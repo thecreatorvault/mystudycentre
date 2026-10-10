@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1020"><title>Study Zone</title><style>body{background:#0b1020;margin:0}</style></head><body>
+<script>
+/* Shell: kabhi badalna nahi padega. Latest app (update ya bundled) chalata hai. */
+(async()=>{const open=()=>new Promise((r,j)=>{const q=indexedDB.open('sz',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=j});
+let h=null,d=null;try{d=await open();h=await new Promise(r=>{const g=d.transaction('f').objectStore('f').get('__app');g.onsuccess=()=>r(g.result);g.onerror=()=>r(null)})}catch(e){}
+const n=+localStorage.szboot||0;
+if(h&&n>=3){try{d.transaction('f','readwrite').objectStore('f').delete('__app')}catch(e){}h=null;localStorage.szboot=0}
+else localStorage.szboot=n+1;
+const b=await fetch('app.html').then(r=>r.text()),bv=+((b.match(/name="app-v" content="(\d+)"/)||[0,0])[1]);
+document.open();document.write(h&&h.v>bv?h.html:b);document.close()})();
+</script></body></html>
