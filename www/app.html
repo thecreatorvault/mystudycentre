@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="app-v" content="5"><meta name="theme-color" content="#0b1020">
+<title>Study Zone</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png">
+<script type="module">import*as p from "./pdfjs/pdf.min.mjs";p.GlobalWorkerOptions.workerSrc="./pdfjs/pdf.worker.min.mjs";window.pdfjsLib=p;</script>
+<style>
+:root{--bg:#0b1020;--card:#151b30;--card2:#1d2540;--tx:#eef1ff;--mu:#8e98c0;--ac:#7c5cff;--ac2:#22d3a6;--wa:#ffb84d;--rd:#ff6b81}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f3fb;--card:#fff;--card2:#e9ecf8;--tx:#161b33;--mu:#5d678f}}
+:root[data-theme="light"]{--bg:#f1f3fb;--card:#fff;--card2:#e9ecf8;--tx:#161b33;--mu:#5d678f}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+#v{max-width:720px;margin:auto;padding:14px}
+h1{font-size:22px;margin:4px 0 2px}h2{font-size:17px;margin:0 0 10px}
+.card{background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,var(--ac),#2fa8ff);color:#fff}
+.mu{color:var(--mu);font-size:13px}.row{display:flex;gap:8px;align-items:center}.sp{flex:1}
+button,.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}
+button.g{background:var(--card2);color:var(--tx)}button.s{padding:4px 9px;font-size:13px}
+input,select{background:var(--card2);color:var(--tx);border:0;border-radius:12px;padding:10px 12px;font:inherit;width:100%}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 20px #0004;z-index:5}
+nav a{flex:1;text-align:center;font-size:11px;color:var(--mu);padding:4px;border-radius:12px;cursor:pointer}
+nav a b{display:block;font-size:20px;font-weight:400}nav a.on{color:var(--ac2);background:var(--card2)}
+.bar{height:8px;background:var(--card2);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:9px}
+.t{display:flex;align-items:center;gap:8px;padding:6px 0}.t.d span{text-decoration:line-through;color:var(--mu)}
+.t input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac2);flex:none}
+.kids{margin-left:14px;border-left:2px solid var(--card2);padding-left:8px}
+.ic{background:none;color:var(--mu);padding:2px 6px;font-size:16px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}.chips button{white-space:nowrap}.chips .on{background:var(--ac)}
+.wall{columns:2;gap:10px}.wi{break-inside:avoid;margin-bottom:10px;border-radius:16px;overflow:hidden;position:relative;background:var(--card)}
+.wi img{width:100%;display:block}.wi p{margin:0;padding:16px;font-weight:700;font-size:17px;background:linear-gradient(135deg,#7c5cff,#ff6b81);color:#fff}
+.wi button{position:absolute;top:6px;right:6px;padding:2px 8px}
+#md{position:fixed;inset:0;background:#000a;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+#md div{background:var(--card);padding:18px;border-radius:18px;width:100%;max-width:380px}
+.big{font-size:54px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:10px 0}
+.bk{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--card2)}
+a{cursor:pointer;color:var(--ac2)}
+@keyframes up{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes fl{50%{transform:translateY(-7px) rotate(8deg)}}
+@keyframes gr{0%{background-position:0 50%}100%{background-position:100% 50%}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(540deg);opacity:0}}
+#v.in>*{animation:up .6s cubic-bezier(.2,.8,.2,1) both}
+#v.in>*:nth-child(2){animation-delay:.06s}#v.in>*:nth-child(3){animation-delay:.12s}#v.in>*:nth-child(4){animation-delay:.18s}#v.in>*:nth-child(5){animation-delay:.24s}#v.in>*:nth-child(n+6){animation-delay:.3s}
+.hero{background:linear-gradient(135deg,#7c5cff,#2fa8ff,#22d3a6,#7c5cff);background-size:300% 300%;animation:gr 9s ease infinite alternate}
+.fl{display:inline-block;animation:fl 3s ease-in-out infinite}
+button,.btn,.card{transition:transform .15s,background .2s}button:active,.btn:active{transform:scale(.93)}
+nav a.on b{animation:pop .45s}.t input:checked{animation:pop .35s}.bar i{transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.cfp{position:fixed;width:8px;height:12px;z-index:50;pointer-events:none;animation:cf 1s ease-out forwards}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#rd{position:fixed;inset:0;background:#2a2f45;z-index:20;display:none;flex-direction:column}
+.pp{margin:0 auto 14px;background:#fff;box-shadow:0 8px 28px #0009;border-radius:4px;overflow:hidden}
+.pp canvas{display:block;width:100%;height:100%}
+.rt{position:absolute;left:0;right:0;z-index:5;padding:10px;display:flex;gap:8px;align-items:center;background:var(--card);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.rt.t{top:0;padding-top:calc(10px + env(safe-area-inset-top,0px))}.rt.b{bottom:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+#panes{flex:1;display:flex;flex-direction:column;min-height:0}
+.pn{position:relative;flex:1;min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#2a2f45}
+.pn.night{background:#000}.pn.sepia{background:#d9c9a5}
+#panes:not(.s2) .pn:nth-child(2){display:none}
+.s2 .pn:nth-child(2){border-top:3px solid var(--ac);animation:up .4s both}
+@media (orientation:landscape){#panes{flex-direction:row}.s2 .pn:nth-child(2){border-top:0;border-left:3px solid var(--ac)}}
+.bx{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior:contain}
+.pgs{display:inline-block;min-width:100%;padding:64px 0 90px;transform-origin:0 0;will-change:transform}
+.sl{padding:0;flex:1;min-width:0;accent-color:var(--ac2);background:none}
+.pp canvas{animation:fi .35s}@keyframes fi{from{opacity:0}}
+.pn.night canvas{filter:invert(1) hue-rotate(180deg)}.pn.sepia canvas{filter:sepia(.55) contrast(.95)}
+.pn.hid .rt.t{transform:translateY(-120%)}.pn.hid .rt.b{transform:translateY(120%)}
+.bx{overflow-anchor:none}.pp canvas{object-fit:contain}.pp{contain:layout paint}</style></head><body>
+<div id="v"></div>
+<nav id="nv"></nav>
+<div id="rd"><div id="panes"></div></div>
+<div id="md"><div><h2 id="mt"></h2><div id="mb"></div><div class="row" style="margin-top:12px"><button class="g sp" onclick="mc(null)">Cancel</button><button class="sp" onclick="mc(true)">OK</button></div></div></div>
+<script>
+const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,9),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const N=(t,c=[])=>({id:uid(),t,done:false,open:false,c:c.map(x=>typeof x==='string'?N(x):x)});
+const seed=()=>[N('Prelims',[N('History',['Ancient','Medieval','Modern','Bengal History']),N('Geography',['India','West Bengal','World']),N('Polity & Constitution'),N('Economy'),N('Science & Environment'),N('Current Affairs'),N('Maths',['Brahmastra']),N('Reasoning')]),N('Mains',[N('Bengali'),N('English'),N('GS Papers'),N('Essay')]),N('Personality Test')];
+let S={};try{S=JSON.parse(localStorage.sz)}catch(e){}
+S=Object.assign({goal:'WBCS Officer banna hai',exam:'',tasks:[],tree:seed(),wall:[],books:[],pages:{},mins:{},st:{n:0,last:''}},S);
+const NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()&&Capacitor.isPluginAvailable&&Capacitor.isPluginAvailable('Filesystem')&&Capacitor.isPluginAvailable('Preferences')),FS=NATIVE&&Capacitor.Plugins.Filesystem,PF=NATIVE&&Capacitor.Plugins.Preferences;
+const save=()=>{try{localStorage.sz=JSON.stringify(S)}catch(e){}if(NATIVE){clearTimeout(save.t);save.t=setTimeout(()=>{try{PF.set({key:'sz',value:localStorage.sz||JSON.stringify(S)})}catch(e){}},400)}};
+if(!S.exams){S.exams=[{id:'e1',name:'WBCS',tree:S.tree||seed()}];S.cur='e1'}
+delete S.tree;
+const cur=()=>S.exams.find(x=>x.id===S.cur)||S.exams[0];
+Object.defineProperty(S,'tree',{get:()=>cur().tree,enumerable:false,configurable:true});
+if(!S.fo){S.fo=[];const m={};S.books.forEach(b=>{if(b.subj){if(!m[b.subj]){m[b.subj]={id:uid(),n:b.subj,p:''};S.fo.push(m[b.subj])}b.f=m[b.subj].id}})}
+const db=new Promise(r=>{try{const q=indexedDB.open('sz',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}});
+const idbOld=async(m,k,v)=>{const d=await db;if(!d)return null;return new Promise(r=>{try{const tx=d.transaction('f',m==='get'||m==='keys'?'readonly':'readwrite'),o=tx.objectStore('f');let res;const q=m==='get'?o.get(k):m==='put'?o.put(v,k):m==='keys'?o.getAllKeys():o.delete(k);q.onsuccess=()=>{res=q.result;if(m==='get'||m==='keys')r(res)};tx.oncomplete=()=>r(res===undefined?1:res);tx.onerror=tx.onabort=()=>r(null)}catch(e){r(null)}})};
+const idb0=idbOld;
+const b64=u=>{let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
+async function nput(k,v){try{const u=new Uint8Array(v.b),C=3145728;for(let o=0;o===0||o<u.length;o+=C){const d=b64(u.subarray(o,o+C));if(o===0)await FS.writeFile({path:'sz/'+k,data:d,directory:'DATA',recursive:true});else await FS.appendFile({path:'sz/'+k,data:d,directory:'DATA'})}return k}catch(e){return null}}
+async function nget(k){try{const u=await FS.getUri({path:'sz/'+k,directory:'DATA'}),r=await fetch(Capacitor.convertFileSrc(u.uri));if(!r.ok)return undefined;return{b:await r.arrayBuffer(),t:''}}catch(e){return undefined}}
+async function nkeys(){try{return(await FS.readdir({path:'sz',directory:'DATA'})).files.map(f=>f.name)}catch(e){return[]}}
+async function ndel(k){try{await FS.deleteFile({path:'sz/'+k,directory:'DATA'})}catch(e){}return 1}
+const idb=(m,k,v)=>{if(!NATIVE||k==='__app')return idb0(m,k,v);if(m==='put')return nput(k,v);if(m==='get')return nget(k);if(m==='keys')return nkeys();return ndel(k)};
+function toast(t){let e=$('#ts');if(!e){e=document.createElement('div');e.id='ts';e.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--card2);color:var(--tx);padding:10px 16px;border-radius:14px;z-index:60;box-shadow:0 4px 20px #0006';document.body.appendChild(e)}e.textContent=t;e.style.display=t?'block':'none'}
+let KEYS=null,MISS=new Set();
+async function chk(){const k=await idb('keys');if(!Array.isArray(k))return;KEYS=new Set(k);const m=new Set(S.books.filter(b=>!KEYS.has(b.id)).map(b=>b.id)),sig=[...m].join()+'|'+S.wall.filter(x=>!x.q&&!KEYS.has(x.id)).length;if(sig!==chk.s){chk.s=sig;MISS=m;if(tab==='books'||tab==='wall')R()}}
+async function stinfo(){const e=$('#sti');if(!e)return;if(window.Capacitor){const b=e.nextElementSibling;if(b)b.style.display='none';if(!NATIVE){e.textContent='⚠ Ye APK purana hai (v5 wala nahi). Naya APK banao, tab PDFs phone ki memory me save hongi.';return}try{const r=await FS.readdir({path:'sz',directory:'DATA'});e.textContent='✅ Phone ki memory me save ('+r.files.length+' file) · '+(r.files.reduce((a,f)=>a+(f.size||0),0)/1048576).toFixed(1)+' MB'}catch(x){e.textContent='✅ Phone ki memory me save hoga · 0 MB'}return}try{const p=await navigator.storage.persisted(),u=await navigator.storage.estimate();e.textContent=(p?'✅ Pakka: browser data nahi hatayega':'⚠ Kaccha: browser kabhi bhi hata sakta hai. App install karo aur "Pakka karo" dabao')+' · '+Math.round(u.usage/1048576)+' MB use'}catch(x){e.textContent='Storage info nahi mili'}}
+async function pers(){if(window.Capacitor){alert('APK me iski zaroorat nahi, data pehle se safe hai ✅');return}try{const ok=await navigator.storage.persist();alert(ok?'Ho gaya ✅ Ab data pakka save rahega':'Browser ne mana kiya. App ko Home screen par install karke use karo.')}catch(e){}stinfo()}
+const Q=["Aaj ka 1 ghanta kal ki officer-ki-kursi hai.","Jo aaj padhega, wahi kal list me naam dekhega.","Discipline motivation se bada hota hai.","Chhote steps roz — bada result ek din.","Thak jao to rest karo, quit mat karo.","Revision hi asli topper banata hai.","Phone side me rakho, future samne rakho.","Tumhari mehnat tumhare parivar ki muskaan hai.","Ek chapter aur. Bas ek aur.","WBCS koi jadu nahi, routine hai.","Success ek din me nahi, roz ke 1% me banti hai.","Aaj ka dard kal ki taaqat hai.","Log sote hain, topper padhte hain.","Jab man na kare tabhi padhna asli jeet hai.","Tumhara competitor abhi padh raha hai.","Selection ke din tum khud pe garv karoge.","Result me der ho sakti hai, andher nahi.","Consistency beats intensity, har baar.","Bahaane mat dhundho, raaste banao.","Har galat answer ek seekh hai, haar nahi.","Aaj ka mock kal ka confidence hai.","Sapne dekhna kaafi nahi, unke liye jaagna padta hai.","Chhota target, pakka kaam, roz.","Jitna paseena padhai me, utna kam pachtawa result me.","Time sabke paas 24 ghante hai — use tum kaise karte ho, wahi farak hai.","Haar tab hoti hai jab tum ruk jaate ho.","Aaj ki mehnat, kal ki pehchaan.","Pehle khud ko jeeto, phir exam ko.","Ek din tum bologe: sab kuch sahi tha, bas tikna tha.","Syllabus bada nahi, tum roz chhota padh rahe ho.","Focus karo: phone nahi, future.","Dard temporary hai, post permanent.","Tum jitna sochte ho usse zyada kar sakte ho.","Aaj bhi ek step aage badho.","Bhaagna nahi hai, bas rukna nahi hai.","Kal ki tension chhodo, aaj ka target pura karo.","Mehnat ka phal der se mile par pakka milta hai.","Padhai boring ho sakti hai, par haar maan'na nahi.","Tum kar sakte ho — aur tum karoge.","Jahan chaah, wahan raah."];
+const dn=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),dq=()=>Q[(dn()*7+(S.qo||0))%Q.length];
+function boom(x=innerWidth/2,y=innerHeight/3){for(let i=0;i<24;i++){const d=document.createElement('i');d.className='cfp';d.style.cssText=`left:${x}px;top:${y}px;background:hsl(${Math.random()*360},90%,60%);--x:${(Math.random()-.5)*280}px;--y:${(Math.random()-.9)*280}px`;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}if(navigator.vibrate)navigator.vibrate(30)}
+let tab='home';
+const TABS=[['home','🏠','Home'],['syl','🌳','Syllabus'],['books','📚','Books'],['wall','🔥','Wall'],['timer','⏱️','Focus']];
+function nav(){$('#nv').innerHTML=TABS.map(t=>`<a class="${t[0]===tab?'on':''}" onclick="sw('${t[0]}')"><b>${t[1]}</b>${t[2]}</a>`).join('')}
+function sw(t){tab=t;nav();R();scrollTo(0,0);const v=$('#v');v.classList.remove('in');void v.offsetWidth;v.classList.add('in');setTimeout(()=>v.classList.remove('in'),1000)}
+function ask(title,def='',opts){return new Promise(res=>{$('#mt').textContent=title;$('#mb').innerHTML=opts?`<select id="mi">${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`:`<input id="mi" value="${esc(def)}" ${def==='date'?'':''}>`;if(def==='date')$('#mi').type='date';$('#md').style.display='flex';window.mc=ok=>{const v=$('#mi').value;$('#md').style.display='none';res(ok?v:null)};setTimeout(()=>$('#mi').focus(),50)})}
+function find(a,id,p){for(const n of a){if(n.id===id)return{n,a};const r=find(n.c,id);if(r)return r}return null}
+const lv=n=>n.c.length?n.c.flatMap(lv):[n];
+const pct=n=>{const l=lv(n);return l.length?Math.round(l.filter(x=>x.done).length*100/l.length):0};
+const setAll=(n,v)=>{n.done=v;n.c.forEach(x=>setAll(x,v))};
+function nodeH(n){const p=pct(n);return`<div><div class="t ${p===100?'d':''}"><span class="ic" onclick="op('${n.id}')" style="width:18px">${n.c.length?(n.open?'▾':'▸'):'•'}</span><input type="checkbox" ${p===100?'checked':''} onchange="ck('${n.id}',this.checked)"><span class="sp" onclick="op('${n.id}')">${esc(n.t)}</span>${n.c.length?`<span class="mu">${p}%</span>`:''}<button class="ic" onclick="ad('${n.id}')">＋</button><button class="ic" onclick="rn('${n.id}')">✎</button><button class="ic" onclick="dl('${n.id}')">✕</button></div>${n.open&&n.c.length?`<div class="kids">${n.c.map(nodeH).join('')}</div>`:''}</div>`}
+const op=id=>{const r=find(S.tree,id);r.n.open=!r.n.open;save();R()};
+const ck=(id,v)=>{setAll(find(S.tree,id).n,v);if(v&&pct(find(S.tree,id).n)===100)boom();save();R()};
+async function ad(id){const t=await ask('Naya topic / sub-topic');if(!t)return;if(id){const r=find(S.tree,id);r.n.c.push(N(t));r.n.open=true}else S.tree.push(N(t));save();R()}
+async function rn(id){const r=find(S.tree,id),t=await ask('Naam badlo',r.n.t);if(t){r.n.t=t;save();R()}}
+async function dl(id){const r=find(S.tree,id);if(confirm('Delete "'+r.n.t+'"?')){r.a.splice(r.a.indexOf(r.n),1);save();R()}}
+function days(){if(!S.exam)return null;return Math.ceil((new Date(S.exam)-new Date(today()))/864e5)}
+function bump(){const t=today();if(S.st.last===t)return;const y=new Date(Date.now()-864e5).toISOString().slice(0,10);S.st.n=S.st.last===y?S.st.n+1:1;S.st.last=t}
+async function addT(){const i=$('#ti');if(!i.value.trim())return;S.tasks.push({id:uid(),t:i.value.trim(),d:false});save();R()}
+function tg(id,v){const t=S.tasks.find(x=>x.id===id);t.d=v;if(v){bump();boom()}save();R()}
+async function goal(){const t=await ask('Tumhara goal kya hai?',S.goal);if(t){S.goal=t;save();R()}}
+async function exam(){const t=await ask('Exam date','date');if(t){S.exam=t;save();R()}}
+function H(){const d=days(),pend=S.tasks.filter(t=>!t.d).length,all=S.tree.flatMap(lv),p=all.length?Math.round(all.filter(x=>x.done).length*100/all.length):0,q=dq(),m=S.mins[today()]||0;
+return`<h1>Namaste 👋</h1><div class="mu">${new Date().toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long'})}</div><br>
+<div class="card hero"><div class="mu" style="color:#fffb">MERA GOAL</div><h2 style="font-size:21px;margin:4px 0" onclick="goal()">🎯 ${esc(S.goal)}</h2><div onclick="exam()">${d===null?'Exam date set karo (tap)':d>0?`⏳ Exam me <b>${d}</b> din baaki`:'Exam aa gaya — all the best!'}</div></div>
+<div class="card"><div class="row"><span class="mu sp">Aaj ki prerna · roz nayi</span><button class="g s" onclick="S.qo=(S.qo||0)+1;save();R()">🔄</button></div><h2 style="margin-top:8px"><span class="fl">✨</span> “${q}”</h2></div>
+<div class="row"><div class="card sp"><div class="mu">Streak</div><h1>🔥 ${S.st.n}</h1></div><div class="card sp"><div class="mu">Aaj padha</div><h1>${m}m</h1></div></div>
+<div class="card"><h2>Syllabus progress</h2>${S.exams.map(e=>{const l=e.tree.flatMap(lv),pp=l.length?Math.round(l.filter(x=>x.done).length*100/l.length):0;return`<div style="margin:8px 0"><div class="row"><span class="sp">${esc(e.name)}</span><b>${pp}%</b></div><div class="bar"><i style="width:${pp}%"></i></div></div>`}).join('')}</div>
+<div class="card"><h2>📌 Aaj kya padhna hai ${pend?`<span class="mu">(${pend} baaki)</span>`:''}</h2>${S.tasks.map(t=>`<div class="t ${t.d?'d':''}"><input type="checkbox" ${t.d?'checked':''} onchange="tg('${t.id}',this.checked)"><span class="sp">${esc(t.t)}</span><button class="ic" onclick="S.tasks=S.tasks.filter(x=>x.id!=='${t.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Koi task nahi. Neeche add karo.</div>'}<div class="row" style="margin-top:8px"><input id="ti" placeholder="e.g. Polity Ch-3 padhna" onkeydown="if(event.key==='Enter')addT()"><button onclick="addT()">Add</button></div>${S.tasks.some(t=>t.d)?'<button class="g s" style="margin-top:8px" onclick="S.tasks=S.tasks.filter(x=>!x.d);save();R()">Done wale hatao</button>':''}</div>
+<div class="card"><h2>🔄 App update</h2><div class="mu">Abhi version v${APP_V}${S.upd?'':' · pehle update link set karo'}</div>${S.nv&&S.nv.v>APP_V?`<div style="margin:8px 0"><b>🆕 v${S.nv.v}</b> ${esc(S.nv.notes||'')}</div><button onclick="doUpd()">Abhi update karo</button>`:''}<div class="row" style="margin-top:8px"><button class="g sp" onclick="chkUpd(1)">Check karo</button><button class="g sp" onclick="setUpd()">Update link</button></div></div><div class="card"><h2>🛡️ Storage</h2><div id="sti" class="mu">check ho raha hai…</div><button class="g s" style="margin-top:8px" onclick="pers()">Pakka karo</button></div><div class="card"><h2>💾 Backup</h2><div class="mu">Syllabus, tasks, goals, timer data ka text backup (PDF/photos nahi).</div><div class="row" style="margin-top:8px"><button class="g sp" onclick="bkp()">Backup lo</button><button class="g sp" onclick="rsb()">Restore</button></div></div><div class="card row"><span class="sp mu">Theme</span><button class="g s" onclick="th()">🌗 Badlo</button>${inst?'<button class="s" onclick="ins()">📲 Install</button>':''}</div>
+<div class="mu" style="text-align:center">Phone me install: Chrome menu ⋮ → “Add to Home screen”</div><div class="mu" style="text-align:center;margin-top:6px">Study Zone v${APP_V}</div>`}
+async function bkp(){const j=JSON.stringify({exams:S.exams,cur:S.cur,tasks:S.tasks,wall:S.wall.filter(w=>w.q),mins:S.mins,st:S.st,goal:S.goal,exam:S.exam,pm:S.pm,log:S.log});try{navigator.clipboard.writeText(j)}catch(e){}await ask('Backup (select-all karke copy karo)',j)}
+async function rsb(){const t=await ask('Backup yahan paste karo');if(!t)return;try{Object.assign(S,JSON.parse(t));save();location.reload()}catch(e){alert('Backup galat hai')}}
+const APP_V=+document.querySelector('meta[name=app-v]').content,uu=()=>(S.upd||'').trim().replace(/\/?$/,'/');
+async function chkUpd(man){if(!S.upd){if(man)setUpd();return}S.lc=Date.now();try{const j=await(await fetch(uu()+'version.json?'+Date.now(),{cache:'no-store'})).json();if(j.v>APP_V){S.nv=j;save();if(tab==='home')R()}else{delete S.nv;save();if(man)alert('Aap latest ho (v'+APP_V+')')}}catch(e){if(man)alert('Update check nahi hua. Internet ya link check karo.')}}
+async function doUpd(){try{const h=await(await fetch(uu()+'app.html?'+Date.now(),{cache:'no-store'})).text(),m=h.match(/name="app-v" content="(\d+)"/);if(!m||+m[1]<=APP_V||!h.includes('</html>'))throw 0;const ok=await idb('put','__app',{v:+m[1],html:h});if(ok==null)throw 0;localStorage.szboot=0;delete S.nv;save();location.reload()}catch(e){alert('Update fail hua. Baad me try karo.')}}
+async function setUpd(){const v=await ask('GitHub Pages link (jaise https://naam.github.io/study-zone/)',S.upd||'');if(v!==null){S.upd=v.trim();save();if(S.upd)chkUpd(1)}}
+function th(){const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme:light)').matches;r.dataset.theme=dk?'light':'dark'}
+const TP={'WBCS':seed,'SSC CGL':()=>[N('Quant',['Number System','Percentage','Profit & Loss','Algebra','Geometry','Trigonometry','Mensuration','Data Interpretation']),N('Reasoning',['Analogy','Series','Coding-Decoding','Syllogism','Puzzle']),N('English',['Grammar','Vocabulary','Comprehension','Cloze Test']),N('General Awareness',['History','Geography','Polity','Economy','Science','Current Affairs'])],'UPSC Prelims':()=>[N('GS Paper 1',['History','Geography','Polity','Economy','Environment','Science & Tech','Current Affairs']),N('CSAT')],'Railway NTPC':()=>[N('Maths'),N('Reasoning'),N('General Awareness'),N('General Science')],'Khali (blank)':()=>[]};
+async function ae(){const n=await ask('Exam ka naam (jaise SSC CGL)');if(!n)return;const t=await ask('Template chuno',null,Object.keys(TP).filter(k=>k!=='WBCS').concat('WBCS'));if(!t)return;const e={id:uid(),name:n,tree:TP[t]()};S.exams.push(e);S.cur=e.id;save();R()}
+async function ee(){const n=await ask('Exam ka naam badlo',cur().name);if(n){cur().name=n;save();R()}}
+function de(){if(confirm('"'+cur().name+'" exam aur uska poora syllabus delete?')){S.exams=S.exams.filter(x=>x.id!==cur().id);S.cur=S.exams[0].id;save();R()}}
+function SY(){const e=cur();return`<div class="chips">${S.exams.map(x=>`<button class="${x.id===e.id?'':'g'} s" onclick="S.cur='${x.id}';save();R()">${esc(x.name)}</button>`).join('')}<button class="g s" onclick="ae()">＋ Naya exam</button></div><div class="row"><h1 class="sp">${esc(e.name)}</h1><button class="g s" onclick="ee()">✎</button>${S.exams.length>1?'<button class="g s" onclick="de()">🗑</button>':''}<button onclick="ad(null)">＋ Add</button></div><div class="mu" style="margin:6px 0 10px">Har exam ka syllabus alag. ＋ se sub-topic, ✎ rename.</div><div class="card">${e.tree.map(nodeH).join('')||'<div class="mu">Khali hai. Add karo.</div>'}</div>`}
+let cf='';
+const path=id=>{const a=[];while(id){const f=S.fo.find(x=>x.id===id);if(!f)break;a.unshift(f);id=f.p}return a},fname=id=>path(id).map(f=>f.n).join(' / ');
+const cnt=id=>S.fo.filter(f=>f.p===id).length+S.books.filter(b=>b.f===id).length;
+function BK(){const sf=S.fo.filter(f=>f.p===cf),bs=S.books.filter(b=>(b.f||'')===cf);
+return`<h1>Meri Library</h1><div class="mu" style="margin:4px 0 10px"><a onclick="cf='';R()">🏠 Home</a>${path(cf).map(f=>` › <a onclick="cf='${f.id}';R()">${esc(f.n)}</a>`).join('')}</div><div class="row" style="margin-bottom:12px"><button class="sp" onclick="nf()">📁 Naya folder</button><label class="btn sp" style="text-align:center">＋ PDF yahan<input type="file" accept="application/pdf" multiple hidden onchange="up(this.files)"></label></div><div class="card">${sf.map(f=>`<div class="bk"><span style="font-size:30px">📁</span><div class="sp" onclick="cf='${f.id}';R()"><b>${esc(f.n)}</b><div class="mu">${cnt(f.id)} items</div></div><button class="ic" onclick="rf('${f.id}')">✎</button><button class="ic" onclick="df('${f.id}')">✕</button></div>`).join('')}${bs.map(b=>{const p=S.pages[b.id]||1;return`<div class="bk"><span style="font-size:30px">📕</span><div class="sp" onclick="openR('${b.id}')"><b>${esc(b.name)}</b><div class="bar" style="margin:5px 0;height:5px"><i style="width:${b.n?p*100/b.n:0}%"></i></div><div class="mu">page ${p}${b.n?' / '+b.n:''}${b.sz?' · '+(b.sz/1048576).toFixed(1)+' MB':''}</div>${MISS.has(b.id)?`<label class="btn s" style="display:inline-block;margin-top:4px;background:var(--rd)" onclick="event.stopPropagation()">⚠ File gayab, dobara chuno<input type="file" accept="application/pdf" hidden onchange="rl('${b.id}',this.files[0])"></label>`:''}</div><button class="ic" onclick="rb('${b.id}')">✎</button><button class="ic" onclick="mv('${b.id}')">📂</button><button class="ic" onclick="rmB('${b.id}')">✕</button></div>`}).join('')}${sf.length+bs.length?'':'<div class="mu">Yeh folder khali hai. Folder banao ya PDF daalo.</div>'}</div>`}
+async function nf(){const n=await ask('Folder ka naam');if(n){S.fo.push({id:uid(),n,p:cf});save();R()}}
+async function rf(id){const f=S.fo.find(x=>x.id===id),n=await ask('Folder rename',f.n);if(n){f.n=n;save();R()}}
+async function df(id){if(!confirm('Folder aur uske andar sab kuch delete?'))return;const ids=[id];for(let i=0;i<ids.length;i++)S.fo.filter(f=>f.p===ids[i]).forEach(f=>ids.push(f.id));for(const b of S.books.filter(b=>ids.includes(b.f)))await idb('del',b.id);S.books=S.books.filter(b=>!ids.includes(b.f));S.fo=S.fo.filter(f=>!ids.includes(f.id));save();R()}
+async function rb(id){const b=S.books.find(x=>x.id===id),n=await ask('Book ka naam',b.name);if(n){b.name=n;save();R()}}
+async function mv(id){const o=['🏠 Home',...S.fo.map(f=>fname(f.id))],v=await ask('Kis folder me bhejna hai?',null,o);if(v===null)return;const i=o.indexOf(v);S.books.find(x=>x.id===id).f=i<1?'':S.fo[i-1].id;save();R()}
+async function up(fs){let bad=0;for(const f of fs){toast('Save ho rahi hai: '+f.name);const id=uid();let ok=null;try{ok=await idb('put',id,{b:await f.arrayBuffer(),t:'application/pdf'})}catch(e){}if(ok==null){bad++;continue}S.books.push({id,name:f.name.replace(/\.pdf$/i,''),f:cf,sz:f.size})}toast('');save();if(bad)alert(bad+' PDF save nahi hui (storage full ya blocked).');R()}
+async function rl(id,f){if(!f)return;let ok=null;try{ok=await idb('put',id,{b:await f.arrayBuffer(),t:'application/pdf'})}catch(e){}if(ok==null)alert('Save nahi hui');R()}
+async function rmB(id){if(!confirm('Book hatao?'))return;await idb('del',id);S.books=S.books.filter(b=>b.id!==id);save();R()}
+if(!window.Capacitor&&'serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)location.reload()})}
+const RS=[];let rz;
+function mkR(i,el){
+const q=s=>el.querySelector(s);let id=null,pd=null,z=1,ra=1.4,ob=null,cp=1,sv,st,lp=0,lt=0,tt,pc=null,wl=null,raf=0;
+el.innerHTML=`<div class="bar" style="position:absolute;top:0;left:0;right:0;z-index:6;border-radius:0;height:3px"><i class="pi" style="width:0"></i></div><div class="rt t"><button class="g s" onclick="RS[${i}].x()">✕</button><b class="sp ttl" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis"></b><button class="g s" onclick="RS[${i}].sp()">${i?'🔁':'◫'}</button><button class="g s bmb" onclick="RS[${i}].bmk()">🔖</button><button class="g s" onclick="RS[${i}].bml()">📑</button><button class="g s" onclick="RS[${i}].thm()">🌗</button></div><div class="bx"><div class="pgs"></div></div><div class="rt b"><span class="mu pgn" style="min-width:84px">…</span><input type="range" class="sl" min="1" max="1" value="1" oninput="RS[${i}].jp(+this.value,1)"><button class="g s" onclick="RS[${i}].anim(1)">Fit</button></div>`;
+const bx=q('.bx'),pg=q('.pgs'),bk=()=>S.books.find(x=>x.id===id),pitch=()=>{const c=pg.firstChild;return c?c.offsetHeight+14:1},wid=()=>Math.max(180,Math.min(bx.clientWidth-16,900))*z;
+const pend=new Set();let busy=false,zl=false;
+function rp(d){d._t=(d._t||0)+1;pend.add(d);pump()}
+async function pump(){if(busy)return;busy=true;try{while(pend.size&&pd){let b=null,bd=1e12;const c=bx.scrollTop+bx.clientHeight/2;for(const d of pend){if(!d._v||!d.isConnected){pend.delete(d);continue}const k=Math.abs(d.offsetTop+d.offsetHeight/2-c);if(k<bd){bd=k;b=d}}if(!b)break;pend.delete(b);await draw(b)}}finally{busy=false}}
+async function draw(d){const t=d._t,q0=pd;try{const p=await q0.getPage(+d.dataset.p),v0=p.getViewport({scale:1}),W=parseFloat(d.style.width);let sc=W/v0.width*Math.min(devicePixelRatio||1,2);const px=v0.width*v0.height*sc*sc;if(px>5e6)sc*=Math.sqrt(5e6/px);const v=p.getViewport({scale:sc}),c=document.createElement('canvas');c.width=v.width;c.height=v.height;await p.render({canvasContext:c.getContext('2d'),canvas:c,viewport:v}).promise;if(d._t===t&&q0===pd&&d._v)d.replaceChildren(c)}catch(e){}}
+function build(){pg.innerHTML='';const W=wid();for(let n=1;n<=pd.numPages;n++){const d=document.createElement('div');d.className='pp';d.dataset.p=n;d.style.width=W+'px';d.style.height=W*ra+'px';pg.appendChild(d);ob.observe(d)}}
+function resize(){const W=wid();[...pg.children].forEach(d=>{d.style.width=W+'px';d.style.height=W*ra+'px';if(d.firstChild){if(d._v)rp(d);else d.replaceChildren()}})}
+function upd(){if(!pd)return;q('.pgn').textContent=cp+' / '+pd.numPages;q('.sl').value=cp;q('.pi').style.width=cp*100/pd.numPages+'%';q('.bmb').textContent=(bk().bm||[]).includes(cp)?'📌':'🔖';S.pages[id]=cp;clearTimeout(st);st=setTimeout(save,600)}
+const dst=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+bx.addEventListener('scroll',()=>{if(!pd||zl)return;cancelAnimationFrame(sv);sv=requestAnimationFrame(()=>{cp=Math.max(1,Math.min(pd.numPages,Math.floor((bx.scrollTop+bx.clientHeight*.35-64)/pitch())+1));upd()})},{passive:true});
+bx.addEventListener('touchstart',e=>{if(e.touches.length===2&&pd){const r=bx.getBoundingClientRect();pc={d:dst(e),s:1,mx:(e.touches[0].clientX+e.touches[1].clientX)/2,my:(e.touches[0].clientY+e.touches[1].clientY)/2};pg.style.transformOrigin=`${bx.scrollLeft+pc.mx-r.left}px ${bx.scrollTop+pc.my-r.top}px`}},{passive:true});
+bx.addEventListener('touchmove',e=>{if(pc&&e.touches.length===2){pc.s=Math.max(.6/z,Math.min(4/z,dst(e)/pc.d));e.preventDefault();if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(pc)pg.style.transform=`scale(${pc.s})`})}},{passive:false});
+bx.addEventListener('touchend',e=>{if(pc&&e.touches.length<2){const p=pc;pc=null;lp=Date.now();pg.style.transform='';o.zset(z*p.s,p.mx,p.my)}});
+bx.addEventListener('click',e=>{if(!pd||Date.now()-lp<500)return;const n=Date.now();if(n-lt<300){clearTimeout(tt);o.anim(z>1.3?1:2.4,e.clientX,e.clientY)}else tt=setTimeout(()=>el.classList.toggle('hid'),260);lt=n});
+bx.addEventListener('wheel',e=>{if(pd&&e.ctrlKey){e.preventDefault();o.zset(z*(e.deltaY<0?1.1:.9),e.clientX,e.clientY)}},{passive:false});
+const o={
+async open(bid){const f=await idb('get',bid);let buf=null;try{buf=f?(f.b||await f.arrayBuffer()):null}catch(e){}if(!buf){alert('File gayab ho gayi. Library me ⚠ wale button se dobara chuno.');return false}o.shut();id=bid;const b=bk();el.classList.remove('hid','night','sepia');if(b.th)el.classList.add(b.th);q('.ttl').textContent=b.name;q('.pgn').textContent='Loading…';
+try{const lt=pdfjsLib.getDocument({data:new Uint8Array(buf)});lt.onProgress=p=>{if(p.total)q('.pgn').textContent='Loading '+Math.round(p.loaded*100/p.total)+'%'};pd=await lt.promise}catch(e){q('.pgn').textContent='PDF khul nahi payi';return false}
+b.n=pd.numPages;const v=(await pd.getPage(Math.max(1,Math.round(b.n/2)))).getViewport({scale:1});ra=v.height/v.width;z=b.z||1;cp=Math.min(S.pages[id]||1,b.n);q('.sl').max=b.n;
+ob=new IntersectionObserver(es=>es.forEach(e=>{e.target._v=e.isIntersecting;if(e.isIntersecting)rp(e.target);else{e.target._t=(e.target._t||0)+1;e.target.replaceChildren()}}),{root:bx,rootMargin:'70% 0px'});
+build();o.jp(cp,1);try{wl=await navigator.wakeLock.request('screen')}catch(e){}return true},
+shut(){ob&&ob.disconnect();pd=null;id=null;pg.innerHTML='';try{wl&&wl.release()}catch(e){}},
+jp(n,now){cp=n;bx.scrollTo({top:(n-1)*pitch()+54,behavior:now?'auto':'smooth'});upd()},
+zset(nz,mx,my){const r=bx.getBoundingClientRect();mx=mx==null?r.width/2:mx-r.left;my=my==null?r.height/2:my-r.top;nz=Math.max(.6,Math.min(4,nz));const k=nz/z,px=bx.scrollLeft+mx,py=bx.scrollTop+my;z=nz;zl=true;resize();const tx=px*k-mx,ty=(py-64)*k+64-my;bx.scrollLeft=tx;bx.scrollTop=ty;requestAnimationFrame(()=>{bx.scrollLeft=tx;bx.scrollTop=ty});setTimeout(()=>{zl=false;bx.dispatchEvent(new Event('scroll'))},400);bk().z=z;save()},
+anim(nz,mx,my){nz=Math.max(.6,Math.min(4,nz));const k=nz/z;if(Math.abs(k-1)<.01)return;const r=bx.getBoundingClientRect();pg.style.transformOrigin=`${bx.scrollLeft+(mx==null?r.width/2:mx-r.left)}px ${bx.scrollTop+(my==null?r.height/2:my-r.top)}px`;pg.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';pg.style.transform=`scale(${k})`;setTimeout(()=>{pg.style.transition='';pg.style.transform='';o.zset(nz,mx,my)},290)},
+relayout(){if(!pd)return;const f=bx.scrollTop/pitch();resize();bx.scrollTop=f*pitch()},
+thm(){const b=bk(),a=['','night','sepia'],n=a[(a.indexOf(b.th||'')+1)%3];el.classList.remove('night','sepia');if(n)el.classList.add(n);b.th=n;save()},
+bmk(){const b=bk();b.bm=b.bm||[];const k=b.bm.indexOf(cp);k<0?b.bm.push(cp):b.bm.splice(k,1);save();upd()},
+async bml(){if(!pd)return;const l=(bk().bm||[]).slice().sort((a,c)=>a-c);let v=await ask('Jump karo',null,['Page number likho…',...l.map(x=>'🔖 Page '+x)]);if(v===null)return;if(v.startsWith('🔖')){o.jp(parseInt(v.slice(7)));return}v=await ask('Page number (1-'+pd.numPages+')',''+cp);if(v)o.jp(Math.max(1,Math.min(pd.numPages,+v||1)))},
+x(){i?closeSplit():closeAll()},sp(){i?change2():toggleSplit()}};
+RS[i]=o}
+function initR(){const p=$('#panes');[0,1].forEach(i=>{const e=document.createElement('div');e.className='pn';p.appendChild(e);mkR(i,e)})}
+async function openR(bid){history.pushState({r:1},'');$('#rd').style.display='flex';$('#panes').classList.remove('s2');await RS[0].open(bid)}
+function closeAll(){if(history.state&&history.state.r)history.back();else doClose()}
+addEventListener('popstate',()=>{if($('#rd').style.display==='flex')doClose()});
+function doClose(){RS[1].shut();RS[0].shut();$('#panes').classList.remove('s2');$('#rd').style.display='none';save();R()}
+async function pick(){const a=S.books.map(b=>b.name);if(!a.length)return null;const v=await ask('Dusri PDF chuno',null,a);return v===null?null:S.books[a.indexOf(v)].id}
+async function toggleSplit(){const P=$('#panes');if(P.classList.contains('s2')){closeSplit();return}const b=await pick();if(!b)return;P.classList.add('s2');await RS[1].open(b);setTimeout(()=>RS.forEach(r=>r.relayout()),80)}
+function closeSplit(){RS[1].shut();$('#panes').classList.remove('s2');setTimeout(()=>RS[0].relayout(),80)}
+async function change2(){const b=await pick();if(b)RS[1].open(b)}
+addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>RS.forEach(r=>r.relayout()),250)});
+function WL(){return`<div class="row"><h1 class="sp">Motivation Wall</h1></div><div class="row" style="margin:8px 0 14px"><button class="sp" onclick="aq()">✍️ Line likho</button><label class="btn sp" style="text-align:center">🖼️ Photo<input type="file" accept="image/*" hidden onchange="ai(this.files[0])"></label></div><div class="wall">${S.wall.map(w=>`<div class="wi">${w.q?`<p>${esc(w.q)}</p>`:KEYS&&!KEYS.has(w.id)?'<p style="background:var(--card2);color:var(--mu)">⚠ Photo gayab ho gayi, ✕ karke dobara lagao</p>':`<img data-k="${w.id}" alt="">`}<button class="g s" onclick="rw('${w.id}')">✕</button></div>`).join('')}</div>${S.wall.length?'':'<div class="mu">Apni photo, sapna, ya motivational line yahan lagao — roz dekho.</div>'}`}
+async function aq(){const q=await ask('Motivation line');if(q){S.wall.unshift({id:uid(),q});save();R()}}
+async function ai(f){if(!f)return;const im=await createImageBitmap(f),s=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.82)),id=uid();const ok=await idb('put',id,{b:await b.arrayBuffer(),t:'image/jpeg'});if(ok==null){alert('Photo save nahi hui (storage full ya blocked)');return}S.wall.unshift({id,img:1});save();R()}
+async function rw(id){S.wall=S.wall.filter(w=>w.id!==id);await idb('del',id);save();R()}
+const fm=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),RC=339.3,ML={f:'Focus',s:'Short break',l:'Long break'};
+S.pm=Object.assign({f:25,s:5,l:15,ev:4,auto:true,goal:120,snd:'off'},S.pm||{});S.log=S.log||[];
+const dur=m=>S.pm[m]*60;
+let tm={mode:'f',left:dur('f'),full:dur('f'),run:false,end:0,iv:null,tag:'General',n:0},ac,sn,wl2;
+function rst(){const t=S.tm;if(t&&t.day===today()){Object.assign(tm,{mode:t.mode,full:dur(t.mode),left:t.left,n:t.n,tag:t.tag||'General'});if(t.run){tm.end=t.end;tm.run=true;tm.iv=setInterval(tick,250);tick()}}}
+const saveTm=()=>{S.tm={mode:tm.mode,left:tm.left,run:tm.run,end:tm.end,n:tm.n,tag:tm.tag,day:today()};save()};
+function tick(){if(tm.run)tm.left=Math.max(0,Math.round((tm.end-Date.now())/1000));const e=$('#tm');if(e){e.textContent=fm(tm.left);$('#rg').style.strokeDashoffset=RC*(1-tm.left/tm.full)}document.title=tm.run?fm(tm.left)+' · Study Zone':'Study Zone';if(tm.run&&tm.left<=0)fin()}
+function start(){if(tm.run)return;tm.end=Date.now()+tm.left*1000;tm.run=true;clearInterval(tm.iv);tm.iv=setInterval(tick,250);if(tm.mode==='f')snd(S.pm.snd);try{Notification.permission==='default'&&Notification.requestPermission()}catch(e){}try{navigator.wakeLock.request('screen').then(w=>wl2=w)}catch(e){}saveTm();R()}
+function pause(){clearInterval(tm.iv);tm.run=false;stopS();saveTm();R()}
+function nxt(){tm.mode=tm.mode==='f'?(tm.n&&tm.n%S.pm.ev===0?'l':'s'):'f';tm.left=tm.full=dur(tm.mode)}
+function tmode(m){pause();tm.mode=m;tm.left=tm.full=dur(m);saveTm();R()}
+function fin(){clearInterval(tm.iv);tm.run=false;stopS();beep();if(tm.mode==='f'){const m=S.pm.f;S.mins[today()]=(S.mins[today()]||0)+m;S.log.push({d:today(),m,t:tm.tag});S.log=S.log.slice(-300);tm.n++;bump();boom()}try{new Notification('Study Zone',{body:tm.mode==='f'?'Focus complete! Break lo 🎉':'Break khatam, padhai shuru!'})}catch(e){}nxt();if(S.pm.auto)start();else{saveTm();R()}}
+function beep(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();[0,.3,.6].forEach(t=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;g.gain.setValueAtTime(.25,ac.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t+.25);o.connect(g);g.connect(ac.destination);o.start(ac.currentTime+t);o.stop(ac.currentTime+t+.26)})}catch(e){}if(navigator.vibrate)navigator.vibrate([300,120,300])}
+function stopS(){try{sn&&sn.forEach(x=>x.stop())}catch(e){}sn=null}
+function snd(k){stopS();if(k==='off')return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const L=ac.sampleRate*3,b=ac.createBuffer(1,L,ac.sampleRate),d=b.getChannelData(0),w=k==='white'||k==='rain';let l=0;for(let i=0;i<L;i++){const r=Math.random()*2-1;if(w)d[i]=r*.5;else{l=(l+.02*r)/1.02;d[i]=l*3.5}}const s=ac.createBufferSource();s.buffer=b;s.loop=true;const g=ac.createGain();g.gain.value=.5;let o=s;if(k==='rain'){const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.value=3000;f.Q.value=.4;s.connect(f);o=f;g.gain.value=.7}o.connect(g);g.connect(ac.destination);sn=[s];if(k==='waves'){const lf=ac.createOscillator(),lg=ac.createGain();lf.frequency.value=.1;lg.gain.value=.35;lf.connect(lg);lg.connect(g.gain);lf.start();sn.push(lf)}s.start()}catch(e){}}
+function ssn(k){S.pm.snd=k;save();if(tm.run&&tm.mode==='f')snd(k);R()}
+function sp(k,v){S.pm[k]=Math.max(1,+v||1);save();if(!tm.run&&'fsl'.includes(k))tm.left=tm.full=dur(tm.mode);R()}
+function fs(){try{document.documentElement.requestFullscreen()}catch(e){}}
+function TM(){const m=S.mins[today()]||0,g=S.pm.goal,pc=Math.min(100,Math.round(m*100/g)),wk=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5).toISOString().slice(0,10);return[d,S.mins[d]||0]}),mx=Math.max(30,...wk.map(x=>x[1])),bt={};S.log.filter(x=>x.d===today()).forEach(x=>bt[x.t]=(bt[x.t]||0)+x.m);
+return`<h1>Focus Studio</h1><div class="card"><div class="chips" style="justify-content:center">${Object.keys(ML).map(k=>`<button class="${tm.mode===k?'':'g'} s" onclick="tmode('${k}')">${ML[k]}</button>`).join('')}</div>
+<div style="position:relative;width:250px;margin:4px auto"><svg viewBox="0 0 120 120" width="250" style="transform:rotate(-90deg)"><circle cx="60" cy="60" r="54" fill="none" stroke="var(--card2)" stroke-width="6"/><circle id="rg" cx="60" cy="60" r="54" fill="none" stroke="var(--ac2)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${RC}" style="stroke-dashoffset:${RC*(1-tm.left/tm.full)};transition:stroke-dashoffset .3s linear"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div class="big" id="tm" style="margin:0">${fm(tm.left)}</div><div class="mu">${ML[tm.mode]} · session ${tm.n+(tm.mode==='f'?1:0)}</div></div></div>
+<div class="row"><button class="sp" onclick="${tm.run?'pause()':'start()'}">${tm.run?'⏸ Pause':'▶ Start'}</button><button class="g" onclick="tmode(tm.mode)">↺</button><button class="g" onclick="pause();nxt();saveTm();R()">⏭</button><button class="g" onclick="fs()">⛶</button></div>
+<select style="margin-top:10px" onchange="tm.tag=this.value;saveTm()">${['General',...S.tree.map(n=>n.t)].map(t=>`<option ${t===tm.tag?'selected':''}>${esc(t)}</option>`).join('')}</select>
+<div class="mu" style="margin:10px 0 4px">🎧 Ambient sound</div><div class="chips">${['off','rain','waves','brown','white'].map(k=>`<button class="${S.pm.snd===k?'':'g'} s" onclick="ssn('${k}')">${k}</button>`).join('')}</div></div>
+<div class="card"><div class="row"><h2 class="sp">Aaj ka goal</h2><b>${m}/${g} min</b></div><div class="bar"><i style="width:${pc}%"></i></div><div class="mu" style="margin-top:6px">${tm.n} focus session complete${pc>=100?' · 🏆 Goal done!':''}</div>${Object.keys(bt).map(k=>`<div class="row" style="margin-top:6px"><span class="sp">${esc(k)}</span><b>${bt[k]}m</b></div>`).join('')}</div>
+<div class="card"><h2>Is hafte</h2><div class="row" style="align-items:flex-end;height:110px">${wk.map(([d,v])=>`<div class="sp" style="text-align:center"><div style="height:${Math.max(4,v*80/mx)}px;background:linear-gradient(var(--ac2),var(--ac));border-radius:6px"></div><div class="mu" style="font-size:11px">${['Su','Mo','Tu','We','Th','Fr','Sa'][new Date(d).getDay()]}</div></div>`).join('')}</div></div>
+<div class="card"><h2>⚙️ Settings</h2><div class="row" style="flex-wrap:wrap">${[['f','Focus min'],['s','Short'],['l','Long'],['ev','Long break after'],['goal','Daily goal min']].map(([k,n])=>`<div style="flex:1 1 90px"><div class="mu">${n}</div><input type="number" min="1" value="${S.pm[k]}" onchange="sp('${k}',this.value)"></div>`).join('')}</div><div class="t"><input type="checkbox" ${S.pm.auto?'checked':''} onchange="S.pm.auto=this.checked;save()"><span>Agla session apne-aap shuru ho</span></div></div>`}
+function R(){const f={home:H,syl:SY,books:BK,wall:WL,timer:TM}[tab];$('#v').innerHTML=f();if(tab==='home')stinfo();if(tab==='books'||tab==='wall')chk();if(tab==='wall')document.querySelectorAll('img[data-k]').forEach(async i=>{const b=await idb('get',i.dataset.k);if(b)i.src=URL.createObjectURL(b instanceof Blob?b:new Blob([b.b],{type:b.t}))})}
+let inst=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();inst=e;if(tab==='home')R()});
+const ins=async()=>{if(inst){inst.prompt();inst=null;R()}};
+try{const m={name:'Study Zone',short_name:'StudyZone',display:'standalone',background_color:'#0b1020',theme_color:'#0b1020',start_url:location.href,icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#7c5cff"/><text x="50" y="68" font-size="56" text-anchor="middle">📚</text></svg>'),sizes:'512x512',type:'image/svg+xml'}]};const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));document.head.appendChild(l)}catch(e){}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+addEventListener('click',()=>{try{navigator.storage.persist()}catch(e){}},{once:true});initR();rst();nav();R();localStorage.szboot=0;setTimeout(()=>chkUpd(),3000);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(S.lc||0)>36e5)chkUpd()});
+</script></body></html>
