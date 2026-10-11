@@ -208,36 +208,9 @@ async function toggleSplit(){const P=$('#panes');if(P.classList.contains('s2')){
 function closeSplit(){RS[1].shut();$('#panes').classList.remove('s2');setTimeout(()=>RS[0].relayout(),80)}
 async function change2(){const b=await pick();if(b)RS[1].open(b)}
 addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>RS.forEach(r=>r.relayout()),250)});
-function WL(){
-  return `<div class="row"><h1 class="sp">Motivation Wall</h1></div>
-  <div class="row" style="margin:8px 0 14px">
-    <button class="sp" onclick="aq()">✍️ Line likho</button>
-    <label class="btn sp" style="text-align:center">🖼️ Photo<input type="file" accept="image/*" hidden onchange="ai(this.files[0])"></label>
-  </div>
-  <div class="wall">${S.wall.map(w=>`
-    <div class="wi">
-      ${w.q ? `<p>${esc(w.q)}</p>` : `<img data-k="${w.id}" alt="" onerror="this.outerHTML='<p style=\\\'background:var(--card2);color:var(--mu)\\\'>⚠ Photo gayab ho gayi, ✕ karke dobara lagao</p>'">`}
-      <button class="g s" onclick="rw('${w.id}')">✕</button>
-    </div>`).join('')}
-  </div>
-  ${S.wall.length?'':'<div class="mu">Apni photo, sapna, ya motivational line yahan lagao — roz dekho.</div>'}`;
-}
+function WL(){return`<div class="row"><h1 class="sp">Motivation Wall</h1></div><div class="row" style="margin:8px 0 14px"><button class="sp" onclick="aq()">✍️ Line likho</button><label class="btn sp" style="text-align:center">🖼️ Photo<input type="file" accept="image/*" hidden onchange="ai(this.files[0])"></label></div><div class="wall">${S.wall.map(w=>`<div class="wi">${w.q?`<p>${esc(w.q)}</p>`:`<img data-k="${w.id}" alt="" onerror="this.outerHTML='<p style=\\'background:var(--card2);color:var(--mu)\\'>⚠ Photo gayab ho gayi, ✕ karke dobara lagao</p>'">`}<button class="g s" onclick="rw('${w.id}')">✕</button></div>`).join('')}</div>${S.wall.length?'':'<div class="mu">Apni photo, sapna, ya motivational line yahan lagao — roz dekho.</div>'}`}
 async function aq(){const q=await ask('Motivation line');if(q){S.wall.unshift({id:uid(),q});save();R()}}
-async function ai(f){
-  if(!f) return;
-  const im = await createImageBitmap(f), s = Math.min(1, 900 / im.width), c = document.createElement('canvas');
-  c.width = im.width * s; c.height = im.height * s;
-  c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-  const b = await new Promise(r => c.toBlob(r, 'image/jpeg', .82)), id = uid();
-  const ok = await idb('put', id, {b: await b.arrayBuffer(), t: 'image/jpeg'});
-  if(ok == null){ alert('Photo save nahi hui (storage full ya blocked)'); return; }
-  
-  if(KEYS) KEYS.add(id); // <--- Bas yeh nayi line add karni hai
-  
-  S.wall.unshift({id, img: 1});
-  save();
-  R();
-}
+async function ai(f){if(!f)return;const im=await createImageBitmap(f),s=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.82)),id=uid(),ok=await idb('put',id,{b:await b.arrayBuffer(),t:'image/jpeg'});if(ok==null){alert('Photo save nahi hui (storage full ya blocked)');return}if(KEYS)KEYS.add(id);S.wall.unshift({id,img:1});save();R()}
 async function rw(id){S.wall=S.wall.filter(w=>w.id!==id);await idb('del',id);save();R()}
 const fm=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),RC=339.3,ML={f:'Focus',s:'Short break',l:'Long break'};
 S.pm=Object.assign({f:25,s:5,l:15,ev:4,auto:true,goal:120,snd:'off'},S.pm||{});S.log=S.log||[];
