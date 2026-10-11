@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-v" content="10"><meta name="theme-color" content="#0b1020">
+<meta name="app-v" content="11"><meta name="theme-color" content="#0b1020">
 <title>Study Zone</title>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png">
 <script type="module">import*as p from "./pdfjs/pdf.min.mjs";p.GlobalWorkerOptions.workerSrc="./pdfjs/pdf.worker.min.mjs";window.pdfjsLib=p;</script>
 <style>
-:root{--bg:#0b1020;--card:#151b30;--card2:#1d2540;--tx:#eef1ff;--mu:#8e98c0;--ac:#7c5cff;--ac2:#22d3a6;--wa:#ffb84d;--rd:#ff6b81}
+:root{--bg:#0b1020;--card:#151b30;--card2:#1d2540;--tx:#eef1ff;--mu:#8e98c0;--ac:#7c5cff;--ac2:#22d3a6;--wa:#ffb84d;--rd:#ff6b81;--gold:#ffd700}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f3fb;--card:#fff;--card2:#e9ecf8;--tx:#161b33;--mu:#5d678f}}
 :root[data-theme="light"]{--bg:#f1f3fb;--card:#fff;--card2:#e9ecf8;--tx:#161b33;--mu:#5d678f}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
@@ -15,24 +15,30 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 #v{max-width:720px;margin:auto;padding:14px}
 h1{font-size:22px;margin:4px 0 2px}h2{font-size:17px;margin:0 0 10px}
-.card{background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px}
+.card{background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px;position:relative}
 .hero{background:linear-gradient(135deg,var(--ac),#2fa8ff);color:#fff}
 .mu{color:var(--mu);font-size:13px}.row{display:flex;gap:8px;align-items:center}.sp{flex:1}
 button,.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}
 button.g{background:var(--card2);color:var(--tx)}button.s{padding:4px 9px;font-size:13px}
-input,select{background:var(--card2);color:var(--tx);border:0;border-radius:12px;padding:10px 12px;font:inherit;width:100%}
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 20px #0004;z-index:5}
-nav a{flex:1;text-align:center;font-size:11px;color:var(--mu);padding:4px;border-radius:12px;cursor:pointer}
-nav a b{display:block;font-size:20px;font-weight:400}nav a.on{color:var(--ac2);background:var(--card2)}
+button.danger{background:var(--rd);color:#fff}
+input,select,textarea{background:var(--card2);color:var(--tx);border:0;border-radius:12px;padding:10px 12px;font:inherit;width:100%}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);display:flex;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 20px #0004;z-index:15}
+nav a{flex:1;text-align:center;font-size:10px;color:var(--mu);padding:4px 2px;border-radius:12px;cursor:pointer;white-space:nowrap}
+nav a b{display:block;font-size:19px;font-weight:400}nav a.on{color:var(--ac2);background:var(--card2)}
 .bar{height:8px;background:var(--card2);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:9px}
 .t{display:flex;align-items:center;gap:8px;padding:6px 0}.t.d span{text-decoration:line-through;color:var(--mu)}
 .t input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac2);flex:none}
 .kids{margin-left:14px;border-left:2px solid var(--card2);padding-left:8px}
 .ic{background:none;color:var(--mu);padding:2px 6px;font-size:16px}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}.chips button{white-space:nowrap}.chips .on{background:var(--ac)}
-.wall{columns:2;gap:10px}.wi{break-inside:avoid;margin-bottom:10px;border-radius:16px;overflow:hidden;position:relative;background:var(--card)}
-.wi img{width:100%;display:block}.wi p{margin:0;padding:16px;font-weight:700;font-size:17px;background:linear-gradient(135deg,#7c5cff,#ff6b81);color:#fff}
-.wi button{position:absolute;top:6px;right:6px;padding:2px 8px}
+.wall{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wi{break-inside:avoid;border-radius:16px;overflow:hidden;position:relative;background:var(--card);border:1px solid var(--card2);cursor:grab;touch-action:manipulation;transition:transform .2s,box-shadow .2s}
+.wi.dragging{opacity:.4;transform:scale(.96)}
+.wi img{width:100%;display:block}.wi p{margin:0;padding:14px;font-weight:700;font-size:15px;color:#fff}
+.wi.sn{padding:14px;color:var(--tx)}
+.wi.c-yellow{background:#ffd166;color:#2a1c00}.wi.c-pink{background:#ff6b81;color:#fff}.wi.c-blue{background:#2fa8ff;color:#fff}.wi.c-green{background:#22d3a6;color:#0b1020}.wi.c-purple{background:#7c5cff;color:#fff}
+.wi .acts{position:absolute;top:4px;right:4px;display:flex;gap:4px}
+.wi button{padding:2px 6px;font-size:12px;background:rgba(0,0,0,.45);color:#fff;border-radius:8px}
 #md{position:fixed;inset:0;background:#000a;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
 #md div{background:var(--card);padding:18px;border-radius:18px;width:100%;max-width:380px}
 .big{font-size:54px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:10px 0}
@@ -43,19 +49,24 @@ a{cursor:pointer;color:var(--ac2)}
 @keyframes gr{0%{background-position:0 50%}100%{background-position:100% 50%}}
 @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 @keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(540deg);opacity:0}}
+@keyframes alertPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,129,0.5)}50%{box-shadow:0 0 0 14px rgba(255,107,129,0)}}
+@keyframes trophyShine{0%{background-position:-200% 0}100%{background-position:200% 0}}
 #v.in>*{animation:up .6s cubic-bezier(.2,.8,.2,1) both}
 #v.in>*:nth-child(2){animation-delay:.06s}#v.in>*:nth-child(3){animation-delay:.12s}#v.in>*:nth-child(4){animation-delay:.18s}#v.in>*:nth-child(5){animation-delay:.24s}#v.in>*:nth-child(n+6){animation-delay:.3s}
 .hero{background:linear-gradient(135deg,#7c5cff,#2fa8ff,#22d3a6,#7c5cff);background-size:300% 300%;animation:gr 9s ease infinite alternate}
 .fl{display:inline-block;animation:fl 3s ease-in-out infinite}
-button,.btn,.card{transition:transform .15s,background .2s}button:active,.btn:active{transform:scale(.93)}
+button,.btn,.card{transition:transform .15s,background .2s}button:active,.btn:active{transform:scale(.94)}
 nav a.on b{animation:pop .45s}.t input:checked{animation:pop .35s}.bar i{transition:width .9s cubic-bezier(.2,.8,.2,1)}
-.cfp{position:fixed;width:8px;height:12px;z-index:50;pointer-events:none;animation:cf 1s ease-out forwards}
+.cfp{position:fixed;width:8px;height:12px;z-index:70;pointer-events:none;animation:cf 1s ease-out forwards}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-#rd{position:fixed;inset:0;background:#2a2f45;z-index:20;display:none;flex-direction:column}
+#rd{position:fixed;inset:0;background:#2a2f45;z-index:25;display:none;flex-direction:column}
 .pp{margin:0 auto 14px;background:#fff;box-shadow:0 8px 28px #0009;border-radius:4px;overflow:hidden}
 .pp canvas{display:block;width:100%;height:100%}
 .rt{position:absolute;left:0;right:0;z-index:5;padding:10px;display:flex;gap:8px;align-items:center;background:var(--card);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .rt.t{top:0;padding-top:calc(10px + env(safe-area-inset-top,0px))}.rt.b{bottom:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+#rd.immersive .rt{transform:translateY(-150%)!important}
+#rd.immersive .rt.b{transform:translateY(150%)!important}
+#rd-fs-toggle{position:fixed;right:14px;bottom:70px;z-index:30;background:#000a;color:#fff;border-radius:50%;width:42px;height:42px;display:none;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(10px)}
 #panes{flex:1;display:flex;flex-direction:column;min-height:0}
 .pn{position:relative;flex:1;min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#2a2f45}
 .pn.night{background:#000}.pn.sepia{background:#d9c9a5}
@@ -68,7 +79,8 @@ nav a.on b{animation:pop .45s}.t input:checked{animation:pop .35s}.bar i{transit
 .pp canvas{animation:fi .35s}@keyframes fi{from{opacity:0}}
 .pn.night canvas{filter:invert(1) hue-rotate(180deg)}.pn.sepia canvas{filter:sepia(.55) contrast(.95)}
 .pn.hid .rt.t{transform:translateY(-120%)}.pn.hid .rt.b{transform:translateY(120%)}
-.bx{overflow-anchor:none}.pp canvas{object-fit:contain}.pp{contain:layout paint}.sw{width:32px;height:32px;border-radius:50%;border:3px solid transparent;padding:0;flex:none}@keyframes bn{0%{transform:translate(-50%,-150%)}8%,88%{transform:translate(-50%,0)}100%{transform:translate(-50%,-150%)}}
+.bx{overflow-anchor:none}.pp canvas{object-fit:contain}.pp{contain:layout paint}.sw{width:32px;height:32px;border-radius:50%;border:3px solid transparent;padding:0;flex:none}
+@keyframes bn{0%{transform:translate(-50%,-150%)}8%,88%{transform:translate(-50%,0)}100%{transform:translate(-50%,-150%)}}
 #bn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-150%);z-index:70;max-width:92%;background:var(--card2);color:var(--tx);padding:12px 16px;border-radius:16px;box-shadow:0 8px 30px #000a;border-left:5px solid var(--ac2);display:none;font-weight:600}#bn.warn{border-left-color:var(--rd)}
 @keyframes sh{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 @keyframes shine{from{background-position:-200% 0}to{background-position:200% 0}}@keyframes bl{50%{opacity:.25}}@keyframes pu{0%{box-shadow:0 0 0 0 #ff6b8199}100%{box-shadow:0 0 0 16px #ff6b8100}}
@@ -76,26 +88,49 @@ nav a.on b{animation:pop .45s}.t input:checked{animation:pop .35s}.bar i{transit
 .seat.rv{background:linear-gradient(135deg,#5b0f1e,#c4223d);color:#fff;animation:sh .6s .15s 2,pu 1.6s infinite}.seat .nm{font-size:26px;font-weight:900;margin:6px 0}.seat .wn{font-weight:900;animation:bl 1s infinite;margin:4px 0}
 .live{color:var(--rd);font-weight:800;font-size:12px}.live i,.pd{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--rd);margin-right:6px;animation:bl 1s infinite}.gh{display:inline-block;animation:fl 3s ease-in-out infinite}
 .stt{padding:10px 12px;border-radius:12px;background:var(--card2);margin-top:8px}.stt.on{border-left:4px solid var(--ac2)}.fi{padding:8px 0;border-bottom:1px solid var(--card2);animation:up .4s both}.fi.warn{color:var(--wa)}
-#ovl{position:fixed;inset:0;background:#000c;z-index:65;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}#ovl .box{background:var(--card);border-radius:22px;padding:20px;width:100%;max-width:400px;animation:up .45s both}
+#ovl{position:fixed;inset:0;background:#000c;z-index:65;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}#ovl .box{background:var(--card);border-radius:22px;padding:20px;width:100%;max-width:420px;animation:up .45s both;max-height:90vh;overflow-y:auto}
+.panic-banner{background:linear-gradient(135deg,#ff4757,#ff6b81);color:#fff;padding:14px;border-radius:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.rev-alert{border:2px solid var(--rd);animation:alertPulse 1.5s infinite;background:rgba(255,107,129,0.08)}
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:10px}
+.trophy-card{border-radius:16px;padding:14px 10px;text-align:center;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2)}
+.tc-gold{background:linear-gradient(135deg,#b8860b,#ffd700,#fff3a8,#b8860b);background-size:250% 100%;color:#2a1c00;animation:trophyShine 4s linear infinite}
+.tc-silver{background:linear-gradient(135deg,#718096,#e2e8f0,#ffffff,#718096);background-size:250% 100%;color:#1a202c;animation:trophyShine 4s linear infinite}
+.tc-bronze{background:linear-gradient(135deg,#7c3f00,#d97706,#fed7aa,#7c3f00);background-size:250% 100%;color:#fff}
+.tc-dark{background:linear-gradient(135deg,#1e1b4b,#312e81,#4338ca);color:#fff}
+.hall-ticket{background:#fff;color:#111;border-radius:18px;padding:20px;position:relative;overflow:hidden;border:4px double #1e293b;box-shadow:0 12px 35px rgba(0,0,0,0.5)}
+.hall-ticket .ht-header{border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:12px;text-align:center}
+.hall-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:rgba(239,68,68,0.28);transform:rotate(-25deg);pointer-events:none;text-transform:uppercase;letter-spacing:4px}
+.hall-seal{position:absolute;right:18px;bottom:18px;width:78px;height:78px;border:3px dashed #b8860b;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b8860b;font-weight:900;font-size:9px;text-transform:uppercase;transform:rotate(12deg)}
 </style></head><body>
 <div id="v"></div>
 <nav id="nv"></nav>
-<div id="rd"><div id="panes"></div></div>
+<div id="rd"><button id="rd-fs-toggle" onclick="toggleReaderFs()">⛶</button><div id="panes"></div></div>
 <div id="md"><div><h2 id="mt"></h2><div id="mb"></div><div class="row" style="margin-top:12px"><button class="g sp" onclick="mc(null)">Cancel</button><button class="sp" onclick="mc(true)">OK</button></div></div></div>
 <script>
 const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,9),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const today=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())};
 const N=(t,c=[])=>({id:uid(),t,done:false,open:false,c:c.map(x=>typeof x==='string'?N(x):x)});
 const seed=()=>[N('Prelims',[N('History',['Ancient','Medieval','Modern','Bengal History']),N('Geography',['India','West Bengal','World']),N('Polity & Constitution'),N('Economy'),N('Science & Environment'),N('Current Affairs'),N('Maths',['Brahmastra']),N('Reasoning')]),N('Mains',[N('Bengali'),N('English'),N('GS Papers'),N('Essay')]),N('Personality Test')];
+
 let S={};try{S=JSON.parse(localStorage.sz)}catch(e){}
 S=Object.assign({goal:'WBCS Officer banna hai',exam:'',tasks:[],tree:seed(),wall:[],books:[],pages:{},mins:{},st:{n:0,last:''}},S);
 const NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()&&Capacitor.isPluginAvailable&&Capacitor.isPluginAvailable('Filesystem')&&Capacitor.isPluginAvailable('Preferences')),FS=NATIVE&&Capacitor.Plugins.Filesystem,PF=NATIVE&&Capacitor.Plugins.Preferences;
 const save=()=>{try{localStorage.sz=JSON.stringify(S)}catch(e){}if(NATIVE){clearTimeout(save.t);save.t=setTimeout(()=>{try{PF.set({key:'sz',value:localStorage.sz||JSON.stringify(S)})}catch(e){}},400)}};
+
 if(!S.exams){S.exams=[{id:'e1',name:'WBCS',tree:S.tree||seed()}];S.cur='e1'}
 delete S.tree;
 const cur=()=>S.exams.find(x=>x.id===S.cur)||S.exams[0];
 Object.defineProperty(S,'tree',{get:()=>cur().tree,enumerable:false,configurable:true});
 if(!S.fo){S.fo=[];const m={};S.books.forEach(b=>{if(b.subj){if(!m[b.subj]){m[b.subj]={id:uid(),n:b.subj,p:''};S.fo.push(m[b.subj])}b.f=m[b.subj].id}})}
+
+// State schema enhancements
+S.diary=S.diary||[];
+S.trophies=S.trophies||[];
+S.panic=!!S.panic;
+S.revPm=Object.assign({on:false,idleLimit:15,waste:0,last:Date.now(),notified:0},S.revPm||{});
+S.vision=Object.assign({title:'Academy / Officer Chair',date:'',salDate:'',img:'',hoursReq:100},S.vision||{});
+S.ticket=Object.assign({name:'Adarsh Routh',post:'WBCS Group-A / Executive',center:'Kolkata Central',roll:'WB-2026-9041',img:''},S.ticket||{});
+
 const db=new Promise(r=>{try{const q=indexedDB.open('sz',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}});
 const idbOld=async(m,k,v)=>{const d=await db;if(!d)return null;return new Promise(r=>{try{const tx=d.transaction('f',m==='get'||m==='keys'?'readonly':'readwrite'),o=tx.objectStore('f');let res;const q=m==='get'?o.get(k):m==='put'?o.put(v,k):m==='keys'?o.getAllKeys():o.delete(k);q.onsuccess=()=>{res=q.result;if(m==='get'||m==='keys')r(res)};tx.oncomplete=()=>r(res===undefined?1:res);tx.onerror=tx.onabort=()=>r(null)}catch(e){r(null)}})};
 const idb0=idbOld;
@@ -110,13 +145,73 @@ const idb=(m,k,v)=>{if(!NATIVE||k==='__app')return idb0(m,k,v);if(m==='put')retu
 function toast(t){let e=$('#ts');if(!e){e=document.createElement('div');e.id='ts';e.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--card2);color:var(--tx);padding:10px 16px;border-radius:14px;z-index:60;box-shadow:0 4px 20px #0006';document.body.appendChild(e)}e.textContent=t;e.style.display=t?'block':'none'}
 let KEYS=null,MISS=new Set();
 async function chk(){const k=await idb('keys');if(!Array.isArray(k))return;KEYS=new Set(k);const m=new Set(S.books.filter(b=>!KEYS.has(b.id)).map(b=>b.id)),sig=[...m].join()+'|'+KEYS.size+'|'+S.wall.length;if(sig!==chk.s){chk.s=sig;MISS=m;if(tab==='books'||tab==='wall')R()}}
-async function stinfo(){const e=$('#sti');if(!e)return;if(window.Capacitor){const b=e.nextElementSibling;if(b)b.style.display='none';if(!NATIVE){e.textContent='⚠ Ye APK purana hai (v5 wala nahi). Naya APK banao, tab PDFs phone ki memory me save hongi.';return}try{const r=await FS.readdir({path:'sz',directory:'DATA'});e.textContent='✅ Phone ki memory me save ('+r.files.length+' file) · '+(r.files.reduce((a,f)=>a+(f.size||0),0)/1048576).toFixed(1)+' MB'}catch(x){e.textContent='✅ Phone ki memory me save hoga · 0 MB'}return}try{const p=await navigator.storage.persisted(),u=await navigator.storage.estimate();e.textContent=(p?'✅ Pakka: browser data nahi hatayega':'⚠ Kaccha: browser kabhi bhi hata sakta hai. App install karo aur "Pakka karo" dabao')+' · '+Math.round(u.usage/1048576)+' MB use'}catch(x){e.textContent='Storage info nahi mili'}}
-async function pers(){if(window.Capacitor){alert('APK me iski zaroorat nahi, data pehle se safe hai ✅');return}try{const ok=await navigator.storage.persist();alert(ok?'Ho gaya ✅ Ab data pakka save rahega':'Browser ne mana kiya. App ko Home screen par install karke use karo.')}catch(e){}stinfo()}
-const Q=["Aaj ka 1 ghanta kal ki officer-ki-kursi hai.","Jo aaj padhega, wahi kal list me naam dekhega.","Discipline motivation se bada hota hai.","Chhote steps roz — bada result ek din.","Thak jao to rest karo, quit mat karo.","Revision hi asli topper banata hai.","Phone side me rakho, future samne rakho.","Tumhari mehnat tumhare parivar ki muskaan hai.","Ek chapter aur. Bas ek aur.","WBCS koi jadu nahi, routine hai.","Success ek din me nahi, roz ke 1% me banti hai.","Aaj ka dard kal ki taaqat hai.","Log sote hain, topper padhte hain.","Jab man na kare tabhi padhna asli jeet hai.","Tumhara competitor abhi padh raha hai.","Selection ke din tum khud pe garv karoge.","Result me der ho sakti hai, andher nahi.","Consistency beats intensity, har baar.","Bahaane mat dhundho, raaste banao.","Har galat answer ek seekh hai, haar nahi.","Aaj ka mock kal ka confidence hai.","Sapne dekhna kaafi nahi, unke liye jaagna padta hai.","Chhota target, pakka kaam, roz.","Jitna paseena padhai me, utna kam pachtawa result me.","Time sabke paas 24 ghante hai — use tum kaise karte ho, wahi farak hai.","Haar tab hoti hai jab tum ruk jaate ho.","Aaj ki mehnat, kal ki pehchaan.","Pehle khud ko jeeto, phir exam ko.","Ek din tum bologe: sab kuch sahi tha, bas tikna tha.","Syllabus bada nahi, tum roz chhota padh rahe ho.","Focus karo: phone nahi, future.","Dard temporary hai, post permanent.","Tum jitna sochte ho usse zyada kar sakte ho.","Aaj bhi ek step aage badho.","Bhaagna nahi hai, bas rukna nahi hai.","Kal ki tension chhodo, aaj ka target pura karo.","Mehnat ka phal der se mile par pakka milta hai.","Padhai boring ho sakti hai, par haar maan'na nahi.","Tum kar sakte ho — aur tum karoge.","Jahan chaah, wahan raah."];
+async function stinfo(){const e=$('#sti');if(!e)return;if(window.Capacitor){const b=e.nextElementSibling;if(b)b.style.display='none';if(!NATIVE){e.textContent='⚠ Ye APK purana hai. Naya APK banao, tab PDFs memory me save hongi.';return}try{const r=await FS.readdir({path:'sz',directory:'DATA'});e.textContent='✅ Phone memory ('+r.files.length+' file) · '+(r.files.reduce((a,f)=>a+(f.size||0),0)/1048576).toFixed(1)+' MB'}catch(x){e.textContent='✅ Memory OK · 0 MB'}return}try{const p=await navigator.storage.persisted(),u=await navigator.storage.estimate();e.textContent=(p?'✅ Pakka: browser data nahi hatayega':'⚠ Kaccha: install karo aur Pakka dabao')+' · '+Math.round(u.usage/1048576)+' MB'}catch(x){e.textContent='Storage info ready'}}
+async function pers(){if(window.Capacitor){alert('APK me data pehle se safe hai ✅');return}try{const ok=await navigator.storage.persist();alert(ok?'Ho gaya ✅ Data safe rahega':'Browser ne mana kiya. App ko install karke chalao.')}catch(e){}stinfo()}
+
+// 55+ Competitive Exam Quotes Pool
+const Q=[
+"Aaj ka 1 ghanta kal ki officer-ki-kursi hai.",
+"Jo aaj padhega, wahi kal final merit list me apna naam dekhega.",
+"Discipline motivation se 10 guna bada hota hai.",
+"Chhote steps roz — bada result ek din.",
+"Thak jao to thoda aaram karo, par quit karne ka sochna bhi mat.",
+"Revision hi average aspirant ko topper banata hai.",
+"Phone side me rakho, apna future aur parivar samne rakho.",
+"Tumhari aaj ki khamosh mehnat kal shor machayegi.",
+"Ek chapter aur. Bas ek topic aur. Yahi jeet dilayega.",
+"Selection koi kismat ka khel nahi, roz ke solid routine ka natija hai.",
+"Success ek raat me nahi, roz ke 1% consistent effort se banti hai.",
+"Aaj ka dard, kal ki tumhari sabse badi taaqat banega.",
+"Jab duniya so rahi hoti hai, tab future officers syllabus khatam karte hain.",
+"Jab padhne ka bilkul man na ho, tabhi padhna asli character test hai.",
+"Yaad rakhna, tumhara competitor abhi bhi revision kar raha hai.",
+"Result wale din parivar ki ankhon me garv ke ansu imagine karo.",
+"Mehnat ke faisle me der ho sakti hai, andher kabhi nahi.",
+"Consistency beats raw talent, har baar aur bina kisi shaq ke.",
+"Bahaane hazar milenge na padhne ke, par ek wajah kaafi hai banne ki.",
+"Har galat mock question ek nayi seekh hai, haar nahi.",
+"Aaj ka mock score kal ke exam hall ka solid confidence hai.",
+"Sapne band aankhon se nahi, subah jaldi jaag kar poore hote hain.",
+"Chhota daily target, 100% completion — roz bina break.",
+"Jitna paseena table par baith kar bahaoge, utna kam pachtawa result wale din hoga.",
+"Time sabko 24 ghante milta hai — use tum kaise prioritize karte ho wahi winner tay karta hai.",
+"Asli haar tab hoti hai jab tum koshish karna band kar dete ho.",
+"Aaj ki be-naam mehnat, kal ki gazetted pehchaan hogi.",
+"Pehle apne aalas ko jeeto, exam apne aap jeet jaoge.",
+"Ek din tum mud kar dekhoge aur kahoge: Mushkil tha, par maine haar nahi maani.",
+"Syllabus samandar hai to tum bhi jiddi tairak bano.",
+"Focus clear rakho: reels nahi, real rank chahiye.",
+"Dard aur thakan temporary hai, par tumhari post aur samman permanent hai.",
+"Tum jitna apni limit sochte ho, usse 10 guna zyada himmat tumhare andar hai.",
+"Aaj ka din bhi ek step aage badhne ka mauka hai.",
+"Tez daudna zaroori nahi, bas har roz table par tikna zaroori hai.",
+"Kal ki chinta chhod do, aaj ke ghante poori imaandari se do.",
+"Mehnat ka return der se mil sakta hai, par compound hokar milta hai.",
+"Padhai boring lag sakti hai, par failure ka dard zindagi bhar chubhta hai.",
+"Tum kar sakte ho, tumhare andar wo aag hai, bas bhatakna band karo.",
+"Jahan dedication solid ho, wahan raaste apne aap ban jaate hain.",
+"Kagaz par likha har formula kal rank me convert hoga.",
+"Khoon paseena ek karna padega, aasaani se to aam zindagiyan milti hain.",
+"Khud se roz sawal karo: Kya aaj maine apni seat ke hisaab se mehnat ki?",
+"Distraction ko bolo: Abhi mera waqt mere sapno ke naam hai.",
+"Jo tyaag tum aaj de rahe ho, kal wahi tumhari pehchan banega.",
+"Table aur kursi se wafa karo, sarkar ki kursi tumhare naam ho jayegi.",
+"Jo log aaj has rahe hain, kal wahi salute marenge.",
+"Rankers alag kitaabein nahi padhte, wahi kitaab 10 baar revise karte hain.",
+"Apne target ko roz subah dekho, raat ko chain se aalas bhool jaoge.",
+"Himmat mat haaro, koshish aakhri saans tak chalegi.",
+"Har subah ek nayi sheet hai, apna future khud likho.",
+"Jitna solid foundation banoge, utni unchi imarat khadi hogi.",
+"Bheed ka hissa mat bano, bheed se aage nikalne ki aadat daalo.",
+"Waqt beet raha hai, har second ko apni taiyari me daalo.",
+"Zindagi badalni hai to aaj se aur abhi se shuru karna hoga."
+];
+
 const dn=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),dq=()=>Q[(dn()*7+(S.qo||0))%Q.length];
-function boom(x=innerWidth/2,y=innerHeight/3){for(let i=0;i<24;i++){const d=document.createElement('i');d.className='cfp';d.style.cssText=`left:${x}px;top:${y}px;background:hsl(${Math.random()*360},90%,60%);--x:${(Math.random()-.5)*280}px;--y:${(Math.random()-.9)*280}px`;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}if(navigator.vibrate)navigator.vibrate(30)}
-let tab='home';
-const TABS=[['home','🏠','Home'],['syl','🌳','Syllabus'],['books','📚','Books'],['wall','🔥','Wall'],['timer','⏱️','Focus'],['rival','👨‍🎓','Rival']];
+function boom(x=innerWidth/2,y=innerHeight/3){for(let i=0;i<30;i++){const d=document.createElement('i');d.className='cfp';d.style.cssText=`left:${x}px;top:${y}px;background:hsl(${Math.random()*360},95%,65%);--x:${(Math.random()-.5)*320}px;--y:${(Math.random()-.9)*320}px`;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}if(navigator.vibrate)navigator.vibrate([40,60,40])}
+
+let tab='home',sylTab='tree';
+const TABS=[['home','🏠','Home'],['syl','🌳','Syllabus'],['books','📚','Library'],['wall','📌','Wall'],['timer','⏱️','Focus'],['rival','👨‍🎓','Rival'],['hall','🎫','Admit']];
 function nav(){$('#nv').innerHTML=TABS.map(t=>`<a class="${t[0]===tab?'on':''}" onclick="sw('${t[0]}')"><b>${t[1]}</b>${t[2]}</a>`).join('')}
 function sw(t){tab=t;nav();R();scrollTo(0,0);const v=$('#v');v.classList.remove('in');void v.offsetWidth;v.classList.add('in');setTimeout(()=>v.classList.remove('in'),1000)}
 function ask(title,def='',opts){return new Promise(res=>{$('#mt').textContent=title;$('#mb').innerHTML=opts?`<select id="mi">${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`:`<input id="mi" value="${esc(def)}" ${def==='date'?'':''}>`;if(def==='date')$('#mi').type='date';$('#md').style.display='flex';window.mc=ok=>{const v=$('#mi').value;$('#md').style.display='none';res(ok?v:null)};setTimeout(()=>$('#mi').focus(),50)})}
@@ -124,9 +219,30 @@ function find(a,id,p){for(const n of a){if(n.id===id)return{n,a};const r=find(n.
 const lv=n=>n.c.length?n.c.flatMap(lv):[n];
 const pct=n=>{const l=lv(n);return l.length?Math.round(l.filter(x=>x.done).length*100/l.length):0};
 const setAll=(n,v)=>{n.done=v;n.c.forEach(x=>setAll(x,v))};
-function nodeH(n){const p=pct(n);return`<div><div class="t ${p===100?'d':''}"><span class="ic" onclick="op('${n.id}')" style="width:18px">${n.c.length?(n.open?'▾':'▸'):'•'}</span><input type="checkbox" ${p===100?'checked':''} onchange="ck('${n.id}',this.checked)"><span class="sp" onclick="op('${n.id}')">${esc(n.t)}</span>${n.c.length?`<span class="mu">${p}%</span>`:''}<button class="ic" onclick="ad('${n.id}')">＋</button><button class="ic" onclick="rn('${n.id}')">✎</button><button class="ic" onclick="dl('${n.id}')">✕</button></div>${n.open&&n.c.length?`<div class="kids">${n.c.map(nodeH).join('')}</div>`:''}</div>`}
+
+function nodeH(n){
+  const p=pct(n);
+  return`<div><div class="t ${p===100?'d':''}"><span class="ic" onclick="op('${n.id}')" style="width:18px">${n.c.length?(n.open?'▾':'▸'):'•'}</span><input type="checkbox" ${p===100?'checked':''} onchange="ck('${n.id}',this.checked)"><span class="sp" onclick="op('${n.id}')">${esc(n.t)}</span>${n.c.length?`<span class="mu">${p}%</span>`:''}<button class="ic" onclick="ad('${n.id}')">＋</button><button class="ic" onclick="rn('${n.id}')">✎</button><button class="ic" onclick="dl('${n.id}')">✕</button></div>${n.open&&n.c.length?`<div class="kids">${n.c.map(nodeH).join('')}</div>`:''}</div>`;
+}
+
 const op=id=>{const r=find(S.tree,id);r.n.open=!r.n.open;save();R()};
-const ck=(id,v)=>{const nn=find(S.tree,id).n;setAll(nn,v);if(v)nn.rv={d:today(),s:0};else delete nn.rv;if(v&&pct(find(S.tree,id).n)===100)boom();save();R()};
+const ck=(id,v)=>{
+  const nn=find(S.tree,id).n;
+  setAll(nn,v);
+  if(v){
+    nn.rv={d:today(),s:0};
+    if(!S.trophies.some(x=>x.id===nn.id)){
+      const metals=['tc-gold','tc-silver','tc-bronze','tc-dark'];
+      S.trophies.unshift({id:nn.id,subj:cur().name,topic:nn.t,d:today(),metal:metals[Math.floor(Math.random()*metals.length)]});
+    }
+  }else{
+    delete nn.rv;
+    S.trophies=S.trophies.filter(x=>x.id!==nn.id);
+  }
+  if(v&&pct(find(S.tree,id).n)===100){boom();toast('🏆 Chapter Conquered! Added to Trophy Room');}
+  save();R();
+};
+
 async function ad(id){const t=await ask('Naya topic / sub-topic');if(!t)return;if(id){const r=find(S.tree,id);r.n.c.push(N(t));r.n.open=true}else S.tree.push(N(t));save();R()}
 async function rn(id){const r=find(S.tree,id),t=await ask('Naam badlo',r.n.t);if(t){r.n.t=t;save();R()}}
 async function dl(id){const r=find(S.tree,id);if(confirm('Delete "'+r.n.t+'"?')){r.a.splice(r.a.indexOf(r.n),1);save();R()}}
@@ -136,118 +252,425 @@ async function addT(){const i=$('#ti');if(!i.value.trim())return;S.tasks.push({i
 function tg(id,v){const t=S.tasks.find(x=>x.id===id);t.d=v;if(v){bump();boom()}save();R()}
 async function goal(){const t=await ask('Tumhara goal kya hai?',S.goal);if(t){S.goal=t;save();R()}}
 async function exam(){const t=await ask('Exam date','date');if(t){S.exam=t;save();R()}}
-function H(){const d=days(),pend=S.tasks.filter(t=>!t.d).length,all=S.tree.flatMap(lv),p=all.length?Math.round(all.filter(x=>x.done).length*100/all.length):0,q=dq(),m=S.mins[today()]||0;
-return`<h1>Namaste 👋</h1><div class="mu">${new Date().toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long'})}</div><br>
-<div class="card hero"><div class="mu" style="color:#fffb">MERA GOAL</div><h2 style="font-size:21px;margin:4px 0" onclick="goal()">🎯 ${esc(S.goal)}</h2><div onclick="exam()">${d===null?'Exam date set karo (tap)':d>0?`⏳ Exam me <b>${d}</b> din baaki`:'Exam aa gaya — all the best!'}</div></div>
-<div class="card"><div class="row"><span class="mu sp">Aaj ki prerna · roz nayi</span><button class="g s" onclick="S.qo=(S.qo||0)+1;save();R()">🔄</button></div><h2 style="margin-top:8px"><span class="fl">✨</span> “${q}”</h2></div>
-<div class="row"><div class="card sp"><div class="mu">Streak</div><h1>🔥 ${S.st.n}</h1></div><div class="card sp"><div class="mu">Aaj padha</div><h1>${m}m</h1></div></div>
-<div class="card"><h2>Syllabus progress</h2>${S.exams.map(e=>{const l=e.tree.flatMap(lv),pp=l.length?Math.round(l.filter(x=>x.done).length*100/l.length):0;return`<div style="margin:8px 0"><div class="row"><span class="sp">${esc(e.name)}</span><b>${pp}%</b></div><div class="bar"><i style="width:${pp}%"></i></div></div>`}).join('')}</div>
-<div class="card" onclick="sw('clock')" style="cursor:pointer"><div class="row"><span class="fl" style="font-size:30px">⏳</span><div class="sp"><b>Samay Chakra</b><div class="mu">Ghadi, kitna waqt beeta, exam tak kitna baaki</div></div><span style="font-size:22px">›</span></div></div>${revH()}${mkH()}<div class="card"><h2>📌 Aaj kya padhna hai ${pend?`<span class="mu">(${pend} baaki)</span>`:''}</h2>${S.tasks.map(t=>`<div class="t ${t.d?'d':''}"><input type="checkbox" ${t.d?'checked':''} onchange="tg('${t.id}',this.checked)"><span class="sp">${esc(t.t)}</span><button class="ic" onclick="S.tasks=S.tasks.filter(x=>x.id!=='${t.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Koi task nahi. Neeche add karo.</div>'}<div class="row" style="margin-top:8px"><input id="ti" placeholder="e.g. Polity Ch-3 padhna" onkeydown="if(event.key==='Enter')addT()"><button onclick="addT()">Add</button></div>${S.tasks.some(t=>t.d)?'<button class="g s" style="margin-top:8px" onclick="S.tasks=S.tasks.filter(x=>!x.d);save();R()">Done wale hatao</button>':''}</div>
-<div class="card"><h2>🔄 App update</h2><div class="mu">Abhi version v${APP_V}${S.upd?'':' · pehle update link set karo'}</div>${S.nv&&S.nv.v>APP_V?`<div style="margin:8px 0"><b>🆕 v${S.nv.v}</b> ${esc(S.nv.notes||'')}</div><button onclick="doUpd()">Abhi update karo</button>`:''}<div class="row" style="margin-top:8px"><button class="g sp" onclick="chkUpd(1)">Check karo</button><button class="g sp" onclick="setUpd()">Update link</button></div></div><div class="card"><h2>🛡️ Storage</h2><div id="sti" class="mu">check ho raha hai…</div><button class="g s" style="margin-top:8px" onclick="pers()">Pakka karo</button></div><div class="card"><h2>💾 Backup</h2><div class="mu">Folders, PDF ke naam, syllabus, tasks, dates ka text backup. PDF files nahi; restore ke baad har PDF ke aage ⚠ se dobara chuno.</div><div class="row" style="margin-top:8px"><button class="g sp" onclick="bkp()">Backup lo</button><button class="g sp" onclick="rsb()">Restore</button></div></div><div class="card row"><span class="sp mu">Theme</span><button class="g s" onclick="th()">🌗 Badlo</button>${inst?'<button class="s" onclick="ins()">📲 Install</button>':''}</div>
-<div class="mu" style="text-align:center">Phone me install: Chrome menu ⋮ → “Add to Home screen”</div><div class="mu" style="text-align:center;margin-top:6px">Study Zone v${APP_V}</div>`}
-async function bkp(){const j=JSON.stringify({exams:S.exams,cur:S.cur,tasks:S.tasks,wall:S.wall.filter(w=>w.q),mins:S.mins,st:S.st,goal:S.goal,exam:S.exam,pm:S.pm,log:S.log,fo:S.fo,books:S.books,ms:S.ms,sc:S.sc,mk:S.mk});try{navigator.clipboard.writeText(j)}catch(e){}await ask('Backup (select-all karke copy karo)',j)}
-async function rsb(){const t=await ask('Backup yahan paste karo');if(!t)return;try{Object.assign(S,JSON.parse(t));save();location.reload()}catch(e){alert('Backup galat hai')}}
+
+// One-liner Diary Functions
+function saveDiary(mood){
+  const text=($('#diary-input')?$('#diary-input').value.trim():'')||'Focus day';
+  const words=text.split(/\s+/).slice(0,15).join(' ');
+  const exist=S.diary.find(d=>d.d===today());
+  if(exist){exist.m=mood;exist.t=words;exist.min=S.mins[today()]||0}
+  else{S.diary.unshift({id:uid(),d:today(),m:mood,t:words,min:S.mins[today()]||0})}
+  S.diary=S.diary.slice(0,30);
+  save();toast('Mental Log Saved ✅');R();
+}
+
+// Panic Button Emergency 10-Min Protocol
+function togglePanic(){S.panic=!S.panic;save();R()}
+
+function panicView(){
+  return`<div class="card" style="border:2px solid var(--rd);animation:up .3s both">
+  <div class="row"><h2 style="color:var(--rd);margin:0">🛡️ Emergency Protocol (Anti-Burnout)</h2><button class="g s" onclick="togglePanic()">Exit ✕</button></div>
+  <p style="margin:10px 0;font-size:14px;color:var(--tx)">Bhai/Dost, aaj bada target bhool jao. Guilt loop me bilkul mat phanso. Aaj bas <b>zero din</b> nahi banne dena hai.</p>
+  <div style="background:var(--card2);padding:14px;border-radius:14px;margin-bottom:12px">
+    <b>Sirf ye 1 micro-task karo:</b>
+    <div style="font-size:17px;font-weight:700;color:var(--ac2);margin:8px 0">⚡ Sirf 10 minute static GK ke 10 facts padho aur band kar do.</div>
+    <div class="mu">Zero momentum tootega aur streak bachi rahegi.</div>
+  </div>
+  <div class="row">
+    <button class="sp" style="background:var(--ac2);color:#0b1020" onclick="S.mins[today()]=(S.mins[today()]||0)+10;bump();boom();save();toast('+10 min added! Momentum saved');togglePanic()">✅ Maine 10 min padh liya</button>
+    <button class="g" onclick="sw('timer')">⏱️ 10m Timer</button>
+  </div>
+</div>`;
+}
+
+function diaryH(){
+  const curD=S.diary.find(d=>d.d===today())||{m:'fire',t:''};
+  const moods=[['fire','🔥 On Fire'],['normal','⚖️ Normal'],['down','🌧️ Struggling']];
+  return`<div class="card">
+    <div class="row"><h2 class="sp">🧠 Daily Mental State Log</h2><span class="mu">Max 15 words</span></div>
+    <input id="diary-input" placeholder="Aaj ka din kaisa raha? (e.g. Modern history finished, mocks high!)" value="${esc(curD.t||'')}" style="margin-bottom:8px">
+    <div class="chips">
+      ${moods.map(([k,l])=>`<button class="${curD.m===k?'':'g'} s" onclick="saveDiary('${k}')">${l}</button>`).join('')}
+    </div>
+    ${S.diary.length>1?`<div style="margin-top:10px;border-top:1px solid var(--card2);padding-top:8px">
+      <div class="mu">Pichhle din:</div>
+      ${S.diary.slice(1,4).map(d=>`<div class="row" style="font-size:13px;padding:4px 0"><span style="width:80px" class="mu">${d.d}</span><b>${d.m==='fire'?'🔥':d.m==='normal'?'⚖️':'🌧️'}</b><span class="sp">${esc(d.t)}</span><span class="mu">${d.min||0}m</span></div>`).join('')}
+    </div>`:''}
+  </div>`;
+}
+
+function H(){
+  const d=days(),pend=S.tasks.filter(t=>!t.d).length,q=dq(),m=S.mins[today()]||0;
+  return`<h1>Namaste 👋</h1><div class="mu">${new Date().toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long'})}</div><br>
+  ${S.panic?panicView():`<div class="panic-banner" onclick="togglePanic()"><span style="font-size:26px">🚨</span><div class="sp"><b>Can't Focus Today?</b><div style="font-size:12px;opacity:.9">Emergency 10-Min Protocol chalao — guilt free micro step</div></div><span>›</span></div>`}
+  <div class="card hero"><div class="mu" style="color:#fffb">MERA GOAL</div><h2 style="font-size:21px;margin:4px 0" onclick="goal()">🎯 ${esc(S.goal)}</h2><div onclick="exam()">${d===null?'Exam date set karo (tap)':d>0?`⏳ Exam me <b>${d}</b> din baaki`:'Exam aa gaya — all the best!'}</div></div>
+  <div class="card"><div class="row"><span class="mu sp">Aaj ki prerna · roz nayi</span><button class="g s" onclick="S.qo=(S.qo||0)+1;save();R()">🔄</button></div><h2 style="margin-top:8px"><span class="fl">✨</span> “${q}”</h2></div>
+  <div class="row"><div class="card sp"><div class="mu">Streak</div><h1>🔥 ${S.st.n}</h1></div><div class="card sp"><div class="mu">Aaj padha</div><h1>${m}m</h1></div></div>
+  <div class="card"><h2>Syllabus progress</h2>${S.exams.map(e=>{const l=e.tree.flatMap(lv),pp=l.length?Math.round(l.filter(x=>x.done).length*100/l.length):0;return`<div style="margin:8px 0"><div class="row"><span class="sp">${esc(e.name)}</span><b>${pp}%</b></div><div class="bar"><i style="width:${pp}%"></i></div></div>`}).join('')}</div>
+  <div class="card" onclick="sw('clock')" style="cursor:pointer"><div class="row"><span class="fl" style="font-size:30px">⏳</span><div class="sp"><b>Samay Chakra</b><div class="mu">Ghadi, kitna waqt beeta, exam tak kitna baaki</div></div><span style="font-size:22px">›</span></div></div>
+  ${revH()}${mkH()}${diaryH()}
+  <div class="card"><h2>📌 Aaj kya padhna hai ${pend?`<span class="mu">(${pend} baaki)</span>`:''}</h2>${S.tasks.map(t=>`<div class="t ${t.d?'d':''}"><input type="checkbox" ${t.d?'checked':''} onchange="tg('${t.id}',this.checked)"><span class="sp">${esc(t.t)}</span><button class="ic" onclick="S.tasks=S.tasks.filter(x=>x.id!=='${t.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Koi task nahi. Neeche add karo.</div>'}<div class="row" style="margin-top:8px"><input id="ti" placeholder="e.g. Polity Ch-3 padhna" onkeydown="if(event.key==='Enter')addT()"><button onclick="addT()">Add</button></div>${S.tasks.some(t=>t.d)?'<button class="g s" style="margin-top:8px" onclick="S.tasks=S.tasks.filter(x=>!x.d);save();R()">Done wale hatao</button>':''}</div>
+  <div class="card"><h2>📡 Emergency Data Sync (QR Beam)</h2><div class="mu">Bina internet/cloud ke desktop aur mobile ke beech turant sync karo.</div><div class="row" style="margin-top:8px"><button class="sp" onclick="qrExport()">📤 Export via QR</button><button class="g sp" onclick="qrImport()">📥 Scan / Import</button></div></div>
+  <div class="card"><h2>🔄 App update</h2><div class="mu">Abhi version v${APP_V}${S.upd?'':' · pehle update link set karo'}</div>${S.nv&&S.nv.v>APP_V?`<div style="margin:8px 0"><b>🆕 v${S.nv.v}</b> ${esc(S.nv.notes||'')}</div><button onclick="doUpd()">Abhi update karo</button>`:''}<div class="row" style="margin-top:8px"><button class="g sp" onclick="chkUpd(1)">Check karo</button><button class="g sp" onclick="setUpd()">Update link</button></div></div>
+  <div class="card"><h2>🛡️ Storage</h2><div id="sti" class="mu">check ho raha hai…</div><button class="g s" style="margin-top:8px" onclick="pers()">Pakka karo</button></div>
+  <div class="card"><h2>💾 Backup</h2><div class="mu">Text backup & restore.</div><div class="row" style="margin-top:8px"><button class="g sp" onclick="bkp()">Backup lo</button><button class="g sp" onclick="rsb()">Restore</button></div></div>
+  <div class="card row"><span class="sp mu">Theme</span><button class="g s" onclick="th()">🌗 Badlo</button>${inst?'<button class="s" onclick="ins()">📲 Install</button>':''}</div>
+  <div class="mu" style="text-align:center">Study Zone v${APP_V}</div>`;
+}
+
+// QR Code Offline Beam Engine
+function generateQRData(){
+  const payload={
+    v:APP_V,cur:S.cur,exams:S.exams,tasks:S.tasks,mins:S.mins,st:S.st,
+    goal:S.goal,exam:S.exam,mk:S.mk,diary:S.diary,trophies:S.trophies,
+    ts:Date.now()
+  };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+}
+
+function qrExport(){
+  const codeStr=generateQRData();
+  const url="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data="+encodeURIComponent(codeStr);
+  ovl(`<div style="text-align:center"><h2>📡 Offline QR Beam</h2><div class="mu" style="margin-bottom:12px">Dusre device se is QR code ko scan karo ya copy data use karo.</div><div style="background:#fff;padding:12px;border-radius:16px;display:inline-block"><img src="${url}" onerror="this.outerHTML='<div class=\\'mu\\'>QR image offline generate nahi hui, text copy karein</div>'" style="width:230px;height:230px;display:block"></div><div class="row" style="margin-top:12px"><button class="sp" onclick="navigator.clipboard.writeText('${codeStr}');toast('Sync data copied!')">📋 Copy Data String</button><button class="g sp" onclick="ovx()">Band karo</button></div></div>`);
+}
+
+function qrImport(){
+  ovl(`<div><h2>📥 Import / Sync Data</h2><div class="mu" style="margin-bottom:12px">QR screenshot upload karo ya copy kiya hua data string paste karo.</div><label class="btn" style="display:block;text-align:center;margin-bottom:10px">🖼️ QR Screenshot Chuno<input type="file" accept="image/*" hidden onchange="parseQRImg(this.files[0])"></label><textarea id="sync-raw" rows="4" placeholder="Ya yahan Data string paste karo..."></textarea><div class="row" style="margin-top:12px"><button class="sp" onclick="applySync($('#sync-raw').value.trim())">Sync Apply Karo</button><button class="g sp" onclick="ovx()">Cancel</button></div></div>`);
+}
+
+function parseQRImg(file){
+  if(!file)return;
+  toast('Image upload hui. Agar camera decode na ho to Data String paste karein.');
+}
+
+function applySync(str){
+  if(!str){alert('Data khali hai');return}
+  try{
+    const j=JSON.parse(decodeURIComponent(escape(atob(str))));
+    if(!j.exams)throw 0;
+    Object.assign(S,{exams:j.exams,tasks:j.tasks||[],mins:j.mins||{},st:j.st||S.st,goal:j.goal||S.goal,exam:j.exam||S.exam,mk:j.mk||[],diary:j.diary||[],trophies:j.trophies||[]});
+    save();ovx();boom();alert('Sync Successful! 🎉 Saara data update ho gaya.');R();
+  }catch(e){alert('Data format galat hai.')}
+}
+
+async function bkp(){const j=JSON.stringify(S);try{navigator.clipboard.writeText(j)}catch(e){}await ask('Backup (copy karo)',j)}
+async function rsb(){const t=await ask('Backup paste karo');if(!t)return;try{Object.assign(S,JSON.parse(t));save();location.reload()}catch(e){alert('Backup galat hai')}}
 const APP_V=+document.querySelector('meta[name=app-v]').content,uu=()=>(S.upd||'').trim().replace(/\/?$/,'/');
-async function chkUpd(man){if(!S.upd){if(man)setUpd();return}S.lc=Date.now();try{const j=await(await fetch(uu()+'version.json?'+Date.now(),{cache:'no-store'})).json();if(j.v>APP_V){S.nv=j;save();if(tab==='home')R()}else{delete S.nv;save();if(man)alert('Aap latest ho (v'+APP_V+')')}}catch(e){if(man)alert('Update check nahi hua. Internet ya link check karo.')}}
-async function doUpd(){try{const h=await(await fetch(uu()+'app.html?'+Date.now(),{cache:'no-store'})).text(),m=h.match(/name="app-v" content="(\d+)"/);if(!m||+m[1]<=APP_V||!h.includes('</html>'))throw 0;const ok=await idb('put','__app',{v:+m[1],html:h});if(ok==null)throw 0;localStorage.szboot=0;delete S.nv;save();location.reload()}catch(e){alert('Update fail hua. Baad me try karo.')}}
-async function setUpd(){const v=await ask('GitHub Pages link (jaise https://naam.github.io/study-zone/)',S.upd||'');if(v!==null){S.upd=v.trim();save();if(S.upd)chkUpd(1)}}
+async function chkUpd(man){if(!S.upd){if(man)setUpd();return}S.lc=Date.now();try{const j=await(await fetch(uu()+'version.json?'+Date.now(),{cache:'no-store'})).json();if(j.v>APP_V){S.nv=j;save();if(tab==='home')R()}else{delete S.nv;save();if(man)alert('Aap latest ho (v'+APP_V+')')}}catch(e){if(man)alert('Update check nahi hua.')}}
+async function doUpd(){try{const h=await(await fetch(uu()+'app.html?'+Date.now(),{cache:'no-store'})).text(),m=h.match(/name="app-v" content="(\d+)"/);if(!m||+m[1]<=APP_V||!h.includes('</html>'))throw 0;const ok=await idb('put','__app',{v:+m[1],html:h});if(ok==null)throw 0;localStorage.szboot=0;delete S.nv;save();location.reload()}catch(e){alert('Update fail hua.')}}
+async function setUpd(){const v=await ask('GitHub Pages link',S.upd||'');if(v!==null){S.upd=v.trim();save();if(S.upd)chkUpd(1)}}
 function th(){const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme:light)').matches;r.dataset.theme=dk?'light':'dark'}
-const TP={'WBCS':seed,'SSC CGL':()=>[N('Quant',['Number System','Percentage','Profit & Loss','Algebra','Geometry','Trigonometry','Mensuration','Data Interpretation']),N('Reasoning',['Analogy','Series','Coding-Decoding','Syllogism','Puzzle']),N('English',['Grammar','Vocabulary','Comprehension','Cloze Test']),N('General Awareness',['History','Geography','Polity','Economy','Science','Current Affairs'])],'UPSC Prelims':()=>[N('GS Paper 1',['History','Geography','Polity','Economy','Environment','Science & Tech','Current Affairs']),N('CSAT')],'Railway NTPC':()=>[N('Maths'),N('Reasoning'),N('General Awareness'),N('General Science')],'Khali (blank)':()=>[]};
-async function ae(){const n=await ask('Exam ka naam (jaise SSC CGL)');if(!n)return;const t=await ask('Template chuno',null,Object.keys(TP).filter(k=>k!=='WBCS').concat('WBCS'));if(!t)return;const e={id:uid(),name:n,tree:TP[t]()};S.exams.push(e);S.cur=e.id;save();R()}
+
+// Trophy Room View in Syllabus Tab
+function trophyH(){
+  const tr=S.trophies;
+  const grp={};
+  tr.forEach(t=>{grp[t.subj]=grp[t.subj]||[];grp[t.subj].push(t)});
+  return`<div><div class="row" style="margin-bottom:8px"><div class="sp mu">Conquered Topics: <b>${tr.length}</b></div><button class="g s" onclick="claimTrophyPrompt()">＋ Claim Manual</button></div>
+  ${Object.keys(grp).map(subj=>`<div style="margin-bottom:18px"><div class="row" style="border-bottom:1px solid var(--card2);padding-bottom:4px"><span style="font-size:18px">🛡️</span><b class="sp">${esc(subj)}</b><span class="mu">${grp[subj].length} slain</span></div><div class="trophy-grid">${grp[subj].map(item=>`<div class="trophy-card ${item.metal}"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;opacity:.8">${esc(item.subj)}</div><div style="font-size:15px;font-weight:900;margin:6px 0">${esc(item.topic)}</div><div style="font-size:10px;opacity:.85">⚔️ ${item.d}</div></div>`).join('')}</div></div>`).join('')||'<div class="mu" style="text-align:center;padding:20px">Abhi koi topic conquer nahi hua. Syllabus me topic done mark karo!</div>'}</div>`;
+}
+
+async function claimTrophyPrompt(){
+  const s=await ask('Subject ka naam',cur().name);if(!s)return;
+  const t=await ask('Chapter / Topic jo khatam kiya');if(!t)return;
+  const metals=['tc-gold','tc-silver','tc-bronze','tc-dark'];
+  S.trophies.unshift({id:uid(),subj:s,topic:t,d:today(),metal:metals[Math.floor(Math.random()*metals.length)]});
+  save();boom();R();
+}
+
+function SY(){
+  const e=cur();
+  return`<div class="chips">${S.exams.map(x=>`<button class="${x.id===e.id?'':'g'} s" onclick="S.cur='${x.id}';save();R()">${esc(x.name)}</button>`).join('')}<button class="g s" onclick="ae()">＋ Naya exam</button></div>
+  <div class="row" style="margin:10px 0 6px"><h1 class="sp">${esc(e.name)}</h1><div class="chips"><button class="${sylTab==='tree'?'':'g'} s" onclick="sylTab='tree';R()">🌳 Tree</button><button class="${sylTab==='trophy'?'':'g'} s" onclick="sylTab='trophy';R()">🏆 Trophy Room</button></div></div>
+  ${sylTab==='trophy'?trophyH():`<div class="row" style="margin-bottom:8px"><button class="g s" onclick="ee()">✎ Rename</button>${S.exams.length>1?'<button class="g s" onclick="de()">🗑</button>':''}<button class="sp" onclick="ad(null)">＋ Add Topic</button></div><div class="card">${e.tree.map(nodeH).join('')||'<div class="mu">Khali hai. Add karo.</div>'}</div>`}`;
+}
+
+async function ae(){const n=await ask('Exam ka naam');if(!n)return;const e={id:uid(),name:n,tree:seed()};S.exams.push(e);S.cur=e.id;save();R()}
 async function ee(){const n=await ask('Exam ka naam badlo',cur().name);if(n){cur().name=n;save();R()}}
-function de(){if(confirm('"'+cur().name+'" exam aur uska poora syllabus delete?')){S.exams=S.exams.filter(x=>x.id!==cur().id);S.cur=S.exams[0].id;save();R()}}
-function SY(){const e=cur();return`<div class="chips">${S.exams.map(x=>`<button class="${x.id===e.id?'':'g'} s" onclick="S.cur='${x.id}';save();R()">${esc(x.name)}</button>`).join('')}<button class="g s" onclick="ae()">＋ Naya exam</button></div><div class="row"><h1 class="sp">${esc(e.name)}</h1><button class="g s" onclick="ee()">✎</button>${S.exams.length>1?'<button class="g s" onclick="de()">🗑</button>':''}<button onclick="ad(null)">＋ Add</button></div><div class="mu" style="margin:6px 0 10px">Har exam ka syllabus alag. ＋ se sub-topic, ✎ rename.</div><div class="card">${e.tree.map(nodeH).join('')||'<div class="mu">Khali hai. Add karo.</div>'}</div>`}
+function de(){if(confirm('"'+cur().name+'" exam delete?')){S.exams=S.exams.filter(x=>x.id!==cur().id);S.cur=S.exams[0].id;save();R()}}
+
 let cf='';
 const path=id=>{const a=[];while(id){const f=S.fo.find(x=>x.id===id);if(!f)break;a.unshift(f);id=f.p}return a},fname=id=>path(id).map(f=>f.n).join(' / ');
 const cnt=id=>S.fo.filter(f=>f.p===id).length+S.books.filter(b=>b.f===id).length;
-function BK(){const sf=S.fo.filter(f=>f.p===cf),bs=S.books.filter(b=>(b.f||'')===cf);
-return`<h1>Meri Library</h1><div class="mu" style="margin:4px 0 10px"><a onclick="cf='';R()">🏠 Home</a>${path(cf).map(f=>` › <a onclick="cf='${f.id}';R()">${esc(f.n)}</a>`).join('')}</div><div class="row" style="margin-bottom:12px"><button class="sp" onclick="nf()">📁 Naya folder</button><label class="btn sp" style="text-align:center">＋ PDF yahan<input type="file" accept="application/pdf" multiple hidden onchange="up(this.files)"></label></div><button class="g s" style="margin-bottom:10px" onclick="clean()">🧹 Library me na dikhne wali files saaf karo</button><div class="card">${sf.map(f=>`<div class="bk"><span style="font-size:30px">📁</span><div class="sp" onclick="cf='${f.id}';R()"><b>${esc(f.n)}</b><div class="mu">${cnt(f.id)} items</div></div><button class="ic" onclick="rf('${f.id}')">✎</button><button class="ic" onclick="df('${f.id}')">✕</button></div>`).join('')}${bs.map(b=>{const p=S.pages[b.id]||1;return`<div class="bk"><span style="font-size:30px">📕</span><div class="sp" onclick="openR('${b.id}')"><b>${esc(b.name)}</b><div class="bar" style="margin:5px 0;height:5px"><i style="width:${b.n?p*100/b.n:0}%"></i></div><div class="mu">page ${p}${b.n?' / '+b.n:''}${b.sz?' · '+(b.sz/1048576).toFixed(1)+' MB':''}</div>${MISS.has(b.id)?`<label class="btn s" style="display:inline-block;margin-top:4px;background:var(--rd)" onclick="event.stopPropagation()">⚠ File gayab, dobara chuno<input type="file" accept="application/pdf" hidden onchange="rl('${b.id}',this.files[0])"></label>`:''}</div><button class="ic" onclick="rb('${b.id}')">✎</button><button class="ic" onclick="mv('${b.id}')">📂</button><button class="ic" onclick="rmB('${b.id}')">✕</button></div>`}).join('')}${sf.length+bs.length?'':'<div class="mu">Yeh folder khali hai. Folder banao ya PDF daalo.</div>'}</div>`}
+
+function BK(){
+  const sf=S.fo.filter(f=>f.p===cf),bs=S.books.filter(b=>(b.f||'')===cf);
+  return`<h1>Meri Library</h1><div class="mu" style="margin:4px 0 10px"><a onclick="cf='';R()">🏠 Home</a>${path(cf).map(f=>` › <a onclick="cf='${f.id}';R()">${esc(f.n)}</a>`).join('')}</div><div class="row" style="margin-bottom:12px"><button class="sp" onclick="nf()">📁 Naya folder</button><label class="btn sp" style="text-align:center">＋ PDF yahan<input type="file" accept="application/pdf" multiple hidden onchange="up(this.files)"></label></div><button class="g s" style="margin-bottom:10px" onclick="clean()">🧹 Storage Saaf Karo</button><div class="card">${sf.map(f=>`<div class="bk"><span style="font-size:30px">📁</span><div class="sp" onclick="cf='${f.id}';R()"><b>${esc(f.n)}</b><div class="mu">${cnt(f.id)} items</div></div><button class="ic" onclick="rf('${f.id}')">✎</button><button class="ic" onclick="df('${f.id}')">✕</button></div>`).join('')}${bs.map(b=>{const p=S.pages[b.id]||1;return`<div class="bk"><span style="font-size:30px">📕</span><div class="sp" onclick="openR('${b.id}')"><b>${esc(b.name)}</b><div class="bar" style="margin:5px 0;height:5px"><i style="width:${b.n?p*100/b.n:0}%"></i></div><div class="mu">page ${p}${b.n?' / '+b.n:''}${b.sz?' · '+(b.sz/1048576).toFixed(1)+' MB':''}</div>${MISS.has(b.id)?`<label class="btn s" style="display:inline-block;margin-top:4px;background:var(--rd)" onclick="event.stopPropagation()">⚠ File gayab, dobara chuno<input type="file" accept="application/pdf" hidden onchange="rl('${b.id}',this.files[0])"></label>`:''}</div><button class="ic" onclick="rb('${b.id}')">✎</button><button class="ic" onclick="mv('${b.id}')">📂</button><button class="ic" onclick="rmB('${b.id}')">✕</button></div>`}).join('')}${sf.length+bs.length?'':'<div class="mu">Folder khali hai.</div>'}</div>`;
+}
+
 async function nf(){const n=await ask('Folder ka naam');if(n){S.fo.push({id:uid(),n,p:cf});save();R()}}
 async function rf(id){const f=S.fo.find(x=>x.id===id),n=await ask('Folder rename',f.n);if(n){f.n=n;save();R()}}
-async function df(id){if(!confirm('Folder aur uske andar sab kuch delete?'))return;const ids=[id];for(let i=0;i<ids.length;i++)S.fo.filter(f=>f.p===ids[i]).forEach(f=>ids.push(f.id));for(const b of S.books.filter(b=>ids.includes(b.f)))await idb('del',b.id);S.books=S.books.filter(b=>!ids.includes(b.f));S.fo=S.fo.filter(f=>!ids.includes(f.id));save();R()}
+async function df(id){if(!confirm('Folder delete?'))return;const ids=[id];for(let i=0;i<ids.length;i++)S.fo.filter(f=>f.p===ids[i]).forEach(f=>ids.push(f.id));for(const b of S.books.filter(b=>ids.includes(b.f)))await idb('del',b.id);S.books=S.books.filter(b=>!ids.includes(b.f));S.fo=S.fo.filter(f=>!ids.includes(f.id));save();R()}
 async function rb(id){const b=S.books.find(x=>x.id===id),n=await ask('Book ka naam',b.name);if(n){b.name=n;save();R()}}
 async function mv(id){const o=['🏠 Home',...S.fo.map(f=>fname(f.id))],v=await ask('Kis folder me bhejna hai?',null,o);if(v===null)return;const i=o.indexOf(v);S.books.find(x=>x.id===id).f=i<1?'':S.fo[i-1].id;save();R()}
-async function up(fs){let bad=0;for(const f of fs){toast('Save ho rahi hai: '+f.name);const id=uid();let ok=null;try{ok=await putPdf(id,f)}catch(e){}if(ok==null){bad++;continue}KEYS&&KEYS.add(id);S.books.push({id,name:f.name.replace(/\.pdf$/i,''),f:cf,sz:f.size})}toast('');save();if(bad)alert(bad+' PDF save nahi hui (storage full ya blocked).');else if(NATIVE&&!S.tip){S.tip=1;save();alert('Ho gaya ✅ App me safe copy ban gayi. Ab phone me jo original PDF hai use delete kar sakte ho, taaki jagah double na ghire. Delete karne se pehle ek backup Drive ya PC me rakh lena.')}R()}
+async function up(fs){let bad=0;for(const f of fs){toast('Save ho rahi hai: '+f.name);const id=uid();let ok=null;try{ok=await putPdf(id,f)}catch(e){}if(ok==null){bad++;continue}KEYS&&KEYS.add(id);S.books.push({id,name:f.name.replace(/\.pdf$/i,''),f:cf,sz:f.size})}toast('');save();if(bad)alert(bad+' PDF save nahi hui.');R()}
 async function rl(id,f){if(!f)return;let ok=null;try{ok=await putPdf(id,f)}catch(e){}if(ok==null)alert('Save nahi hui');else{KEYS&&KEYS.add(id);MISS.delete(id)}R()}
 async function rmB(id){if(!confirm('Book hatao?'))return;await idb('del',id);S.books=S.books.filter(b=>b.id!==id);save();R()}
-if(!window.Capacitor&&'serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)location.reload()})}
+
+// PDF Reader with Fullscreen Capability
 const RS=[];let rz;
+function toggleReaderFs(){
+  const rd=$('#rd');
+  if(!document.fullscreenElement){
+    if(rd.requestFullscreen)rd.requestFullscreen();
+    else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();
+    rd.classList.add('immersive');
+    $('#rd-fs-toggle').style.display='flex';
+  }else{
+    if(document.exitFullscreen)document.exitFullscreen();
+    rd.classList.remove('immersive');
+    $('#rd-fs-toggle').style.display='none';
+  }
+}
+
 function mkR(i,el){
-const q=s=>el.querySelector(s);let id=null,pd=null,z=1,ra=1.4,ob=null,cp=1,sv,st,lp=0,lt=0,tt,pc=null,wl=null,raf=0;
-el.innerHTML=`<div class="bar" style="position:absolute;top:0;left:0;right:0;z-index:6;border-radius:0;height:3px"><i class="pi" style="width:0"></i></div><div class="rt t"><button class="g s" onclick="RS[${i}].x()">✕</button><b class="sp ttl" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis"></b><button class="g s" onclick="RS[${i}].sp()">${i?'🔁':'◫'}</button><button class="g s bmb" onclick="RS[${i}].bmk()">🔖</button><button class="g s" onclick="RS[${i}].bml()">📑</button><button class="g s" onclick="RS[${i}].thm()">🌗</button></div><div class="bx"><div class="pgs"></div></div><div class="rt b"><span class="mu pgn" style="min-width:84px">…</span><input type="range" class="sl" min="1" max="1" value="1" oninput="RS[${i}].jp(+this.value,1)"><button class="g s" onclick="RS[${i}].anim(1)">Fit</button></div>`;
-const bx=q('.bx'),pg=q('.pgs'),bk=()=>S.books.find(x=>x.id===id),pitch=()=>{const c=pg.firstChild;return c?c.offsetHeight+parseFloat(c.style.marginBottom||14):1},wid=()=>Math.max(180,Math.min(bx.clientWidth-16,900))*z;
-const pend=new Set();let busy=false,zl=false;
-function rp(d){d._t=(d._t||0)+1;pend.add(d);pump()}
-async function pump(){if(busy)return;busy=true;try{while(pend.size&&pd){let b=null,bd=1e12;const c=bx.scrollTop+bx.clientHeight/2;for(const d of pend){if(!d._v||!d.isConnected){pend.delete(d);continue}const k=Math.abs(d.offsetTop+d.offsetHeight/2-c);if(k<bd){bd=k;b=d}}if(!b)break;pend.delete(b);await draw(b)}}finally{busy=false}}
-async function draw(d){const t=d._t,q0=pd;try{const p=await q0.getPage(+d.dataset.p),v0=p.getViewport({scale:1}),W=parseFloat(d.style.width);let sc=W/v0.width*Math.min(devicePixelRatio||1,2);const px=v0.width*v0.height*sc*sc;if(px>5e6)sc*=Math.sqrt(5e6/px);const v=p.getViewport({scale:sc}),c=document.createElement('canvas');c.width=v.width;c.height=v.height;await p.render({canvasContext:c.getContext('2d'),canvas:c,viewport:v}).promise;if(d._t===t&&q0===pd&&d._v)d.replaceChildren(c)}catch(e){}}
-function build(){pg.innerHTML='';const W=wid();for(let n=1;n<=pd.numPages;n++){const d=document.createElement('div');d.className='pp';d.dataset.p=n;d.style.width=W+'px';d.style.height=W*ra+'px';d.style.marginBottom=W*.02+'px';pg.appendChild(d);ob.observe(d)}}
-function resize(){const W=wid();[...pg.children].forEach(d=>{d.style.width=W+'px';d.style.height=W*ra+'px';d.style.marginBottom=W*.02+'px';if(d.firstChild){if(d._v)rp(d);else d.replaceChildren()}})}
-function upd(){if(!pd)return;q('.pgn').textContent=cp+' / '+pd.numPages;q('.sl').value=cp;q('.pi').style.width=cp*100/pd.numPages+'%';q('.bmb').textContent=(bk().bm||[]).includes(cp)?'📌':'🔖';S.pages[id]=cp;clearTimeout(st);st=setTimeout(save,600)}
-const dst=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-bx.addEventListener('scroll',()=>{if(!pd||zl)return;cancelAnimationFrame(sv);sv=requestAnimationFrame(()=>{cp=Math.max(1,Math.min(pd.numPages,Math.floor((bx.scrollTop+bx.clientHeight*.35-64)/pitch())+1));upd()})},{passive:true});
-bx.addEventListener('touchstart',e=>{if(e.touches.length===2&&pd){const r=bx.getBoundingClientRect();pc={d:dst(e),s:1,mx:(e.touches[0].clientX+e.touches[1].clientX)/2,my:(e.touches[0].clientY+e.touches[1].clientY)/2};pg.style.transformOrigin=`${bx.scrollLeft+pc.mx-r.left}px ${bx.scrollTop+pc.my-r.top}px`}},{passive:true});
-bx.addEventListener('touchmove',e=>{if(pc&&e.touches.length===2){pc.s=Math.max(.6/z,Math.min(4/z,dst(e)/pc.d));e.preventDefault();if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(pc)pg.style.transform=`scale(${pc.s})`})}},{passive:false});
-bx.addEventListener('touchend',e=>{if(pc&&e.touches.length<2){const p=pc;pc=null;lp=Date.now();pg.style.transform='';o.zset(z*p.s,p.mx,p.my)}});
-bx.addEventListener('click',e=>{if(!pd||Date.now()-lp<500)return;const n=Date.now();if(n-lt<300){clearTimeout(tt);o.anim(z>1.3?1:2.4,e.clientX,e.clientY)}else tt=setTimeout(()=>el.classList.toggle('hid'),260);lt=n});
-bx.addEventListener('wheel',e=>{if(pd&&e.ctrlKey){e.preventDefault();o.zset(z*(e.deltaY<0?1.1:.9),e.clientX,e.clientY)}},{passive:false});
-const o={
-async open(bid){let src=null;const f=NATIVE?null:await idb('get',bid);if(NATIVE){try{const st=await FS.stat({path:'sz/'+bid,directory:'DATA'});if(st.size>0){const u=await FS.getUri({path:'sz/'+bid,directory:'DATA'});src={url:Capacitor.convertFileSrc(u.uri),rangeChunkSize:2097152,disableAutoFetch:true}}}catch(e){}}let buf=null;try{buf=f?(f.b||await f.arrayBuffer()):null}catch(e){}if(!buf&&!src){alert('File gayab ho gayi. Library me ⚠ wale button se dobara chuno.');return false}o.shut();id=bid;const b=bk();el.classList.remove('hid','night','sepia');if(b.th)el.classList.add(b.th);q('.ttl').textContent=b.name;q('.pgn').textContent='Loading…';
-let lt;try{lt=pdfjsLib.getDocument(src||{data:new Uint8Array(buf)});lt.onProgress=p=>{if(p.total)q('.pgn').textContent='Loading '+Math.round(p.loaded*100/p.total)+'%'};pd=await lt.promise}catch(e){pd=null;if(src){try{const g=await nget(bid);pd=await pdfjsLib.getDocument({data:new Uint8Array(g.b)}).promise}catch(e2){pd=null}}}
-if(!pd){q('.pgn').textContent='PDF khul nahi payi';return false}
-b.n=pd.numPages;const v=(await pd.getPage(Math.max(1,Math.round(b.n/2)))).getViewport({scale:1});ra=v.height/v.width;z=b.z||1;cp=Math.min(S.pages[id]||1,b.n);q('.sl').max=b.n;
-ob=new IntersectionObserver(es=>es.forEach(e=>{e.target._v=e.isIntersecting;if(e.isIntersecting)rp(e.target);else{e.target._t=(e.target._t||0)+1;e.target.replaceChildren()}}),{root:bx,rootMargin:'70% 0px'});
-build();o.jp(cp,1);try{wl=await navigator.wakeLock.request('screen')}catch(e){}return true},
-shut(){ob&&ob.disconnect();pd=null;id=null;pg.innerHTML='';try{wl&&wl.release()}catch(e){}},
-jp(n,now){cp=n;bx.scrollTo({top:(n-1)*pitch()+54,behavior:now?'auto':'smooth'});upd()},
-zset(nz,mx,my){const r=bx.getBoundingClientRect();mx=mx==null?r.width/2:mx-r.left;my=my==null?r.height/2:my-r.top;nz=Math.max(.6,Math.min(4,nz));const k=nz/z,px=bx.scrollLeft+mx,pu=(bx.scrollTop+my-64)/pitch();z=nz;zl=true;resize();const tx=px*k-mx,ty=64+pu*pitch()-my;bx.scrollLeft=tx;bx.scrollTop=ty;requestAnimationFrame(()=>{bx.scrollLeft=tx;bx.scrollTop=ty});setTimeout(()=>{zl=false;bx.dispatchEvent(new Event('scroll'))},400);bk().z=z;save()},
-anim(nz,mx,my){nz=Math.max(.6,Math.min(4,nz));const k=nz/z;if(Math.abs(k-1)<.01)return;const r=bx.getBoundingClientRect();pg.style.transformOrigin=`${bx.scrollLeft+(mx==null?r.width/2:mx-r.left)}px ${bx.scrollTop+(my==null?r.height/2:my-r.top)}px`;pg.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';pg.style.transform=`scale(${k})`;setTimeout(()=>{pg.style.transition='';pg.style.transform='';o.zset(nz,mx,my)},290)},
-relayout(){if(!pd)return;const f=bx.scrollTop/pitch();resize();bx.scrollTop=f*pitch()},
-thm(){const b=bk(),a=['','night','sepia'],n=a[(a.indexOf(b.th||'')+1)%3];el.classList.remove('night','sepia');if(n)el.classList.add(n);b.th=n;save()},
-bmk(){const b=bk();b.bm=b.bm||[];const k=b.bm.indexOf(cp);k<0?b.bm.push(cp):b.bm.splice(k,1);save();upd()},
-async bml(){if(!pd)return;const l=(bk().bm||[]).slice().sort((a,c)=>a-c);let v=await ask('Jump karo',null,['Page number likho…',...l.map(x=>'🔖 Page '+x)]);if(v===null)return;if(v.startsWith('🔖')){o.jp(parseInt(v.slice(7)));return}v=await ask('Page number (1-'+pd.numPages+')',''+cp);if(v)o.jp(Math.max(1,Math.min(pd.numPages,+v||1)))},
-x(){i?closeSplit():closeAll()},sp(){i?change2():toggleSplit()}};
-RS[i]=o}
+  const q=s=>el.querySelector(s);let id=null,pd=null,z=1,ra=1.4,ob=null,cp=1,sv,st,lp=0,lt=0,tt,pc=null,wl=null,raf=0;
+  el.innerHTML=`<div class="bar" style="position:absolute;top:0;left:0;right:0;z-index:6;border-radius:0;height:3px"><i class="pi" style="width:0"></i></div><div class="rt t"><button class="g s" onclick="RS[${i}].x()">✕</button><b class="sp ttl" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis"></b><button class="g s" onclick="toggleReaderFs()">⛶</button><button class="g s" onclick="RS[${i}].sp()">${i?'🔁':'◫'}</button><button class="g s bmb" onclick="RS[${i}].bmk()">🔖</button><button class="g s" onclick="RS[${i}].bml()">📑</button><button class="g s" onclick="RS[${i}].thm()">🌗</button></div><div class="bx"><div class="pgs"></div></div><div class="rt b"><span class="mu pgn" style="min-width:84px">…</span><input type="range" class="sl" min="1" max="1" value="1" oninput="RS[${i}].jp(+this.value,1)"><button class="g s" onclick="RS[${i}].anim(1)">Fit</button></div>`;
+  const bx=q('.bx'),pg=q('.pgs'),bk=()=>S.books.find(x=>x.id===id),pitch=()=>{const c=pg.firstChild;return c?c.offsetHeight+parseFloat(c.style.marginBottom||14):1},wid=()=>Math.max(180,Math.min(bx.clientWidth-16,900))*z;
+  const pend=new Set();let busy=false,zl=false;
+  function rp(d){d._t=(d._t||0)+1;pend.add(d);pump()}
+  async function pump(){if(busy)return;busy=true;try{while(pend.size&&pd){let b=null,bd=1e12;const c=bx.scrollTop+bx.clientHeight/2;for(const d of pend){if(!d._v||!d.isConnected){pend.delete(d);continue}const k=Math.abs(d.offsetTop+d.offsetHeight/2-c);if(k<bd){bd=k;b=d}}if(!b)break;pend.delete(b);await draw(b)}}finally{busy=false}}
+  async function draw(d){const t=d._t,q0=pd;try{const p=await q0.getPage(+d.dataset.p),v0=p.getViewport({scale:1}),W=parseFloat(d.style.width);let sc=W/v0.width*Math.min(devicePixelRatio||1,2);const px=v0.width*v0.height*sc*sc;if(px>5e6)sc*=Math.sqrt(5e6/px);const v=p.getViewport({scale:sc}),c=document.createElement('canvas');c.width=v.width;c.height=v.height;await p.render({canvasContext:c.getContext('2d'),canvas:c,viewport:v}).promise;if(d._t===t&&q0===pd&&d._v)d.replaceChildren(c)}catch(e){}}
+  function build(){pg.innerHTML='';const W=wid();for(let n=1;n<=pd.numPages;n++){const d=document.createElement('div');d.className='pp';d.dataset.p=n;d.style.width=W+'px';d.style.height=W*ra+'px';d.style.marginBottom=W*.02+'px';pg.appendChild(d);ob.observe(d)}}
+  function resize(){const W=wid();[...pg.children].forEach(d=>{d.style.width=W+'px';d.style.height=W*ra+'px';d.style.marginBottom=W*.02+'px';if(d.firstChild){if(d._v)rp(d);else d.replaceChildren()}})}
+  function upd(){if(!pd)return;q('.pgn').textContent=cp+' / '+pd.numPages;q('.sl').value=cp;q('.pi').style.width=cp*100/pd.numPages+'%';q('.bmb').textContent=(bk().bm||[]).includes(cp)?'📌':'🔖';S.pages[id]=cp;clearTimeout(st);st=setTimeout(save,600)}
+  const dst=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  bx.addEventListener('scroll',()=>{if(!pd||zl)return;cancelAnimationFrame(sv);sv=requestAnimationFrame(()=>{cp=Math.max(1,Math.min(pd.numPages,Math.floor((bx.scrollTop+bx.clientHeight*.35-64)/pitch())+1));upd()})},{passive:true});
+  bx.addEventListener('touchstart',e=>{if(e.touches.length===2&&pd){const r=bx.getBoundingClientRect();pc={d:dst(e),s:1,mx:(e.touches[0].clientX+e.touches[1].clientX)/2,my:(e.touches[0].clientY+e.touches[1].clientY)/2};pg.style.transformOrigin=`${bx.scrollLeft+pc.mx-r.left}px ${bx.scrollTop+pc.my-r.top}px`}},{passive:true});
+  bx.addEventListener('touchmove',e=>{if(pc&&e.touches.length===2){pc.s=Math.max(.6/z,Math.min(4/z,dst(e)/pc.d));e.preventDefault();if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(pc)pg.style.transform=`scale(${pc.s})`})}},{passive:false});
+  bx.addEventListener('touchend',e=>{if(pc&&e.touches.length<2){const p=pc;pc=null;lp=Date.now();pg.style.transform='';o.zset(z*p.s,p.mx,p.my)}});
+  bx.addEventListener('click',e=>{if(!pd||Date.now()-lp<500)return;const n=Date.now();if(n-lt<300){clearTimeout(tt);o.anim(z>1.3?1:2.4,e.clientX,e.clientY)}else tt=setTimeout(()=>el.classList.toggle('hid'),260);lt=n});
+  bx.addEventListener('wheel',e=>{if(pd&&e.ctrlKey){e.preventDefault();o.zset(z*(e.deltaY<0?1.1:.9),e.clientX,e.clientY)}},{passive:false});
+  const o={
+    async open(bid){let src=null;const f=NATIVE?null:await idb('get',bid);if(NATIVE){try{const st=await FS.stat({path:'sz/'+bid,directory:'DATA'});if(st.size>0){const u=await FS.getUri({path:'sz/'+bid,directory:'DATA'});src={url:Capacitor.convertFileSrc(u.uri),rangeChunkSize:2097152,disableAutoFetch:true}}}catch(e){}}let buf=null;try{buf=f?(f.b||await f.arrayBuffer()):null}catch(e){}if(!buf&&!src){alert('File gayab ho gayi.');return false}o.shut();id=bid;const b=bk();el.classList.remove('hid','night','sepia');if(b.th)el.classList.add(b.th);q('.ttl').textContent=b.name;q('.pgn').textContent='Loading…';
+    let lt;try{lt=pdfjsLib.getDocument(src||{data:new Uint8Array(buf)});lt.onProgress=p=>{if(p.total)q('.pgn').textContent='Loading '+Math.round(p.loaded*100/p.total)+'%'};pd=await lt.promise}catch(e){pd=null;if(src){try{const g=await nget(bid);pd=await pdfjsLib.getDocument({data:new Uint8Array(g.b)}).promise}catch(e2){pd=null}}}
+    if(!pd){q('.pgn').textContent='PDF khul nahi payi';return false}
+    b.n=pd.numPages;const v=(await pd.getPage(Math.max(1,Math.round(b.n/2)))).getViewport({scale:1});ra=v.height/v.width;z=b.z||1;cp=Math.min(S.pages[id]||1,b.n);q('.sl').max=b.n;
+    ob=new IntersectionObserver(es=>es.forEach(e=>{e.target._v=e.isIntersecting;if(e.isIntersecting)rp(e.target);else{e.target._t=(e.target._t||0)+1;e.target.replaceChildren()}}),{root:bx,rootMargin:'70% 0px'});
+    build();o.jp(cp,1);try{wl=await navigator.wakeLock.request('screen')}catch(e){}return true},
+    shut(){ob&&ob.disconnect();pd=null;id=null;pg.innerHTML='';try{wl&&wl.release()}catch(e){}},
+    jp(n,now){cp=n;bx.scrollTo({top:(n-1)*pitch()+54,behavior:now?'auto':'smooth'});upd()},
+    zset(nz,mx,my){const r=bx.getBoundingClientRect();mx=mx==null?r.width/2:mx-r.left;my=my==null?r.height/2:my-r.top;nz=Math.max(.6,Math.min(4,nz));const k=nz/z,px=bx.scrollLeft+mx,pu=(bx.scrollTop+my-64)/pitch();z=nz;zl=true;resize();const tx=px*k-mx,ty=64+pu*pitch()-my;bx.scrollLeft=tx;bx.scrollTop=ty;requestAnimationFrame(()=>{bx.scrollLeft=tx;bx.scrollTop=ty});setTimeout(()=>{zl=false;bx.dispatchEvent(new Event('scroll'))},400);bk().z=z;save()},
+    anim(nz,mx,my){nz=Math.max(.6,Math.min(4,nz));const k=nz/z;if(Math.abs(k-1)<.01)return;const r=bx.getBoundingClientRect();pg.style.transformOrigin=`${bx.scrollLeft+(mx==null?r.width/2:mx-r.left)}px ${bx.scrollTop+(my==null?r.height/2:my-r.top)}px`;pg.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';pg.style.transform=`scale(${k})`;setTimeout(()=>{pg.style.transition='';pg.style.transform='';o.zset(nz,mx,my)},290)},
+    relayout(){if(!pd)return;const f=bx.scrollTop/pitch();resize();bx.scrollTop=f*pitch()},
+    thm(){const b=bk(),a=['','night','sepia'],n=a[(a.indexOf(b.th||'')+1)%3];el.classList.remove('night','sepia');if(n)el.classList.add(n);b.th=n;save()},
+    bmk(){const b=bk();b.bm=b.bm||[];const k=b.bm.indexOf(cp);k<0?b.bm.push(cp):b.bm.splice(k,1);save();upd()},
+    async bml(){if(!pd)return;const l=(bk().bm||[]).slice().sort((a,c)=>a-c);let v=await ask('Jump karo',null,['Page number likho…',...l.map(x=>'🔖 Page '+x)]);if(v===null)return;if(v.startsWith('🔖')){o.jp(parseInt(v.slice(7)));return}v=await ask('Page number (1-'+pd.numPages+')',''+cp);if(v)o.jp(Math.max(1,Math.min(pd.numPages,+v||1)))},
+    x(){i?closeSplit():closeAll()},sp(){i?change2():toggleSplit()}};
+  RS[i]=o;
+}
+
 function initR(){const p=$('#panes');[0,1].forEach(i=>{const e=document.createElement('div');e.className='pn';p.appendChild(e);mkR(i,e)})}
 async function openR(bid){history.pushState({r:1},'');$('#rd').style.display='flex';$('#panes').classList.remove('s2');await RS[0].open(bid)}
 function closeAll(){if(history.state&&history.state.r)history.back();else doClose()}
 addEventListener('popstate',()=>{if($('#rd').style.display==='flex')doClose()});
-function doClose(){RS[1].shut();RS[0].shut();$('#panes').classList.remove('s2');$('#rd').style.display='none';save();R()}
+function doClose(){RS[1].shut();RS[0].shut();$('#panes').classList.remove('s2');$('#rd').style.display='none';$('#rd').classList.remove('immersive');$('#rd-fs-toggle').style.display='none';save();R()}
 async function pick(){const a=S.books.map(b=>b.name);if(!a.length)return null;const v=await ask('Dusri PDF chuno',null,a);return v===null?null:S.books[a.indexOf(v)].id}
 async function toggleSplit(){const P=$('#panes');if(P.classList.contains('s2')){closeSplit();return}const b=await pick();if(!b)return;P.classList.add('s2');await RS[1].open(b);setTimeout(()=>RS.forEach(r=>r.relayout()),80)}
 function closeSplit(){RS[1].shut();$('#panes').classList.remove('s2');setTimeout(()=>RS[0].relayout(),80)}
 async function change2(){const b=await pick();if(b)RS[1].open(b)}
 addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>RS.forEach(r=>r.relayout()),250)});
-function WL(){return`<div class="row"><h1 class="sp">Motivation Wall</h1></div><div class="row" style="margin:8px 0 14px"><button class="sp" onclick="aq()">✍️ Line likho</button><label class="btn sp" style="text-align:center">🖼️ Photo<input type="file" accept="image/*" hidden onchange="ai(this.files[0])"></label></div><div class="wall">${S.wall.map(w=>`<div class="wi">${w.q?`<p>${esc(w.q)}</p>`:KEYS&&!KEYS.has(w.id)?'<p style="background:var(--card2);color:var(--mu)">⚠ Photo gayab ho gayi, ✕ karke dobara lagao</p>':`<img data-k="${w.id}" alt="">`}<button class="g s" onclick="rw('${w.id}')">✕</button></div>`).join('')}</div>${S.wall.length?'':'<div class="mu">Apni photo, sapna, ya motivational line yahan lagao — roz dekho.</div>'}`}
+
+// Wall & Touch Reorder Sticky Notes
+let dragSrcIdx=null;
+function WL(){
+  return`<div class="row"><h1 class="sp">Wall & Notes</h1></div>
+  <div class="row" style="margin:8px 0 14px">
+    <button class="sp" onclick="aq()">✍️ Quote</button>
+    <button class="sp g" onclick="addStickyPrompt()">📝 Sticky Note</button>
+    <label class="btn sp" style="text-align:center">🖼️ Photo<input type="file" accept="image/*" hidden onchange="ai(this.files[0])"></label>
+  </div>
+  <div class="wall" id="wall-grid">${S.wall.map((w,i)=>`
+    <div class="wi ${w.col||''} ${w.sn?'sn':''}" draggable="true" ondragstart="wDragStart(${i})" ondragover="event.preventDefault()" ondrop="wDrop(${i})" style="touch-action:manipulation">
+      <div class="acts">
+        <button onclick="mvW(${i},-1)">▲</button>
+        <button onclick="mvW(${i},1)">▼</button>
+        <button onclick="rw('${w.id}')">✕</button>
+      </div>
+      ${w.q?`<p>${esc(w.q)}</p>`:w.sn?`<b>${esc(w.title||'Note')}</b><div style="font-size:13px;margin-top:6px;white-space:pre-wrap">${esc(w.sn)}</div>`:KEYS&&!KEYS.has(w.id)?'<p style="background:var(--card2);color:var(--mu)">Photo gayab</p>':`<img data-k="${w.id}" alt="">`}
+    </div>`).join('')}
+  </div>${S.wall.length?'':'<div class="mu" style="text-align:center;padding:20px">Sticky note, sapne, ya quotes lagao. Upar-niche buttons se order badlo.</div>'}`;
+}
+
+function wDragStart(idx){dragSrcIdx=idx}
+function wDrop(tgtIdx){if(dragSrcIdx!==null&&dragSrcIdx!==tgtIdx){const it=S.wall.splice(dragSrcIdx,1)[0];S.wall.splice(tgtIdx,0,it);save();R()}dragSrcIdx=null}
+function mvW(idx,dir){const target=idx+dir;if(target>=0&&target<S.wall.length){const item=S.wall.splice(idx,1)[0];S.wall.splice(target,0,item);save();R()}}
+
+async function addStickyPrompt(){
+  const t=await ask('Note title','Polity Short Rules');if(!t)return;
+  const c=await ask('Note content / details');if(!c)return;
+  const cols=['c-yellow','c-blue','c-green','c-purple','c-pink'];
+  const col=cols[Math.floor(Math.random()*cols.length)];
+  S.wall.unshift({id:uid(),title:t,sn:c,col});
+  save();R();
+}
+
 async function aq(){const q=await ask('Motivation line');if(q){S.wall.unshift({id:uid(),q});save();R()}}
-async function ai(f){if(!f)return;const im=await createImageBitmap(f),s=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.82)),id=uid();const ok=await idb('put',id,{b:await b.arrayBuffer(),t:'image/jpeg'});if(ok==null){alert('Photo save nahi hui (storage full ya blocked)');return}KEYS&&KEYS.add(id);S.wall.unshift({id,img:1});save();R()}
+async function ai(f){if(!f)return;const im=await createImageBitmap(f),s=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.82)),id=uid();const ok=await idb('put',id,{b:await b.arrayBuffer(),t:'image/jpeg'});if(ok==null){alert('Save nahi hui');return}KEYS&&KEYS.add(id);S.wall.unshift({id,img:1});save();R()}
 async function rw(id){S.wall=S.wall.filter(w=>w.id!==id);await idb('del',id);save();R()}
+
+// Reverse Pomodoro & Focus Studio
 const fm=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),RC=339.3,ML={f:'Focus',s:'Short break',l:'Long break'};
 S.pm=Object.assign({f:25,s:5,l:15,ev:4,auto:true,goal:120,snd:'off'},S.pm||{});S.log=S.log||[];
 const dur=m=>S.pm[m]*60;
 let tm={mode:'f',left:dur('f'),full:dur('f'),run:false,end:0,iv:null,tag:'General',n:0},ac,sn,wl2;
+
 function rst(){const t=S.tm;if(t&&t.day===today()){Object.assign(tm,{mode:t.mode,full:dur(t.mode),left:t.left,n:t.n,tag:t.tag||'General'});if(t.run){tm.end=t.end;tm.run=true;tm.iv=setInterval(tick,250);tick()}}}
 const saveTm=()=>{S.tm={mode:tm.mode,left:tm.left,run:tm.run,end:tm.end,n:tm.n,tag:tm.tag,day:today()};save()};
-function tick(){if(tm.run)tm.left=Math.max(0,Math.round((tm.end-Date.now())/1000));const e=$('#tm');if(e){e.textContent=fm(tm.left);$('#rg').style.strokeDashoffset=RC*(1-tm.left/tm.full)}document.title=tm.run?fm(tm.left)+' · Study Zone':'Study Zone';if(tm.run&&tm.left<=0)fin()}
-function start(){if(tm.run)return;tm.end=Date.now()+tm.left*1000;tm.run=true;clearInterval(tm.iv);tm.iv=setInterval(tick,250);if(tm.mode==='f')snd(S.pm.snd);try{Notification.permission==='default'&&Notification.requestPermission()}catch(e){}try{navigator.wakeLock.request('screen').then(w=>wl2=w)}catch(e){}saveTm();R()}
-function pause(){clearInterval(tm.iv);tm.run=false;stopS();saveTm();R()}
+
+function tick(){
+  if(tm.run)tm.left=Math.max(0,Math.round((tm.end-Date.now())/1000));
+  const e=$('#tm');if(e){e.textContent=fm(tm.left);$('#rg').style.strokeDashoffset=RC*(1-tm.left/tm.full)}
+  document.title=tm.run?fm(tm.left)+' · Study Zone':'Study Zone';
+  if(tm.run&&tm.left<=0)fin();
+}
+
+function start(){
+  if(tm.run)return;
+  tm.end=Date.now()+tm.left*1000;
+  tm.run=true;
+  S.revPm.last=Date.now();
+  save();
+  clearInterval(tm.iv);tm.iv=setInterval(tick,250);
+  if(tm.mode==='f')snd(S.pm.snd);
+  try{Notification.permission==='default'&&Notification.requestPermission()}catch(e){}
+  try{navigator.wakeLock.request('screen').then(w=>wl2=w)}catch(e){}
+  saveTm();R();
+}
+
+function pause(){clearInterval(tm.iv);tm.run=false;stopS();S.revPm.last=Date.now();save();saveTm();R()}
 function nxt(){tm.mode=tm.mode==='f'?(tm.n&&tm.n%S.pm.ev===0?'l':'s'):'f';tm.left=tm.full=dur(tm.mode)}
 function tmode(m){pause();tm.mode=m;tm.left=tm.full=dur(m);saveTm();R()}
-function fin(){clearInterval(tm.iv);tm.run=false;stopS();beep();if(tm.mode==='f'){const m=S.pm.f;S.mins[today()]=(S.mins[today()]||0)+m;S.log.push({d:today(),m,t:tm.tag});S.log=S.log.slice(-300);tm.n++;bump();boom()}try{new Notification('Study Zone',{body:tm.mode==='f'?'Focus complete! Break lo 🎉':'Break khatam, padhai shuru!'})}catch(e){}nxt();if(S.pm.auto)start();else{saveTm();R()}}
+
+function fin(){
+  clearInterval(tm.iv);tm.run=false;stopS();beep();
+  if(tm.mode==='f'){
+    const m=S.pm.f;
+    S.mins[today()]=(S.mins[today()]||0)+m;
+    S.log.push({d:today(),m,t:tm.tag});
+    S.log=S.log.slice(-300);
+    tm.n++;bump();boom();
+  }
+  S.revPm.last=Date.now();
+  save();
+  try{new Notification('Study Zone',{body:tm.mode==='f'?'Focus complete! Break lo 🎉':'Break khatam, padhai shuru!'})}catch(e){}
+  nxt();if(S.pm.auto)start();else{saveTm();R()}
+}
+
 function beep(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();[0,.3,.6].forEach(t=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;g.gain.setValueAtTime(.25,ac.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t+.25);o.connect(g);g.connect(ac.destination);o.start(ac.currentTime+t);o.stop(ac.currentTime+t+.26)})}catch(e){}if(navigator.vibrate)navigator.vibrate([300,120,300])}
 function stopS(){try{sn&&sn.forEach(x=>x.stop())}catch(e){}sn=null}
 function snd(k){stopS();if(k==='off')return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const L=ac.sampleRate*3,b=ac.createBuffer(1,L,ac.sampleRate),d=b.getChannelData(0),w=k==='white'||k==='rain';let l=0;for(let i=0;i<L;i++){const r=Math.random()*2-1;if(w)d[i]=r*.5;else{l=(l+.02*r)/1.02;d[i]=l*3.5}}const s=ac.createBufferSource();s.buffer=b;s.loop=true;const g=ac.createGain();g.gain.value=.5;let o=s;if(k==='rain'){const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.value=3000;f.Q.value=.4;s.connect(f);o=f;g.gain.value=.7}o.connect(g);g.connect(ac.destination);sn=[s];if(k==='waves'){const lf=ac.createOscillator(),lg=ac.createGain();lf.frequency.value=.1;lg.gain.value=.35;lf.connect(lg);lg.connect(g.gain);lf.start();sn.push(lf)}s.start()}catch(e){}}
 function ssn(k){S.pm.snd=k;save();if(tm.run&&tm.mode==='f')snd(k);R()}
 function sp(k,v){S.pm[k]=Math.max(1,+v||1);save();if(!tm.run&&'fsl'.includes(k))tm.left=tm.full=dur(tm.mode);R()}
-function fs(){try{document.documentElement.requestFullscreen()}catch(e){}}
-function TM(){const m=S.mins[today()]||0,g=S.pm.goal,pc=Math.min(100,Math.round(m*100/g)),wk=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5).toISOString().slice(0,10);return[d,S.mins[d]||0]}),mx=Math.max(30,...wk.map(x=>x[1])),bt={};S.log.filter(x=>x.d===today()).forEach(x=>bt[x.t]=(bt[x.t]||0)+x.m);
-return`<h1>Focus Studio</h1><div class="card"><div class="chips" style="justify-content:center">${Object.keys(ML).map(k=>`<button class="${tm.mode===k?'':'g'} s" onclick="tmode('${k}')">${ML[k]}</button>`).join('')}</div>
-<div style="position:relative;width:250px;margin:4px auto"><svg viewBox="0 0 120 120" width="250" style="transform:rotate(-90deg)"><circle cx="60" cy="60" r="54" fill="none" stroke="var(--card2)" stroke-width="6"/><circle id="rg" cx="60" cy="60" r="54" fill="none" stroke="var(--ac2)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${RC}" style="stroke-dashoffset:${RC*(1-tm.left/tm.full)};transition:stroke-dashoffset .3s linear"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div class="big" id="tm" style="margin:0">${fm(tm.left)}</div><div class="mu">${ML[tm.mode]} · session ${tm.n+(tm.mode==='f'?1:0)}</div></div></div>
-<div class="row"><button class="sp" onclick="${tm.run?'pause()':'start()'}">${tm.run?'⏸ Pause':'▶ Start'}</button><button class="g" onclick="tmode(tm.mode)">↺</button><button class="g" onclick="pause();nxt();saveTm();R()">⏭</button><button class="g" onclick="fs()">⛶</button></div>
-<select style="margin-top:10px" onchange="tm.tag=this.value;saveTm()">${['General',...S.tree.map(n=>n.t)].map(t=>`<option ${t===tm.tag?'selected':''}>${esc(t)}</option>`).join('')}</select>
-<div class="mu" style="margin:10px 0 4px">🎧 Ambient sound</div><div class="chips">${['off','rain','waves','brown','white'].map(k=>`<button class="${S.pm.snd===k?'':'g'} s" onclick="ssn('${k}')">${k}</button>`).join('')}</div></div>
-<div class="card"><div class="row"><h2 class="sp">Aaj ka goal</h2><b>${m}/${g} min</b></div><div class="bar"><i style="width:${pc}%"></i></div><div class="mu" style="margin-top:6px">${tm.n} focus session complete${pc>=100?' · 🏆 Goal done!':''}</div>${Object.keys(bt).map(k=>`<div class="row" style="margin-top:6px"><span class="sp">${esc(k)}</span><b>${bt[k]}m</b></div>`).join('')}</div>
-<div class="card"><h2>Is hafte</h2><div class="row" style="align-items:flex-end;height:110px">${wk.map(([d,v])=>`<div class="sp" style="text-align:center"><div style="height:${Math.max(4,v*80/mx)}px;background:linear-gradient(var(--ac2),var(--ac));border-radius:6px"></div><div class="mu" style="font-size:11px">${['Su','Mo','Tu','We','Th','Fr','Sa'][new Date(d).getDay()]}</div></div>`).join('')}</div></div>
-<div class="card"><h2>⚙️ Settings</h2><div class="row" style="flex-wrap:wrap">${[['f','Focus min'],['s','Short'],['l','Long'],['ev','Long break after'],['goal','Daily goal min']].map(([k,n])=>`<div style="flex:1 1 90px"><div class="mu">${n}</div><input type="number" min="1" value="${S.pm[k]}" onchange="sp('${k}',this.value)"></div>`).join('')}</div><div class="t"><input type="checkbox" ${S.pm.auto?'checked':''} onchange="S.pm.auto=this.checked;save()"><span>Agla session apne-aap shuru ho</span></div></div>`}
+
+// Reverse Pomodoro Waste Check Loop
+function checkReversePomodoro(){
+  if(!S.revPm.on)return;
+  if(!tm.run){
+    const idleSec=Math.floor((Date.now()-(S.revPm.last||Date.now()))/1000);
+    const limitSec=(S.revPm.idleLimit||15)*60;
+    if(idleSec>limitSec){
+      const wasteMin=Math.floor((idleSec-limitSec)/60);
+      S.revPm.waste=wasteMin;
+      if(Date.now()-(S.revPm.notified||0)>300000){
+        S.revPm.notified=Date.now();
+        banner(`⚠️ ALERT: ${wasteMin} min waste ho chuke hain! Padhai shuru karo.`,'warn');
+        if(navigator.vibrate)navigator.vibrate([200,100,200]);
+      }
+    }else{
+      S.revPm.waste=0;
+    }
+  }else{
+    S.revPm.waste=0;
+    S.revPm.last=Date.now();
+  }
+}
+setInterval(checkReversePomodoro,5000);
+
+function TM(){
+  const m=S.mins[today()]||0,g=S.pm.goal,pc=Math.min(100,Math.round(m*100/g));
+  const isWaste=S.revPm.on&&!tm.run&&S.revPm.waste>0;
+  return`<h1>Focus Studio</h1>
+  ${isWaste?`<div class="card rev-alert">
+    <div class="row"><span style="font-size:26px">🚨</span><div class="sp"><b style="color:var(--rd)">Reverse Pomodoro Alert!</b><div>Aapka break limit over ho chuka hai: <b>${S.revPm.waste} minute</b> waste ho rahe hain.</div></div></div>
+    <button style="width:100%;margin-top:8px;background:var(--ac2);color:#0b1020" onclick="start()">▶ Abhi Padhna Shuru Karo</button>
+  </div>`:''}
+  <div class="card"><div class="chips" style="justify-content:center">${Object.keys(ML).map(k=>`<button class="${tm.mode===k?'':'g'} s" onclick="tmode('${k}')">${ML[k]}</button>`).join('')}</div>
+  <div style="position:relative;width:250px;margin:4px auto"><svg viewBox="0 0 120 120" width="250" style="transform:rotate(-90deg)"><circle cx="60" cy="60" r="54" fill="none" stroke="var(--card2)" stroke-width="6"/><circle id="rg" cx="60" cy="60" r="54" fill="none" stroke="var(--ac2)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${RC}" style="stroke-dashoffset:${RC*(1-tm.left/tm.full)};transition:stroke-dashoffset .3s linear"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div class="big" id="tm" style="margin:0">${fm(tm.left)}</div><div class="mu">${ML[tm.mode]} · session ${tm.n+(tm.mode==='f'?1:0)}</div></div></div>
+  <div class="row"><button class="sp" onclick="${tm.run?'pause()':'start()'}">${tm.run?'⏸ Pause':'▶ Start'}</button><button class="g" onclick="tmode(tm.mode)">↺</button><button class="g" onclick="pause();nxt();saveTm();R()">⏭</button></div>
+  <div class="mu" style="margin:10px 0 4px">🎧 Ambient sound</div><div class="chips">${['off','rain','waves','brown','white'].map(k=>`<button class="${S.pm.snd===k?'':'g'} s" onclick="ssn('${k}')">${k}</button>`).join('')}</div></div>
+  <div class="card">
+    <div class="row"><h2 class="sp">⚠️ Reverse Pomodoro (Anti-Sloth)</h2><button class="${S.revPm.on?'':'g'} s" onclick="S.revPm.on=!S.revPm.on;save();R()">${S.revPm.on?'On':'Off'}</button></div>
+    <div class="mu">Agar set break se zyada aalas kiya to notification live count karega ki kitne minute waste ho rahe hain.</div>
+    <div class="row" style="margin-top:8px"><span class="sp mu">Max Break Limit:</span><input type="number" min="5" style="width:90px" value="${S.revPm.idleLimit||15}" onchange="S.revPm.idleLimit=+this.value||15;save()"> min</div>
+  </div>
+  <div class="card"><div class="row"><h2 class="sp">Aaj ka goal</h2><b>${m}/${g} min</b></div><div class="bar"><i style="width:${pc}%"></i></div><div class="mu" style="margin-top:6px">${tm.n} focus session complete</div></div>
+  <div class="card"><h2>⚙️ Settings</h2><div class="row" style="flex-wrap:wrap">${[['f','Focus min'],['s','Short'],['l','Long'],['goal','Daily goal']].map(([k,n])=>`<div style="flex:1 1 90px"><div class="mu">${n}</div><input type="number" min="1" value="${S.pm[k]}" onchange="sp('${k}',this.value)"></div>`).join('')}</div></div>`;
+}
+
+// Target Hall Ticket Generator
+function HALL(){
+  const allNodes=S.exams.flatMap(e=>e.tree.flatMap(lv));
+  const sylDone=allNodes.filter(x=>x.done).length;
+  const sylPct=allNodes.length?Math.round(sylDone*100/allNodes.length):0;
+  const mks=(S.mk||[]).length;
+  const verified=sylPct>=80&&mks>=5;
+  const t=S.ticket;
+
+  return`<h1>Target Hall Ticket <span class="fl">🎫</span></h1>
+  <div class="mu" style="margin-bottom:12px">Subconscious mind ko target visualize karwane ke liye official admit card. 80% syllabus + 5 mocks par official seal unlock hoti hai.</div>
+  <div class="card" style="padding:10px">
+    <div class="hall-ticket" style="${verified?'':'filter:contrast(.95)'}">
+      ${verified?'':`<div class="hall-watermark">UNVERIFIED PROVISIONAL</div>`}
+      <div class="ht-header">
+        <b style="font-size:16px;letter-spacing:1px">WEST BENGAL CIVIL SERVICES / SSC CGL EXAMINATION</b>
+        <div style="font-size:11px;color:#475569">OFFICIAL ADMIT CARD & E-VERIFICATION SLIP</div>
+      </div>
+      <div class="row" style="align-items:flex-start;margin-bottom:12px">
+        <div class="sp">
+          <div style="font-size:11px;color:#64748b">CANDIDATE NAME</div>
+          <b style="font-size:17px">${esc(t.name)}</b>
+          <div style="font-size:11px;color:#64748b;margin-top:6px">TARGET POST / SERVICE</div>
+          <b style="color:var(--ac);font-size:14px">${esc(t.post)}</b>
+          <div style="font-size:11px;color:#64748b;margin-top:6px">ROLL NO / REGISTRATION</div>
+          <b style="font-family:monospace;letter-spacing:1px">${esc(t.roll)}</b>
+        </div>
+        <div style="width:78px;height:95px;background:#e2e8f0;border:2px solid #94a3b8;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+          ${t.img?`<img src="${t.img}" style="width:100%;height:100%;object-fit:cover">`:`<span style="font-size:36px">👨‍🎓</span>`}
+        </div>
+      </div>
+      <div style="background:#f8fafc;padding:8px;border-radius:8px;border:1px solid #cbd5e1;font-size:12px">
+        <div><b>EXAM CENTER:</b> ${esc(t.center)}</div>
+        <div><b>DATE OF EXAMINATION:</b> ${S.exam||'Target Date Not Set'}</div>
+      </div>
+      <div class="hall-seal" style="${verified?'':'opacity:.4'}">
+        <span>★ PENDING ★</span>
+        <span style="font-size:7px">PSC BENGAL</span>
+        <span>${verified?'VERIFIED':'LOCKED'}</span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🎯 Unlock Criteria</h2>
+    <div style="margin:8px 0">
+      <div class="row"><span class="sp">1. Syllabus Completion (Min 80%)</span><b>${sylPct}%</b></div>
+      <div class="bar"><i style="width:${Math.min(100,sylPct)}%"></i></div>
+    </div>
+    <div style="margin:8px 0">
+      <div class="row"><span class="sp">2. Mock Tests Completed (Min 5)</span><b>${mks}/5</b></div>
+      <div class="bar"><i style="width:${Math.min(100,mks*20)}%"></i></div>
+    </div>
+    <div class="mu" style="margin-top:6px">${verified?'🎉 Badhai! Aapka Admit card 100% verified hai. Rank laane ki taiyari shuru karo!':'⚠ Watermark hatane ke liye syllabus 80% aur 5 mocks score add karein.'}</div>
+  </div>
+  <div class="card">
+    <h2>✏️ Admit Card Details</h2>
+    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="ask('Candidate Name',S.ticket.name).then(v=>{if(v){S.ticket.name=v;save();R()}})">Naam: ${esc(t.name)}</button>
+    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="ask('Target Post',S.ticket.post).then(v=>{if(v){S.ticket.post=v;save();R()}})">Post: ${esc(t.post)}</button>
+    <button class="g sp" style="width:100%" onclick="ask('Exam Center',S.ticket.center).then(v=>{if(v){S.ticket.center=v;save();R()}})">Center: ${esc(t.center)}</button>
+  </div>`;
+}
+
+// Samay Chakra and Clocks
 const dfm=ms=>{const a=Math.abs(ms),d=Math.floor(a/864e5),h=Math.floor(a%864e5/36e5),m=Math.floor(a%36e5/6e4),s=Math.floor(a%6e4/1e3);return{d,h,m,s,t:`${d} din ${P2(h)}:${P2(m)}:${P2(s)}`}},P2=n=>String(n).padStart(2,'0');
 S.sc=Object.assign({st:'both',face:'tick',col:'#22d3a6',sec:true,h24:false,q:true,birth:''},S.sc||{});S.ms=S.ms||[];S.mk=S.mk||[];
 const dnum=d=>Math.floor(Date.parse(d+'T00:00:00Z')/864e5),RV=[1,3,7,21];
@@ -255,17 +678,31 @@ function dueRv(){const o=[];S.exams.forEach(e=>{const w=ns=>ns.forEach(n=>{if(n.
 function revH(){const l=dueRv();if(!l.length)return'';return`<div class="card"><h2>🔁 Aaj revise karo</h2>${l.slice(0,6).map(n=>`<div class="t"><span class="sp">${esc(n.t)}</span><button class="s" onclick="revd('${n.id}')">Ho gaya</button></div>`).join('')}<div class="mu">Padhe hue topic 1, 3, 7 aur 21 din baad yaad dilate hain.</div></div>`}
 function revd(id){for(const e of S.exams){const r=find(e.tree,id);if(r){const n=r.n;n.rv.s++;if(n.rv.s>=RV.length)delete n.rv;save();boom();R();return}}}
 async function addMk(){const n=await ask('Test ka naam');if(!n)return;const sc=await ask('Score (jaise 78/100)');if(!sc)return;const m=sc.match(/([\d.]+)\s*\/\s*([\d.]+)/);if(!m){alert('Aise likho: 78/100');return}S.mk.push({id:uid(),n,s:+m[1],t:+m[2],d:today()});save();R()}
-function mkH(){const l=S.mk.slice(-10),p=l.map(x=>x.s*100/x.t);let g='';if(l.length>1){const pts=p.map((v,i)=>`${i*260/(p.length-1)},${50-v*.5}`).join(' ');g=`<svg viewBox="0 0 260 50" width="100%" height="60"><polyline points="${pts}" fill="none" stroke="var(--ac2)" stroke-width="3" stroke-linejoin="round"/></svg>`}return`<div class="card"><div class="row"><h2 class="sp">📝 Mock test</h2><button class="s" onclick="addMk()">＋ Score</button></div>${g}${l.slice(-4).reverse().map(x=>`<div class="row"><span class="sp">${esc(x.n)}</span><b>${(x.s*100/x.t).toFixed(0)}%</b><button class="ic" onclick="S.mk=S.mk.filter(y=>y.id!=='${x.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Pehla test score jodo.</div>'}</div>`}
-async function clean(){if(!NATIVE){alert('Ye sirf APK me chalta hai');return}const keep=new Set([...S.books.map(b=>b.id),...S.wall.filter(w=>!w.q).map(w=>w.id)]);let r;try{r=await FS.readdir({path:'sz',directory:'DATA'})}catch(e){alert('Saaf karne ke liye kuch nahi mila');return}const j=r.files.filter(f=>!keep.has(f.name));if(!j.length){alert('Koi extra file nahi mili ✅');return}const mb=j.reduce((a,f)=>a+(f.size||0),0)/1048576;if(!confirm(j.length+' extra file ('+mb.toFixed(0)+' MB) hatani hain? Library ki koi PDF nahi hategi.'))return;for(const f of j){try{await FS.deleteFile({path:'sz/'+f.name,directory:'DATA'})}catch(e){}}alert('Ho gaya ✅ '+mb.toFixed(0)+' MB jagah khali hui');R()}
-async function addMs(){const n=await ask('Naam (jaise SSC CGL ya Preparation shuru)');if(!n)return;const t=await ask('Kaisa counter?',null,['Is date tak kitna baaki (countdown)','Is date se kitna beet gaya']);if(t===null)return;const d=await ask('Date chuno','date');if(!d)return;const u=t.startsWith('Is date tak');let a='';if(u)a=await ask('Shuru ki date (bar ke liye, optional)','date')||'';S.ms.push({id:uid(),n,t:u?'u':'s',d,a});save();R()}
+function mkH(){const l=S.mk.slice(-10),p=l.map(x=>x.s*100/x.t);let g='';if(l.length>1){const pts=p.map((v,i)=>`${i*260/(p.length-1)},${50-v*.5}`).join(' ');g=`<svg viewBox="0 0 260 50" width="100%" height="60"><polyline points="${pts}" fill="none" stroke="var(--ac2)" stroke-width="3" stroke-linejoin="round"/></svg>`}return`<div class="card"><div class="row"><h2 class="sp">📝 Mock test</h2><button class="s" onclick="addMk()">＋ Score</button></div>${g}${l.slice(-4).reverse().map(x=>`<div class="row"><span class="sp">${esc(x.n)}</span><b>${(x.s*100/x.t).toFixed(0)}%</b><button class="ic" onclick="S.mk=S.mk.filter(y=>y.id!=='\${x.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Pehla test score jodo.</div>'}</div>`}
+async function clean(){if(!NATIVE){alert('Ye sirf APK me chalta hai');return}const keep=new Set([...S.books.map(b=>b.id),...S.wall.filter(w=>!w.q).map(w=>w.id)]);let r;try{r=await FS.readdir({path:'sz',directory:'DATA'})}catch(e){alert('Saaf karne ke liye kuch nahi mila');return}const j=r.files.filter(f=>!keep.has(f.name));if(!j.length){alert('Koi extra file nahi mili ✅');return}const mb=j.reduce((a,f)=>a+(f.size||0),0)/1048576;if(!confirm(j.length+' extra file hatani hain?'))return;for(const f of j){try{await FS.deleteFile({path:'sz/'+f.name,directory:'DATA'})}catch(e){}}alert('Ho gaya ✅ '+mb.toFixed(0)+' MB khali hui');R()}
+async function addMs(){const n=await ask('Naam');if(!n)return;const t=await ask('Kaisa counter?',null,['Is date tak kitna baaki','Is date se kitna beet gaya']);if(t===null)return;const d=await ask('Date chuno','date');if(!d)return;const u=t.startsWith('Is date tak');let a='';if(u)a=await ask('Shuru ki date','date')||'';S.ms.push({id:uid(),n,t:u?'u':'s',d,a});save();R()}
 const rmMs=id=>{S.ms=S.ms.filter(x=>x.id!==id);save();R()},scs=(k,v)=>{S.sc[k]=v;save();R()},scb=k=>{S.sc[k]=!S.sc[k];save();R()};
 async function setBirth(){const d=await ask('Janm tithi','date');if(d){S.sc.birth=d;save();R()}}
-const QX=[f=>'Time kisi ka intezaar nahi karta.',f=>`Aaj ka ${(f*100).toFixed(0)}% waqt beet chuka. Baaki ka kya karoge?`,f=>'Jo pal beet gaya wo laut kar nahi aayega.',f=>`Aaj ${S.mins[today()]||0} min padhai hui. Ek session aur?`,f=>'Kal ka intezaar mat karo, kal bhi yahi bolega.',f=>'Ghadi chal rahi hai. Tum bhi chalo.',f=>'Har second ek mauka hai ya ek bahana.'];
+
+const QX=[
+f=>'Time kisi ka intezaar nahi karta.',
+f=>`Aaj ka ${(f*100).toFixed(0)}% waqt beet chuka. Baaki ka kya karoge?`,
+f=>'Jo pal beet gaya wo laut kar nahi aayega.',
+f=>`Aaj ${S.mins[today()]||0} min padhai hui. Ek session aur?`,
+f=>'Kal ka intezaar mat karo, kal bhi yahi bolega.',
+f=>'Ghadi chal rahi hai. Tum bhi chalo.',
+f=>'Har second ek mauka hai ya ek bahana.',
+f=>'Selection ki ghadi tik-tik kar rahi hai.',
+f=>'Koshish aisi ho ki haarne ki gunjaish na bache.',
+f=>'Waqt ko mat gavao, yehi waqt kal itihaas banega.'
+];
+
 function clockSVG(){const c=S.sc;if(c.st==='digital')return'';const col=c.col;let t='',nm='';for(let i=0;i<60;i++){const big=i%5===0;if(c.face==='dots'&&!big)continue;t+=`<line x1="100" y1="${big?8:11}" x2="100" y2="${big?20:15}" stroke="${big?col:'var(--mu)'}" stroke-width="${big?3:1.2}" transform="rotate(${i*6} 100 100)"/>`}
 if(c.face==='num')for(let i=1;i<=12;i++){const a=i*Math.PI/6;nm+=`<text x="${100+72*Math.sin(a)}" y="${105-72*Math.cos(a)}" text-anchor="middle" fill="var(--tx)" font-size="14" font-weight="700">${i}</text>`}
-return`<svg viewBox="0 0 200 200" width="270" height="270"><circle cx="100" cy="100" r="96" fill="none" stroke="var(--card2)" stroke-width="2"/><circle id="ar" cx="100" cy="100" r="90" fill="none" stroke="${col}" stroke-opacity=".4" stroke-width="3" stroke-dasharray="565.5" stroke-dashoffset="565.5" transform="rotate(-90 100 100)"/>${t}${nm}<line id="hh" x1="100" y1="100" x2="100" y2="55" stroke="var(--tx)" stroke-width="5" stroke-linecap="round"/><line id="hm" x1="100" y1="100" x2="100" y2="35" stroke="var(--tx)" stroke-width="3.5" stroke-linecap="round"/>${c.sec?`<line id="hs" x1="100" y1="112" x2="100" y2="25" stroke="${col}" stroke-width="1.8" stroke-linecap="round"/>`:''}<circle cx="100" cy="100" r="5" fill="${col}"/></svg>`}
+return`<svg viewBox="0 0 200 200" width="270" height="270"><circle cx="100" cy="100" r="96" fill="none" stroke="var(--card2)" stroke-width="2"/><circle id="ar" cx="100" cy="100" r="90" fill="none" stroke="${col}" stroke-opacity=".4" stroke-width="3" stroke-dasharray="565.5" stroke-dashoffset="565.5" transform="rotate(-90 100 100)"/>${t}${nm}<line id="hh" x1="100" y1="100" x2="100" y2="55" stroke="var(--tx)" stroke-width="5" stroke-linecap="round"/><line id="hm" x1="100" y1="100" x2="100" y2="35" stroke="var(--tx)" stroke-width="3.5" stroke-linecap="round"/>${c.sec?`<line id="hs" x1="100" y1="112" x2="100" y2="25" stroke="\${col}" stroke-width="1.8" stroke-linecap="round"/>`:''}<circle cx="100" cy="100" r="5" fill="${col}"/></svg>`}
 function CK(){const c=S.sc,ch=(k,v,l)=>`<button class="${c[k]===v?'':'g'} s" onclick="scs('${k}','${v}')">${l}</button>`,tg=(k,l)=>`<button class="${c[k]?'':'g'} s" onclick="scb('${k}')">${l}: ${c[k]?'On':'Off'}</button>`;
-return`<div class="row"><button class="g s" onclick="sw('home')">‹ Home</button></div><h1>Samay Chakra <span class="fl">⏳</span></h1><div class="card" style="text-align:center"><div id="clk">${clockSVG()}</div><div id="dg" class="big" style="font-size:42px;margin:6px 0"></div><div id="dt" class="mu"></div></div>${c.q?'<div class="card"><h2 id="qq" style="margin:0"></h2></div>':''}<div class="card"><h2>Aaj, hafta, mahina, saal</h2><div id="pr"></div></div><div class="card"><h2>Mere dates</h2><div id="ml"></div><div class="row" style="margin-top:8px"><button class="sp" onclick="addMs()">＋ Date jodo</button><button class="g sp" onclick="setBirth()">🎂 Janm tithi</button></div></div><div class="card"><h2>🎨 Customize</h2><div class="mu">Style</div><div class="chips">${ch('st','both','Analog+Digital')}${ch('st','analog','Analog')}${ch('st','digital','Digital')}</div><div class="mu">Dial</div><div class="chips">${ch('face','tick','Lines')}${ch('face','num','Numbers')}${ch('face','dots','Dots')}</div><div class="mu">Rang</div><div class="chips">${['#22d3a6','#7c5cff','#ff6b81','#ffb84d','#2fa8ff','#e879f9'].map(x=>`<button class="sw" style="background:${x};border-color:${c.col===x?'var(--tx)':'transparent'}" onclick="scs('col','${x}')"></button>`).join('')}</div><div class="chips">${tg('sec','Seconds')}${tg('h24','24 ghanta')}${tg('q','Prerna line')}</div></div>`}
+return`<div class="row"><button class="g s" onclick="sw('home')">‹ Home</button></div><h1>Samay Chakra <span class="fl">⏳</span></h1><div class="card" style="text-align:center"><div id="clk">${clockSVG()}</div><div id="dg" class="big" style="font-size:42px;margin:6px 0"></div><div id="dt" class="mu"></div></div>${c.q?'<div class="card"><h2 id="qq" style="margin:0"></h2></div>':''}<div class="card"><h2>Aaj, hafta, mahina, saal</h2><div id="pr"></div></div><div class="card"><h2>Mere dates</h2><div id="ml"></div><div class="row" style="margin-top:8px"><button class="sp" onclick="addMs()">＋ Date jodo</button><button class="g sp" onclick="setBirth()">🎂 Janm tithi</button></div></div><div class="card"><h2>🎨 Customize</h2><div class="chips">${ch('st','both','Analog+Digital')}${ch('st','analog','Analog')}${ch('st','digital','Digital')}</div></div>`}
+
 let ckR=0;
 function ckFrame(){if(tab!=='clock')return;const n=new Date(),s=n.getSeconds()+n.getMilliseconds()/1000,m=n.getMinutes()+s/60,h=n.getHours()%12+m/60,set=(i,a)=>{const e=document.getElementById(i);if(e)e.setAttribute('transform',`rotate(${a} 100 100)`)};set('hh',h*30);set('hm',m*6);set('hs',s*6);const a=document.getElementById('ar');if(a)a.style.strokeDashoffset=565.5*(1-(n-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);ckR=requestAnimationFrame(ckFrame)}
 function ckStart(){cancelAnimationFrame(ckR);ckFrame();ckTick()}
@@ -275,14 +712,14 @@ if(g('dt'))g('dt').textContent=n.toLocaleDateString('en-IN',{weekday:'long',day:
 if(g('qq'))g('qq').textContent='“'+QX[Math.floor(n/15000)%QX.length](f)+'”';
 const dm=new Date(n.getFullYear(),n.getMonth()+1,0).getDate(),wk=((n.getDay()+6)%7+f)/7,mo=(n.getDate()-1+f)/dm,y0=new Date(n.getFullYear(),0,1),y1=new Date(n.getFullYear()+1,0,1),yr=(n-y0)/(y1-y0),hl=(1-f)*24;
 const rows=[['Aaj',f,`${Math.floor(hl)} ghante ${Math.floor(hl%1*60)} min baaki`],['Is hafte',wk,`${((1-wk)*7).toFixed(1)} din baaki`],['Is mahine',mo,`${(dm*(1-mo)).toFixed(1)} din baaki`],['Is saal',yr,`${Math.ceil((y1-n)/864e5)} din baaki`]];
-g('pr').innerHTML=rows.map(([a,p,t])=>`<div style="margin:10px 0"><div class="row"><span class="sp">${a}</span><b>${(p*100).toFixed(1)}%</b></div><div class="bar"><i style="width:${p*100}%;transition:none;background:${c.col}"></i></div><div class="mu">${t}</div></div>`).join('');
+if(g('pr'))g('pr').innerHTML=rows.map(([a,p,t])=>`<div style="margin:10px 0"><div class="row"><span class="sp">${a}</span><b>${(p*100).toFixed(1)}%</b></div><div class="bar"><i style="width:${p*100}%;transition:none;background:${c.col}"></i></div><div class="mu">${t}</div></div>`).join('');
 const it=[...(S.exam?[{id:'',n:'Exam (Home me set)',d:S.exam,t:'u',a:''}]:[]),...S.ms];
 let h=it.map(m=>{const t=new Date(m.d+'T00:00:00'),df=t-n,x=dfm(df),u=m.t==='u';let p='';if(u&&m.a){const a=new Date(m.a+'T00:00:00');p=Math.max(0,Math.min(100,(n-a)/(t-a)*100))}
-return`<div style="margin:14px 0"><div class="row"><b class="sp">${esc(m.n)}</b>${m.id?`<button class="ic" onclick="rmMs('${m.id}')">✕</button>`:''}</div><div style="font-size:23px;font-weight:800;color:${u&&df>0?'var(--wa)':c.col};font-variant-numeric:tabular-nums">${x.t}</div><div class="mu">${u?(df>0?'baaki hai':'beet chuka'):(df<0?'beet chuka hai':'abhi shuru nahi hua')} · ${x.d*24+x.h} ghante</div>${p!==''?`<div class="bar" style="margin-top:6px"><i style="width:${p}%;transition:none"></i></div><div class="mu">Safar ka ${p.toFixed(1)}% beet gaya</div>`:''}</div>`}).join('');
-if(c.birth){const d=n-new Date(c.birth+'T00:00:00'),y=dfm(d).d;h+=`<div style="margin:14px 0"><b>Meri umr</b><div style="font-size:23px;font-weight:800;color:${c.col}">${y} din</div><div class="mu">${Math.floor(d/36e5)} ghante · 80 saal ka ${(y/29200*100).toFixed(1)}% beet chuka</div></div>`}
-g('ml').innerHTML=h||'<div class="mu">＋ Date jodo: exam ki date ya preparation kab shuru hui.</div>'}
+return`<div style="margin:14px 0"><div class="row"><b class="sp">${esc(m.n)}</b>${m.id?`<button class="ic" onclick="rmMs('\${m.id}')">✕</button>`:''}</div><div style="font-size:23px;font-weight:800;color:${u&&df>0?'var(--wa)':c.col};font-variant-numeric:tabular-nums">${x.t}</div><div class="mu">${u?(df>0?'baaki hai':'beet chuka'):(df<0?'beet chuka hai':'abhi shuru nahi hua')} · ${x.d*24+x.h} ghante</div>${p!==''?`<div class="bar" style="margin-top:6px"><i style="width:\${p}%;transition:none"></i></div>`:''}</div>`}).join('');
+if(g('ml'))g('ml').innerHTML=h||'<div class="mu">＋ Date jodo</div>'}
 setInterval(ckTick,1000);
 
+// Ghost Rival Supercharged Engine
 const ld=(d=new Date())=>d.getFullYear()+'-'+P2(d.getMonth()+1)+'-'+P2(d.getDate());
 S.rv=Object.assign({on:false,name:'AIR 50 Aspirant',exam:'WBCS',me:'Adarsh Routh',em:'👻',lvl:1,night:true,nf:true,sl:[{id:'a1',d:[1,2,3,4,5],s:'09:00',e:'11:00'},{id:'a2',d:[1,2,3,4,5],s:'17:00',e:'19:00'},{id:'a3',d:[0,6],s:'10:00',e:'13:00'}],pw:{},pd:{},rep:{},feed:[],bt:1500,bw:{},since:'',lo:0,lm:{d:'',m:0},tn:{},ga:0,xp:0,sg:0},S.rv||{});
 const LVM=[.7,1,1.4],DD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],VB={s:'padh raha hai',r:'revision kar raha hai',m:'mock test de raha hai'},BOSS=['Polity Dragon','History Hydra','Geography Golem','Maths Minotaur','Reasoning Reaper','Economy Ogre','Current-Affairs Kraken'],RK=['Beginner','Aspirant','Warrior','Officer-in-making','SDM Material','Topper'];
@@ -291,12 +728,15 @@ const mult=x=>LVM[S.rv.lvl]*(S.rv.night&&hm(x.s)>=1260?1.5:1),slotsOf=d=>S.rv.sl
 function rvM(d,up){let t=0;slotsOf(d).forEach(x=>{t+=Math.max(0,Math.min(up,hm(x.e))-hm(x.s))*mult(x)});return t}
 const meT=()=>(S.mins[today()]||0)+(typeof tm!=='undefined'&&tm.run&&tm.mode==='f'?(tm.full-tm.left)/60:0),rvT=()=>rvM(today(),nowM());
 function ct(c,sl){let o=0;for(const x of sl){const a=hm(x.s),L=hm(x.e)-a;if(c<=o+L)return a+(c-o);o+=L}return hm(sl[sl.length-1].e)}
+
 function tl(d){const sl=slotsOf(d),it=planFor(d),n=it.length,ev=[];if(!sl.length)return ev;const T=sl.reduce((a,x)=>a+hm(x.e)-hm(x.s),0),nm=S.rv.name,em=S.rv.em;
-sl.forEach(x=>{const L=hm(x.e)-hm(x.s);ev.push({t:hm(x.s),k:'st',m:L>=120?`${em} ${nm} Deep Focus Mode me gaya (Target: ${(L/60).toFixed(1)} ghante). Gap badh raha hai!`:`${em} ${nm} ne padhna shuru kiya`});ev.push({t:hm(x.e),k:'en',m:`${em} ${nm} ka session khatam (${L} min)`})});
-it.forEach((x,i)=>{ev.push({t:ct(i*T/n,sl)+.01,k:'it',m:`${em} ${nm} ${VB[x.k||'s']}: ${x.t}`});if(!x.k||x.k==='s')ev.push({t:ct((i+.85)*T/n,sl),k:'cm',m:`${em} ${nm} ye chapter complete kar raha hai: ${x.t}`})});return ev.sort((a,b)=>a.t-b.t)}
+sl.forEach(x=>{const L=hm(x.e)-hm(x.s);ev.push({t:hm(x.s),k:'st',m:`${em} ${nm} ne padhna shuru kiya (${(L/60).toFixed(1)}h)`});ev.push({t:hm(x.e),k:'en',m:`${em} ${nm} ka session khatam (${L} min)`})});
+it.forEach((x,i)=>{ev.push({t:ct(i*T/n,sl)+.01,k:'it',m:`${em} ${nm} ${VB[x.k||'s']}: ${x.t}`});if(!x.k||x.k==='s')ev.push({t:ct((i+.85)*T/n,sl),k:'cm',m:`${em} ${nm} chapter complete kar raha: ${x.t}`})});return ev.sort((a,b)=>a.t-b.t)}
+
 function rvSt(){const d=today(),sl=slotsOf(d),it=planFor(d),m=nowM();if(!sl.length)return{a:0,i:-1,t:'Aaj rival ki chhutti hai 😴'};const act=sl.find(x=>m>=hm(x.s)&&m<hm(x.e));
-if(act){let e=0;for(const x of sl){if(x===act){e+=m-hm(x.s);break}e+=hm(x.e)-hm(x.s)}const T=sl.reduce((a,x)=>a+hm(x.e)-hm(x.s),0),i=it.length?Math.min(it.length-1,Math.floor(e/T*it.length)):-1,x=it[i];return{a:1,i,t:x?`${VB[x.k||'s']}: ${x.t}`:'padh raha hai (plan set nahi)'}}
-const nx=sl.find(x=>hm(x.s)>m);return{a:0,i:nx?-1:99,t:nx?`Rival break me hai. Agla session ${nx.s} baje`:'Rival aaj ke session khatam kar chuka'}}
+if(act){let e=0;for(const x of sl){if(x===act){e+=m-hm(x.s);break}e+=hm(x.e)-hm(x.s)}const T=sl.reduce((a,x)=>a+hm(x.e)-hm(x.s),0),i=it.length?Math.min(it.length-1,Math.floor(e/T*it.length)):-1,x=it[i];return{a:1,i,t:x?`${VB[x.k||'s']}: ${x.t}`:'padh raha hai'}}
+const nx=sl.find(x=>hm(x.s)>m);return{a:0,i:nx?-1:99,t:nx?`Break me hai. Agla session ${nx.s}`:'Session khatam'}}
+
 function wkDates(o){const n=new Date();n.setDate(n.getDate()-((n.getDay()+6)%7)+o*7);return[...Array(7)].map((_,i)=>{const x=new Date(n);x.setDate(n.getDate()+i);return ld(x)})}
 const wkMe=()=>wkDates(0).reduce((a,d)=>a+(S.mins[d]||0),0)+meT()-(S.mins[today()]||0),wkRv=()=>wkDates(0).reduce((a,d)=>a+(d<today()?rvM(d,1440):d===today()?rvT():0),0),wkPast=()=>{const t=new Date().getDay(),i=(t+6)%7;return wkDates(-1).slice(0,i+1).reduce((a,d)=>a+(S.mins[d]||0),0)};
 const xpT=()=>Object.values(S.mins).reduce((a,b)=>a+b,0)+S.rv.xp;
@@ -304,49 +744,157 @@ function feed(m,c){S.rv.feed.unshift({t:Date.now(),m,c:c||''});S.rv.feed=S.rv.fe
 function banner(m,c){let b=document.getElementById('bn');if(!b){b=document.createElement('div');b.id='bn';document.body.appendChild(b)}b.className=c||'';b.textContent=m;b.style.display='block';b.style.animation='none';void b.offsetWidth;b.style.animation='bn 5s ease forwards';if(navigator.vibrate)navigator.vibrate(c==='warn'?[200,100,200]:60)}
 function ovl(h){ovx();const o=document.createElement('div');o.id='ovl';o.innerHTML='<div class="box">'+h+'</div>';document.body.appendChild(o)}
 const ovx=()=>{const o=document.getElementById('ovl');if(o)o.remove()};
-function showRep(d){const p=S.rv.rep[d];p.seen=1;save();const w=p.r==='W',l=p.r==='L',mx=Math.max(1,p.me,p.rv),tot=Object.values(S.rv.rep),W=tot.filter(x=>x.r==='W').length,L=tot.filter(x=>x.r==='L').length;if(w)boom();
-ovl(`<div style="text-align:center;font-size:44px;${l?'animation:sh .6s 2':'animation:pop .6s'}">${w?'🏆':l?'💀':'🤝'}</div><h1 style="text-align:center;color:${w?'var(--ac2)':l?'var(--rd)':'var(--wa)'}">${w?'VICTORY':l?'DEFEAT':'DRAW'}</h1><div class="mu" style="text-align:center">${d} ka report</div><div style="margin:12px 0"><div class="row"><span class="sp">${esc(S.rv.me)}</span><b>${Math.round(p.me)} min</b></div><div class="bar"><i style="width:${p.me*100/mx}%"></i></div></div><div style="margin:12px 0"><div class="row"><span class="sp">${esc(S.rv.name)}</span><b>${Math.round(p.rv)} min</b></div><div class="bar"><i style="width:${p.rv*100/mx}%;background:var(--rd)"></i></div></div><div>${w?`Seat tumhari rahi: ${esc(S.rv.me)} 👑`:l?`Seat chheen li: ${esc(S.rv.name)} ne ${Math.round(p.rv-p.me)} min zyada padha`:'Barabari. Kal ek step aage nikalna.'}</div>${p.ch.length?`<div class="mu" style="margin-top:8px">Rival ne cover kiya: ${p.ch.map(esc).join(', ')}</div>`:''}<div class="mu" style="margin-top:8px">Record: ${W} jeet · ${L} haar · ${esc(S.rv.exam)}</div><button style="width:100%;margin-top:14px" onclick="ovx()">Theek hai</button>`)}
-function repCheck(){const t=today(),m=nowM();let x=new Date((S.rv.since||t)+'T00:00:00'),last=null;for(let i=0;i<60;i++){const ds=ld(x);if(ds>t||(ds===t&&m<1439))break;if(!S.rv.rep[ds]){S.rv.rep[ds]={me:S.mins[ds]||0,rv:Math.round(rvM(ds,1440)),r:0,ch:planFor(ds).map(q=>q.t),seen:0};const p=S.rv.rep[ds];p.r=p.me>p.rv?'W':p.me<p.rv?'L':'D';last=ds}x.setDate(x.getDate()+1)}if(last){save();showRep(last)}}
-function rvBg(){if(!S.rv.on)return;const d=today(),m=nowM(),lm=S.rv.lm,ev=tl(d).filter(e=>e.t>Math.max(lm.d===d?lm.m:0,m-180)&&e.t<=m);ev.forEach((e,i)=>{S.rv.feed.unshift({t:Date.now(),m:e.m,c:e.k==='cm'?'warn':''});if(i===ev.length-1)banner(e.m,e.k==='st'||e.k==='cm'?'warn':'')});if(ev.length){S.rv.feed=S.rv.feed.slice(0,40);if(tab==='rival')R()}S.rv.lm={d,m};
-const gap=meT()-rvT(),sg=gap>=0?1:-1;if(S.rv.sg&&S.rv.sg!==sg&&rvT()>0){const msg=sg<0?`${S.rv.em} ${S.rv.name} ne tumhe cross kiya! Tum ab ${Math.round(-gap)} min piche ho.`:`🔥 Tumne ${S.rv.name} ko cross kiya! Seat tumhari.`;feed(msg,sg<0?'warn':'');banner(msg,sg<0?'warn':'')}S.rv.sg=sg;
-if(gap<-30&&Date.now()-S.rv.ga>18e5){S.rv.ga=Date.now();const msg=`Tum ${Math.round(-gap)} min piche ho. ${S.rv.name}: ${Math.round(rvT())} min, tum: ${Math.round(meT())} min.`;feed(msg,'warn');banner(msg,'warn')}
-if(m>=1380&&!S.rv.tn[d]){S.rv.tn[d]=1;save();if(Math.abs(gap)<=30||(gap<0&&gap>-60)){const need=Math.max(1,Math.ceil(gap<0?-gap+1:15));ovl(`<div style="font-size:40px;text-align:center">🌙</div><h2 style="text-align:center">${esc(S.rv.name)} abhi bhi jaag raha hai</h2><p>${gap<0?`Sirf <b>${need} minute</b> ka formula revision tumhe lead dila sakta hai.`:`Lead sirf ${Math.round(gap)} min ki hai. 15 min aur?`}</p><div class="mu">Will you sleep or take the win?</div><div class="row" style="margin-top:12px"><button class="g sp" onclick="ovx()">Sone jaa raha hoon</button><button class="sp" onclick="ovx();sw('timer')">Jeet lunga 💪</button></div>`)}}
-const wk=wkDates(0)[0],hp=S.rv.bt-wkMe();if(hp<=0&&!S.rv.bw[wk]){S.rv.bw[wk]='W';S.rv.xp+=200;save();boom();banner(`🏆 Boss haar gaya! +200 XP`,'')}const pk=wkDates(-1)[0];if(S.rv.since&&pk>=S.rv.since.slice(0,8)+'00'&&!S.rv.bw[pk]&&dnum(wk)>dnum(S.rv.since)){S.rv.bw[pk]=wkDates(-1).reduce((a,x)=>a+(S.mins[x]||0),0)>=S.rv.bt?'W':'L';save()}repCheck()}
-function rvOpen(){if(!S.rv.on)return;const n=Date.now();if(S.rv.lo&&n-S.rv.lo>72e5){const st=rvSt();if(st.a){const L=slotsOf(today()).find(x=>nowM()>=hm(x.s)&&nowM()<hm(x.e));banner(`${S.rv.em} ${S.rv.name} Deep Focus Mode me hai (Target: ${L?((hm(L.e)-hm(L.s))/60).toFixed(1):'?'} ghante). Gap badh raha hai!`,'warn')}}S.rv.lo=n;save();rvBg()}
-const LN=()=>window.Capacitor&&Capacitor.isPluginAvailable&&Capacitor.isPluginAvailable('LocalNotifications')&&Capacitor.Plugins.LocalNotifications;
-async function schedRv(ask){const L=LN();if(!L||!S.rv.on||!S.rv.nf)return;try{if(ask)await L.requestPermissions();const p=await L.getPending(),old=(p.notifications||[]).filter(n=>n.id>=7000&&n.id<8000);if(old.length)await L.cancel({notifications:old.map(n=>({id:n.id}))});const out=[],now=Date.now();let id=7000;for(let k=0;k<3;k++){const x=new Date();x.setDate(x.getDate()+k);const d=ld(x),at=mm=>{const y=new Date(d+'T00:00:00');y.setMinutes(Math.round(mm));return y};tl(d).forEach(e=>{const a=at(e.t);if(a>now)out.push({id:id++,title:S.rv.name,body:e.m,schedule:{at:a}})});[[1380,'Raat ke 11 baje. Sirf thoda sa revision tumhe lead dila sakta hai. Soyega ya jeet legaa?'],[1439,'Aaj ka Victory/Defeat report taiyaar hai. App kholo.']].forEach(([mm,b])=>{const a=at(mm);if(a>now)out.push({id:id++,title:S.rv.name,body:b,schedule:{at:a}})})}await L.schedule({notifications:out.slice(0,60)})}catch(e){}}
-let rvt={d:[1,2,3,4,5],s:'09:00',e:'11:00',pw:'t',k:'s'};
-const rvOn=()=>{S.rv.on=true;S.rv.since=today();save();schedRv(1);R()},rvs=(k,v)=>{S.rv[k]=v;save();schedRv();R()},rvb=k=>{S.rv[k]=!S.rv[k];save();schedRv(k==='nf');R()};
-const rvA=(k,t,def)=>ask(t,def===undefined?String(S.rv[k]):def).then(v=>{if(v!=null&&v!==''){S.rv[k]=k==='bt'?Math.max(60,+v||1500):v;save();schedRv();R()}});
-function rvtd(i){const a=rvt.d,j=a.indexOf(i);j<0?a.push(i):a.splice(j,1);R()}
-function rvAddSl(){if(!rvt.d.length||hm(rvt.e)<=hm(rvt.s)){alert('Din chuno aur end time start ke baad rakho');return}S.rv.sl.push({id:uid(),d:[...rvt.d],s:rvt.s,e:rvt.e});save();schedRv();R()}
-const rvDel=id=>{S.rv.sl=S.rv.sl.filter(x=>x.id!==id);save();schedRv();R()};
-const pKey=()=>rvt.pw==='t'?null:rvt.pw,pArr=()=>rvt.pw==='t'?(S.rv.pd[today()]=S.rv.pd[today()]||[]):(S.rv.pw[rvt.pw]=S.rv.pw[rvt.pw]||[]);
-function rvAddIt(){const v=document.getElementById('pit').value.trim();if(!v)return;pArr().push({t:v,k:rvt.k});save();schedRv();R()}
-const rvDelIt=i=>{pArr().splice(i,1);save();schedRv();R()};
-function rvSet(){const r=S.rv,ch=(a,v,l,f)=>`<button class="${a===v?'':'g'} s" onclick="${f}">${l}</button>`,it=pArr(),KL={s:'📖 Padhai',r:'🔁 Revision',m:'📝 Mock'};
-return`<div class="card"><h2>🗓 Rival ka time-table</h2>${r.sl.map(x=>`<div class="t"><span class="sp"><b>${x.s}-${x.e}</b> <span class="mu">${x.d.map(i=>DD[i]).join(' ')}</span>${r.night&&hm(x.s)>=1260?' 🌙':''}</span><button class="ic" onclick="rvDel('${x.id}')">✕</button></div>`).join('')||'<div class="mu">Koi slot nahi. Neeche jodo.</div>'}<div class="mu" style="margin-top:8px">Naya slot: din chuno</div><div class="chips">${DD.map((n,i)=>`<button class="${rvt.d.includes(i)?'':'g'} s" onclick="rvtd(${i})">${n}</button>`).join('')}</div><div class="row"><input type="time" value="${rvt.s}" onchange="rvt.s=this.value"><input type="time" value="${rvt.e}" onchange="rvt.e=this.value"></div><button style="width:100%;margin-top:8px" onclick="rvAddSl()">＋ Slot jodo</button></div>
-<div class="card"><h2>📚 Rival kya padhega</h2><div class="mu">Din chuno (ya sirf aaj ke liye)</div><div class="chips"><button class="${rvt.pw==='t'?'':'g'} s" onclick="rvt.pw='t';R()">Sirf aaj</button>${DD.map((n,i)=>ch(rvt.pw,i,n,`rvt.pw=${i};R()`)).join('')}</div>${it.map((x,i)=>`<div class="t"><span class="sp">${i+1}. ${esc(x.t)} <span class="mu">${KL[x.k||'s']}</span></span><button class="ic" onclick="rvDelIt(${i})">✕</button></div>`).join('')||'<div class="mu">Is din ka plan khali hai.</div>'}<input id="pit" placeholder="Chapter / topic, jaise Polity Ch-3" style="margin-top:8px"><div class="chips" style="margin-top:8px">${['s','r','m'].map(k=>ch(rvt.k,k,KL[k],`rvt.k='${k}'`)).join('')}</div><button style="width:100%" onclick="rvAddIt()">＋ Plan me jodo</button><div class="mu" style="margin-top:6px">Session ka time chapters me barabar baant diya jata hai.</div></div>
-<div class="card"><h2>⚙️ Rival customize</h2><div class="row"><button class="g sp" onclick="rvA('name','Rival ka naam (AIR 50, SDM aspirant...)')">Naam: ${esc(r.name)}</button></div><div class="row" style="margin-top:6px"><button class="g sp" onclick="rvA('exam','Rival kis exam ki taiyari kar raha hai')">Exam: ${esc(r.exam)}</button></div><div class="row" style="margin-top:6px"><button class="g sp" onclick="rvA('me','Tumhara naam (seat par)')">Mera naam: ${esc(r.me)}</button></div><div class="mu" style="margin-top:8px">Avatar</div><div class="chips">${['👻','🧑‍🎓','🦉','🐺','🔥','🤖','👑'].map(a=>`<button class="${r.em===a?'':'g'} s" style="font-size:20px" onclick="rvs('em','${a}')">${a}</button>`).join('')}</div><div class="mu">Mehnat level</div><div class="chips">${['Casual','Serious','Beast'].map((n,i)=>ch(r.lvl,i,n,`rvs('lvl',${i})`)).join('')}</div><div class="chips"><button class="${r.night?'':'g'} s" onclick="rvb('night')">🌙 Night Owl (raat ko aggressive): ${r.night?'On':'Off'}</button><button class="${r.nf?'':'g'} s" onclick="rvb('nf')">🔔 Notification: ${r.nf?'On':'Off'}</button></div><button class="g s" style="margin-top:8px" onclick="rvA('bt','Weekly Boss target (minute)')">⚔️ Boss target: ${r.bt} min/hafta</button><button class="g s" style="margin-top:8px" onclick="if(confirm('Rival band karna hai? (Settings bachi rahengi)')){S.rv.on=false;save();R()}">Rival band karo</button></div>`}
-function RVS(){const r=S.rv;if(!r.on)return`<h1>Ghost Rival <span class="fl">👻</span></h1><div class="card hero"><h2>Ek kalpanik competitor, asli pressure</h2><div>Tum rival ka padhne ka time set karo, wo roz usi hisaab se padhega. Tum piche hue to notification, raat 11:59 ko Victory ya Defeat report, aur Sunday ko Boss Fight.</div></div><button style="width:100%" onclick="rvOn()">👻 Rival banao</button>`;
-return`<div class="row"><h1 class="sp">Ghost Rival</h1><span class="live"><i></i>LIVE</span></div><div id="rvl"></div><div class="card"><h2>📰 Rival feed</h2>${r.feed.slice(0,8).map(f=>`<div class="fi ${f.c}"><span class="mu">${new Date(f.t).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span> ${esc(f.m)}</div>`).join('')||'<div class="mu">Abhi koi khabar nahi.</div>'}</div>${rvSet()}`}
+
+function showRep(d){
+  const p=S.rv.rep[d];if(!p)return;p.seen=1;save();const w=p.r==='W',l=p.r==='L',mx=Math.max(1,p.me,p.rv);if(w)boom();
+  ovl(`<div style="text-align:center;font-size:46px">${w?'🏆':l?'💀':'🤝'}</div>
+  <h1 style="text-align:center;color:${w?'var(--ac2)':l?'var(--rd)':'var(--wa)'}">${w?'VICTORY':l?'DEFEAT':'DRAW'}</h1>
+  <div class="mu" style="text-align:center">${d} Grand Finale Report</div>
+  <div style="margin:14px 0"><div class="row"><span class="sp">${esc(S.rv.me)}</span><b>${Math.round(p.me)} min</b></div><div class="bar"><i style="width:${p.me*100/mx}%"></i></div></div>
+  <div style="margin:14px 0"><div class="row"><span class="sp">${esc(S.rv.name)}</span><b>${Math.round(p.rv)} min</b></div><div class="bar"><i style="width:${p.rv*100/mx}%;background:var(--rd)"></i></div></div>
+  <div>${w?`Seat tumhari rahi 👑`:l?`Seat chheen li: ${esc(S.rv.name)} ne${Math.round(p.rv-p.me)} min zyada padha`:'Barabari.'}</div>
+  <button style="width:100%;margin-top:14px" onclick="ovx()">Band Karo</button>`);
+}
+
+function repCheck(){
+  const t=today(),m=nowM();let x=new Date((S.rv.since||t)+'T00:00:00'),last=null;
+  for(let i=0;i<60;i++){
+    const ds=ld(x);if(ds>t||(ds===t&&m<1439))break;
+    if(!S.rv.rep[ds]){
+      S.rv.rep[ds]={me:S.mins[ds]||0,rv:Math.round(rvM(ds,1440)),r:0,ch:planFor(ds).map(q=>q.t),seen:0};
+      const p=S.rv.rep[ds];p.r=p.me>p.rv?'W':p.me<p.rv?'L':'D';last=ds;
+    }
+    x.setDate(x.getDate()+1);
+  }
+  if(last&&!S.rv.rep[last].seen){save();showRep(last)}
+}
+
+function rvBg(){
+  if(!S.rv.on)return;const d=today(),m=nowM(),lm=S.rv.lm,ev=tl(d).filter(e=>e.t>Math.max(lm.d===d?lm.m:0,m-180)&&e.t<=m);
+  ev.forEach((e,i)=>{S.rv.feed.unshift({t:Date.now(),m:e.m,c:e.k==='cm'?'warn':''});if(i===ev.length-1)banner(e.m,e.k==='st'||e.k==='cm'?'warn':'')});
+  if(ev.length){S.rv.feed=S.rv.feed.slice(0,40);if(tab==='rival')R()}
+  S.rv.lm={d,m};
+  const gap=meT()-rvT(),sg=gap>=0?1:-1;
+  if(S.rv.sg&&S.rv.sg!==sg&&rvT()>0){const msg=sg<0?`${S.rv.em} ${S.rv.name} ne tumhe cross kiya! ${Math.round(-gap)} min piche.`:`🔥 Tumne ${S.rv.name} ko cross kiya! Seat tumhari.`;feed(msg,sg<0?'warn':'');banner(msg,sg<0?'warn':'')}
+  S.rv.sg=sg;
+  repCheck();
+}
+
+// Rival Reset Mechanisms
+function resetRival(scope){
+  if(scope==='day'){
+    if(confirm("Aaj ka muqabla zero karein?")){
+      S.mins[today()]=0;S.rv.lm={d:today(),m:nowM()};S.rv.sg=0;save();toast("Aaj ka muqabla zero kiya!");R();
+    }
+  }else if(scope==='week'){
+    if(confirm("Is hafte ka Boss fight aur score reset karein?")){
+      const wk=wkDates(0)[0];delete S.rv.bw[wk];wkDates(0).forEach(d=>S.mins[d]=0);save();toast("Hafte ka progress reset!");R();
+    }
+  }else if(scope==='all'){
+    if(confirm("Pura Rival data reset karein (Shuruat se start)?")){
+      S.rv.rep={};S.rv.feed=[];S.rv.xp=0;S.rv.since=today();save();toast("Rival pura reset hua!");R();
+    }
+  }
+}
+
+// Post-Exam Timeline Vision Board
+function visionH(){
+  const totH=Math.floor(xpT()/60);
+  const reqH=S.vision.hoursReq||100;
+  const pct=Math.min(100,Math.round(totH*100/reqH));
+  const blurPx=Math.max(0,(1-pct/100)*24);
+  const v=S.vision;
+
+  return`<div class="card" style="border:1px solid rgba(255,215,0,0.3)">
+    <div class="row"><h2 class="sp" style="color:var(--gold);margin:0">🌟 Post-Exam Vision (Dopamine Fuel)</h2><label class="btn s">Photo<input type="file" accept="image/*" hidden onchange="uploadVision(this.files[0])"></label></div>
+    <div class="mu" style="margin:4px 0 10px">Har ghante padhai par photo ka blur hatega aur sapna tangible banega.</div>
+    <div style="position:relative;height:180px;border-radius:16px;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,0.6)">
+      ${v.img?`<img src="${v.img}" style="width:100\%;height:100\%;object-fit:cover;filter:blur(${blurPx}px);transition:filter 1s ease">`:`<div style="text-align:center"><span style="font-size:46px">🏛️</span><div class="mu">Target Academy / Seat photo upload karo</div></div>`}
+      <div style="position:absolute;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);padding:8px 12px;border-radius:10px;display:flex;align-items:center">
+        <span class="sp" style="font-size:13px;font-weight:700">${esc(v.title)}</span>
+        <b style="color:var(--gold)">${totH} / ${reqH} Ghante (${pct}%)</b>
+      </div>
+    </div>
+    <div class="bar" style="margin-top:8px"><i style="width:${pct}%;background:linear-gradient(90deg,var(--wa),var(--gold))"></i></div>
+  </div>`;
+}
+
+async function uploadVision(f){if(!f)return;const r=new FileReader();r.onload=()=>{S.vision.img=r.result;save();R()};r.readAsDataURL(f)}
+
+function rvSet(){
+  const r=S.rv,ch=(a,v,l,f)=>`<button class="${a===v?'':'g'} s" onclick="${f}">${l}</button>`,it=pArr(),KL={s:'📖 Padhai',r:'🔁 Revision',m:'📝 Mock'};
+  return`<div class="card">
+    <div class="row"><h2 class="sp">🔄 Rival Data Reset</h2></div>
+    <div class="chips">
+      <button class="g s" onclick="resetRival('day')">Reset Today</button>
+      <button class="g s" onclick="resetRival('week')">Reset This Week</button>
+      <button class="danger s" onclick="resetRival('all')">Full Fresh Start</button>
+    </div>
+  </div>
+  ${visionH()}
+  <div class="card"><h2>🗓 Rival ka time-table</h2>${r.sl.map(x=>`<div class="t"><span class="sp"><b>${x.s}-${x.e}</b> <span class="mu">${x.d.map(i=>DD[i]).join(' ')}</span>${r.night&&hm(x.s)>=1260?' 🌙':''}</span><button class="ic" onclick="rvDel('\${x.id}')">✕</button></div>`).join('')||'<div class="mu">Koi slot nahi.</div>'}<div class="chips" style="margin-top:8px">${DD.map((n,i)=>`<button class="\${rvt.d.includes(i)?'':'g'} s" onclick="rvtd(${i})">${n}</button>`).join('')}</div><div class="row"><input type="time" value="${rvt.s}" onchange="rvt.s=this.value"><input type="time" value="${rvt.e}" onchange="rvt.e=this.value"></div><button style="width:100%;margin-top:8px" onclick="rvAddSl()">＋ Slot jodo</button></div>
+  <div class="card"><h2>📚 Rival kya padhega</h2><div class="chips"><button class="${rvt.pw==='t'?'':'g'} s" onclick="rvt.pw='t';R()">Sirf aaj</button>${DD.map((n,i)=>ch(rvt.pw,i,n,`rvt.pw=\${i};R()`)).join('')}</div>${it.map((x,i)=>`<div class="t"><span class="sp">${i+1}.${esc(x.t)} <span class="mu">\${KL[x.k||'s']}</span></span><button class="ic" onclick="rvDelIt(\${i})">✕</button></div>`).join('')||'<div class="mu">Plan khali hai.</div>'}<input id="pit" placeholder="Chapter / topic" style="margin-top:8px"><div class="chips" style="margin-top:8px">${['s','r','m'].map(k=>ch(rvt.k,k,KL[k],`rvt.k='\${k}'`)).join('')}</div><button style="width:100%" onclick="rvAddIt()">＋ Plan me jodo</button></div>
+  <div class="card"><h2>⚙️ Rival customize</h2><div class="row"><button class="g sp" onclick="rvA('name','Rival Name')">Naam: ${esc(r.name)}</button></div><div class="row" style="margin-top:6px"><button class="g sp" onclick="rvA('me','Your Name')">Mera naam: ${esc(r.me)}</button></div><div class="chips" style="margin-top:8px"><button class="${r.night?'':'g'} s" onclick="rvb('night')">🌙 Night Owl: ${r.night?'On':'Off'}</button><button class="${r.nf?'':'g'} s" onclick="rvb('nf')">🔔 Notification: ${r.nf?'On':'Off'}</button></div><button class="g s" style="margin-top:8px" onclick="if(confirm('Rival band karna hai?')){S.rv.on=false;save();R()}">Rival band karo</button></div>`;
+}
+
+function repArchiveH(){
+  const reps=Object.entries(S.rv.rep).reverse();
+  if(!reps.length)return'';
+  return`<div class="card">
+    <h2>📜 Grand Finale Archives (Past Days)</h2>
+    ${reps.slice(0,5).map(([d,p])=>`<div class="row" style="padding:6px 0;border-bottom:1px solid var(--card2)">
+      <span style="font-size:18px">\${p.r==='W'?'🏆':p.r==='L'?'💀':'🤝'}</span>
+      <span class="sp">${d} (${p.r==='W'?'Won':p.r==='L'?'Lost':'Draw'})</span>
+      <span class="mu">${Math.round(p.me)}m vs${Math.round(p.rv)}m</span>
+      <button class="g s" onclick="showRep('\${d}')">Kholo</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function RVS(){
+  const r=S.rv;if(!r.on)return`<h1>Ghost Rival <span class="fl">👻</span></h1><div class="card hero"><h2>Ek kalpanik competitor, asli pressure</h2><div>Rival ka padhne ka time set karo, wo usi tarah padhega. Tu piche to notification, raat ko report aur Sunday Boss Fight!</div></div><button style="width:100%" onclick="rvOn()">👻 Rival banao</button>`;
+  return`<div class="row"><h1 class="sp">Ghost Rival</h1><span class="live"><i></i>LIVE</span></div><div id="rvl"></div><div class="card"><h2>📰 Rival feed</h2>${r.feed.slice(0,6).map(f=>`<div class="fi \${f.c}"><span class="mu">${new Date(f.t).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span>${esc(f.m)}</div>`).join('')||'<div class="mu">Abhi koi feed nahi.</div>'}</div>${repArchiveH()}${rvSet()}`;
+}
+
 let rvc='';
-function rvLive(){const e=document.getElementById('rvl');if(!e)return;const r=S.rv,m=nowM(),me=Math.floor(meT()),rv=Math.floor(rvT()),pa=Math.floor(wkPast()),gap=me-rv,lead=gap>=0,st=rvSt(),mx=Math.max(60,me,rv),it=planFor(today()),wm=Math.floor(wkMe()),wr=Math.floor(wkRv()),hp=Math.max(0,r.bt-wm),bi=Math.floor(dnum(wkDates(0)[0])/7)%BOSS.length,sun=new Date().getDay()===0,xp=Math.floor(xpT()),lv=Math.floor(xp/600),rk=RK[Math.min(RK.length-1,Math.floor(lv/2))],reps=Object.entries(r.rep).sort().slice(-7),dsy=(7-((new Date().getDay()+6)%7+1));
-const bar=(n,v,c)=>`<div style="margin:10px 0"><div class="row"><span class="sp">${n}</span><b>${v} min</b></div><div class="bar"><i style="width:${v*100/mx}%;${c?'background:'+c:''}"></i></div></div>`;
-const h=`<div class="card"><div class="row"><span class="gh" style="font-size:46px">${r.em}</span><div class="sp"><b style="font-size:18px">${esc(r.name)}</b><div class="mu">${esc(r.exam)} ki taiyari</div></div></div><div class="stt ${st.a?'on':''}">${st.a?'<i class="pd"></i>':''}${esc(st.t)}</div></div>
-<div class="seat ${lead?'me':'rv'}"><div style="font-size:11px;letter-spacing:3px;font-weight:800">THIS POST RESERVED FOR</div><div class="nm">${lead?'👑 ':''}${esc(lead?r.me:r.name)}</div>${lead?`<div>Tum ${gap} min aage ho</div>`:`<div class="wn">⚠ SEAT SNATCHED BY RIVAL ⚠</div><div>Tum ${-gap} min piche ho</div>`}</div>
-<div class="card"><h2>Aaj ka muqabla</h2>${bar(esc(r.me),me)}${bar(esc(r.name),rv,'var(--rd)')}${bar('Pichle hafte ka main (aaj tak)',Math.floor(S.mins[wkDates(-1)[(new Date().getDay()+6)%7]]||0),'var(--wa)')}<div class="row" style="margin-top:8px"><span class="mu sp">Maine bhi padha:</span>${[15,30,60].map(n=>`<button class="g s" onclick="S.mins[today()]=(S.mins[today()]||0)+${n};save();rvBg();R()">+${n}</button>`).join('')}</div></div>
-<div class="card"><h2>Rival ka aaj ka plan</h2>${it.map((x,i)=>{const d=st.i>i||st.i===99,c=st.i===i&&st.a;return`<div class="t" style="${c?'color:var(--ac2);font-weight:700':''}">${d?'✅':c?'▶':'⏳'} ${esc(x.t)} <span class="mu">${VB[x.k||'s']}</span></div>`}).join('')||'<div class="mu">Plan set nahi. Neeche "Rival kya padhega" me jodo.</div>'}</div>
-<div class="card"><div class="row"><h2 class="sp">⚔️ Boss Fight ${sun?'<span class="live">SUNDAY!</span>':''}</h2><span class="mu">${sun?'Aakhri din':dsy+' din baaki'}</span></div><div style="font-size:42px;text-align:center;animation:${hp<=0?'pop .8s':'fl 2.5s ease-in-out infinite'}">${hp<=0?'💥':'🐉'}</div><div style="text-align:center"><b>${BOSS[bi]}</b></div><div class="bar" style="height:14px;margin:8px 0"><i style="width:${hp*100/r.bt}%;background:linear-gradient(90deg,#ff6b81,#ffb84d)"></i></div><div class="mu" style="text-align:center">${hp<=0?'Boss haar gaya! 🏆':`HP ${hp}/${r.bt}. Har minute ki padhai = 1 damage`}</div></div>
-<div class="card"><h2>📊 Is hafte</h2>${bar(esc(r.me),wm)}${bar(esc(r.name),wr,'var(--rd)')}${bar('Pichle hafte ka main (isi din tak)',pa,'var(--wa)')}<div class="mu">${wm>wr&&wm>pa?'Tum sabse aage ho 🔥':wr>wm?'Rival aage hai. Seat khatre me!':'Pichle hafte ka tumse behtar tha. Usse aage niklo.'}</div></div>
-<div class="card"><div class="row"><h2 class="sp">🎖 Level ${lv+1}</h2><b>${rk}</b></div><div class="bar"><i style="width:${xp%600*100/600}%"></i></div><div class="mu">${xp} XP · 1 min = 1 XP, Boss jeetne par +200</div><div class="row" style="margin-top:8px">${reps.map(([d,p])=>`<span title="${d}" style="font-size:22px">${p.r==='W'?'🟢':p.r==='L'?'🔴':'⚪'}</span>`).join('')||'<span class="mu">Din ka report 11:59 baje aata hai.</span>'}</div><div class="mu">Pichhle 7 din: 🟢 jeet 🔴 haar</div></div>`;
-if(h!==rvc){rvc=h;e.innerHTML=h}}
+function rvLive(){
+  const e=document.getElementById('rvl');if(!e)return;
+  const r=S.rv,m=nowM(),me=Math.floor(meT()),rv=Math.floor(rvT()),gap=me-rv,lead=gap>=0,st=rvSt(),mx=Math.max(60,me,rv),it=planFor(today()),wm=Math.floor(wkMe()),wr=Math.floor(wkRv()),hp=Math.max(0,r.bt-wm),bi=Math.floor(dnum(wkDates(0)[0])/7)%BOSS.length,sun=new Date().getDay()===0,xp=Math.floor(xpT()),lv=Math.floor(xp/600),rk=RK[Math.min(RK.length-1,Math.floor(lv/2))],reps=Object.entries(r.rep).sort().slice(-7);
+  const bar=(n,v,c)=>`<div style="margin:10px 0"><div class="row"><span class="sp">${n}</span><b>${v} min</b></div><div class="bar"><i style="width:${v*100/mx}%;${c?'background:'+c:''}"></i></div></div>`;
+  const h=`<div class="card"><div class="row"><span class="gh" style="font-size:46px">${r.em}</span><div class="sp"><b style="font-size:18px">${esc(r.name)}</b><div class="mu">${esc(r.exam)} aspirant</div></div></div><div class="stt ${st.a?'on':''}">${st.a?'<i class="pd"></i>':''}${esc(st.t)}</div></div>
+  <div class="seat ${lead?'me':'rv'}"><div style="font-size:11px;letter-spacing:3px;font-weight:800">THIS POST RESERVED FOR</div><div class="nm">${lead?'👑 ':''}${esc(lead?r.me:r.name)}</div>${lead?`<div>Tum \${gap} min aage ho</div>`:`<div class="wn">⚠ SEAT SNATCHED BY RIVAL ⚠</div><div>Tum \${-gap} min piche ho</div>`}</div>
+  <div class="card"><h2>Aaj ka muqabla</h2>${bar(esc(r.me),me)}${bar(esc(r.name),rv,'var(--rd)')}<div class="row" style="margin-top:8px"><span class="mu sp">Maine bhi padha:</span>${[15,30,60].map(n=>`<button class="g s" onclick="S.mins[today()]=(S.mins[today()]||0)+${n};save();rvBg();R()">+${n}</button>`).join('')}</div></div>
+  <div class="card"><div class="row"><h2 class="sp">⚔️ Boss Fight ${sun?'<span class="live">SUNDAY!</span>':''}</h2></div><div style="font-size:38px;text-align:center">${hp<=0?'💥':'🐉'}</div><div style="text-align:center"><b>${BOSS[bi]}</b></div><div class="bar" style="height:12px;margin:8px 0"><i style="width:${hp*100/r.bt}%;background:linear-gradient(90deg,#ff6b81,#ffb84d)"></i></div><div class="mu" style="text-align:center">HP ${hp}/${r.bt}</div></div>
+  <div class="card"><div class="row"><h2 class="sp">🎖 Level ${lv+1} · ${rk}</h2><b>${xp} XP</b></div><div class="bar"><i style="width:${xp%600*100/600}%"></i></div><div class="row" style="margin-top:8px">${reps.map(([d,p])=>`<span title="${d}" style="font-size:20px">${p.r==='W'?'🟢':p.r==='L'?'🔴':'⚪'}</span>`).join('')}</div></div>`;
+  if(h!==rvc){rvc=h;e.innerHTML=h}
+}
+
 setInterval(()=>{if(tab==='rival')rvLive()},1000);setInterval(rvBg,5000);
 
-function R(){const f={home:H,syl:SY,books:BK,wall:WL,timer:TM,clock:CK,rival:RVS}[tab];$('#v').innerHTML=f();if(tab==='home')stinfo();if(tab==='clock')ckStart();if(tab==='rival')rvLive();if(tab==='books'||tab==='wall')chk();if(tab==='wall')document.querySelectorAll('img[data-k]').forEach(async i=>{const b=await idb('get',i.dataset.k);if(b)i.src=URL.createObjectURL(b instanceof Blob?b:new Blob([b.b],{type:b.t||'image/jpeg'}))})}
+let rvt={d:[1,2,3,4,5],s:'09:00',e:'11:00',pw:'t',k:'s'};
+const rvOn=()=>{S.rv.on=true;S.rv.since=today();save();R()},rvs=(k,v)=>{S.rv[k]=v;save();R()},rvb=k=>{S.rv[k]=!S.rv[k];save();R()};
+const rvA=(k,t,def)=>ask(t,def===undefined?String(S.rv[k]):def).then(v=>{if(v!=null&&v!==''){S.rv[k]=v;save();R()}});
+function rvtd(i){const a=rvt.d,j=a.indexOf(i);j<0?a.push(i):a.splice(j,1);R()}
+function rvAddSl(){if(!rvt.d.length||hm(rvt.e)<=hm(rvt.s)){alert('Din chuno aur end time start ke baad rakho');return}S.rv.sl.push({id:uid(),d:[...rvt.d],s:rvt.s,e:rvt.e});save();R()}
+const rvDel=id=>{S.rv.sl=S.rv.sl.filter(x=>x.id!==id);save();R()};
+const pArr=()=>rvt.pw==='t'?(S.rv.pd[today()]=S.rv.pd[today()]||[]):(S.rv.pw[rvt.pw]=S.rv.pw[rvt.pw]||[]);
+function rvAddIt(){const v=document.getElementById('pit').value.trim();if(!v)return;pArr().push({t:v,k:rvt.k});save();R()}
+const rvDelIt=i=>{pArr().splice(i,1);save();R()};
+
+function R(){
+  const f={home:H,syl:SY,books:BK,wall:WL,timer:TM,clock:CK,rival:RVS,hall:HALL}[tab];
+  \$('#v').innerHTML=f();
+  if(tab==='home')stinfo();
+  if(tab==='clock')ckStart();
+  if(tab==='rival')rvLive();
+  if(tab==='books'||tab==='wall')chk();
+  if(tab==='wall')document.querySelectorAll('img[data-k]').forEach(async i=>{const b=await idb('get',i.dataset.k);if(b)i.src=URL.createObjectURL(b instanceof Blob?b:new Blob([b.b],{type:b.t||'image/jpeg'}))});
+}
+
 let inst=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();inst=e;if(tab==='home')R()});
 const ins=async()=>{if(inst){inst.prompt();inst=null;R()}};
 try{const m={name:'Study Zone',short_name:'StudyZone',display:'standalone',background_color:'#0b1020',theme_color:'#0b1020',start_url:location.href,icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#7c5cff"/><text x="50" y="68" font-size="56" text-anchor="middle">📚</text></svg>'),sizes:'512x512',type:'image/svg+xml'}]};const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));document.head.appendChild(l)}catch(e){}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-addEventListener('click',()=>{try{navigator.storage.persist()}catch(e){}},{once:true});initR();rst();nav();R();localStorage.szboot=0;setTimeout(()=>chkUpd(),3000);setTimeout(()=>{rvOpen();schedRv()},1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)rvOpen();if(!document.hidden&&Date.now()-(S.lc||0)>36e5)chkUpd()});
+addEventListener('click',()=>{try{navigator.storage.persist()}catch(e){}},{once:true});
+initR();rst();nav();R();localStorage.szboot=0;setTimeout(()=>chkUpd(),3000);
 </script></body></html>
