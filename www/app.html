@@ -123,7 +123,6 @@ const cur=()=>S.exams.find(x=>x.id===S.cur)||S.exams[0];
 Object.defineProperty(S,'tree',{get:()=>cur().tree,enumerable:false,configurable:true});
 if(!S.fo){S.fo=[];const m={};S.books.forEach(b=>{if(b.subj){if(!m[b.subj]){m[b.subj]={id:uid(),n:b.subj,p:''};S.fo.push(m[b.subj])}b.f=m[b.subj].id}})}
 
-// State schema enhancements
 S.diary=S.diary||[];
 S.trophies=S.trophies||[];
 S.panic=!!S.panic;
@@ -148,7 +147,6 @@ async function chk(){const k=await idb('keys');if(!Array.isArray(k))return;KEYS=
 async function stinfo(){const e=$('#sti');if(!e)return;if(window.Capacitor){const b=e.nextElementSibling;if(b)b.style.display='none';if(!NATIVE){e.textContent='⚠ Ye APK purana hai. Naya APK banao, tab PDFs memory me save hongi.';return}try{const r=await FS.readdir({path:'sz',directory:'DATA'});e.textContent='✅ Phone memory ('+r.files.length+' file) · '+(r.files.reduce((a,f)=>a+(f.size||0),0)/1048576).toFixed(1)+' MB'}catch(x){e.textContent='✅ Memory OK · 0 MB'}return}try{const p=await navigator.storage.persisted(),u=await navigator.storage.estimate();e.textContent=(p?'✅ Pakka: browser data nahi hatayega':'⚠ Kaccha: install karo aur Pakka dabao')+' · '+Math.round(u.usage/1048576)+' MB'}catch(x){e.textContent='Storage info ready'}}
 async function pers(){if(window.Capacitor){alert('APK me data pehle se safe hai ✅');return}try{const ok=await navigator.storage.persist();alert(ok?'Ho gaya ✅ Data safe rahega':'Browser ne mana kiya. App ko install karke chalao.')}catch(e){}stinfo()}
 
-// 55+ Competitive Exam Quotes Pool
 const Q=[
 "Aaj ka 1 ghanta kal ki officer-ki-kursi hai.",
 "Jo aaj padhega, wahi kal final merit list me apna naam dekhega.",
@@ -253,7 +251,6 @@ function tg(id,v){const t=S.tasks.find(x=>x.id===id);t.d=v;if(v){bump();boom()}s
 async function goal(){const t=await ask('Tumhara goal kya hai?',S.goal);if(t){S.goal=t;save();R()}}
 async function exam(){const t=await ask('Exam date','date');if(t){S.exam=t;save();R()}}
 
-// One-liner Diary Functions
 function saveDiary(mood){
   const text=($('#diary-input')?$('#diary-input').value.trim():'')||'Focus day';
   const words=text.split(/\s+/).slice(0,15).join(' ');
@@ -264,13 +261,12 @@ function saveDiary(mood){
   save();toast('Mental Log Saved ✅');R();
 }
 
-// Panic Button Emergency 10-Min Protocol
 function togglePanic(){S.panic=!S.panic;save();R()}
 
 function panicView(){
   return`<div class="card" style="border:2px solid var(--rd);animation:up .3s both">
   <div class="row"><h2 style="color:var(--rd);margin:0">🛡️ Emergency Protocol (Anti-Burnout)</h2><button class="g s" onclick="togglePanic()">Exit ✕</button></div>
-  <p style="margin:10px 0;font-size:14px;color:var(--tx)">Bhai/Dost, aaj bada target bhool jao. Guilt loop me bilkul mat phanso. Aaj bas <b>zero din</b> nahi banne dena hai.</p>
+  <p style="margin:10px 0;font-size:14px;color:var(--tx)">Bhai, aaj bada target bhool jao. Guilt loop me bilkul mat phanso. Aaj bas <b>zero din</b> nahi banne dena hai.</p>
   <div style="background:var(--card2);padding:14px;border-radius:14px;margin-bottom:12px">
     <b>Sirf ye 1 micro-task karo:</b>
     <div style="font-size:17px;font-weight:700;color:var(--ac2);margin:8px 0">⚡ Sirf 10 minute static GK ke 10 facts padho aur band kar do.</div>
@@ -318,7 +314,6 @@ function H(){
   <div class="mu" style="text-align:center">Study Zone v${APP_V}</div>`;
 }
 
-// QR Code Offline Beam Engine
 function generateQRData(){
   const payload={
     v:APP_V,cur:S.cur,exams:S.exams,tasks:S.tasks,mins:S.mins,st:S.st,
@@ -331,16 +326,15 @@ function generateQRData(){
 function qrExport(){
   const codeStr=generateQRData();
   const url="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data="+encodeURIComponent(codeStr);
-  ovl(`<div style="text-align:center"><h2>📡 Offline QR Beam</h2><div class="mu" style="margin-bottom:12px">Dusre device se is QR code ko scan karo ya copy data use karo.</div><div style="background:#fff;padding:12px;border-radius:16px;display:inline-block"><img src="${url}" onerror="this.outerHTML='<div class=\\'mu\\'>QR image offline generate nahi hui, text copy karein</div>'" style="width:230px;height:230px;display:block"></div><div class="row" style="margin-top:12px"><button class="sp" onclick="navigator.clipboard.writeText('${codeStr}');toast('Sync data copied!')">📋 Copy Data String</button><button class="g sp" onclick="ovx()">Band karo</button></div></div>`);
+  ovl(`<div style="text-align:center"><h2>📡 Offline QR Beam</h2><div class="mu" style="margin-bottom:12px">Dusre device se is QR code ko scan karo ya copy data use karo.</div><div style="background:#fff;padding:12px;border-radius:16px;display:inline-block"><img src="${url}" style="width:230px;height:230px;display:block"></div><div class="row" style="margin-top:12px"><button class="sp" id="btn-copy-sync">📋 Copy Data String</button><button class="g sp" onclick="ovx()">Band karo</button></div></div>`);
+  setTimeout(()=>{
+    const b=$('#btn-copy-sync');
+    if(b)b.onclick=()=>{navigator.clipboard.writeText(codeStr);toast('Sync data copied!')};
+  },50);
 }
 
 function qrImport(){
-  ovl(`<div><h2>📥 Import / Sync Data</h2><div class="mu" style="margin-bottom:12px">QR screenshot upload karo ya copy kiya hua data string paste karo.</div><label class="btn" style="display:block;text-align:center;margin-bottom:10px">🖼️ QR Screenshot Chuno<input type="file" accept="image/*" hidden onchange="parseQRImg(this.files[0])"></label><textarea id="sync-raw" rows="4" placeholder="Ya yahan Data string paste karo..."></textarea><div class="row" style="margin-top:12px"><button class="sp" onclick="applySync($('#sync-raw').value.trim())">Sync Apply Karo</button><button class="g sp" onclick="ovx()">Cancel</button></div></div>`);
-}
-
-function parseQRImg(file){
-  if(!file)return;
-  toast('Image upload hui. Agar camera decode na ho to Data String paste karein.');
+  ovl(`<div><h2>📥 Import / Sync Data</h2><div class="mu" style="margin-bottom:12px">QR screenshot upload karo ya copy kiya hua data string paste karo.</div><textarea id="sync-raw" rows="4" placeholder="Yahan Data string paste karo..."></textarea><div class="row" style="margin-top:12px"><button class="sp" onclick="applySync($('#sync-raw').value.trim())">Sync Apply Karo</button><button class="g sp" onclick="ovx()">Cancel</button></div></div>`);
 }
 
 function applySync(str){
@@ -361,7 +355,6 @@ async function doUpd(){try{const h=await(await fetch(uu()+'app.html?'+Date.now()
 async function setUpd(){const v=await ask('GitHub Pages link',S.upd||'');if(v!==null){S.upd=v.trim();save();if(S.upd)chkUpd(1)}}
 function th(){const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme:light)').matches;r.dataset.theme=dk?'light':'dark'}
 
-// Trophy Room View in Syllabus Tab
 function trophyH(){
   const tr=S.trophies;
   const grp={};
@@ -407,7 +400,6 @@ async function up(fs){let bad=0;for(const f of fs){toast('Save ho rahi hai: '+f.
 async function rl(id,f){if(!f)return;let ok=null;try{ok=await putPdf(id,f)}catch(e){}if(ok==null)alert('Save nahi hui');else{KEYS&&KEYS.add(id);MISS.delete(id)}R()}
 async function rmB(id){if(!confirm('Book hatao?'))return;await idb('del',id);S.books=S.books.filter(b=>b.id!==id);save();R()}
 
-// PDF Reader with Fullscreen Capability
 const RS=[];let rz;
 function toggleReaderFs(){
   const rd=$('#rd');
@@ -471,8 +463,14 @@ function closeSplit(){RS[1].shut();$('#panes').classList.remove('s2');setTimeout
 async function change2(){const b=await pick();if(b)RS[1].open(b)}
 addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>RS.forEach(r=>r.relayout()),250)});
 
-// Wall & Touch Reorder Sticky Notes
 let dragSrcIdx=null;
+function wallBody(w){
+  if(w.q)return`<p>${esc(w.q)}</p>`;
+  if(w.sn)return`<b>${esc(w.title||'Note')}</b><div style="font-size:13px;margin-top:6px;white-space:pre-wrap">${esc(w.sn)}</div>`;
+  if(KEYS&&!KEYS.has(w.id))return`<p style="background:var(--card2);color:var(--mu)">Photo gayab</p>`;
+  return`<img data-k="${w.id}" alt="">`;
+}
+
 function WL(){
   return`<div class="row"><h1 class="sp">Wall & Notes</h1></div>
   <div class="row" style="margin:8px 0 14px">
@@ -487,7 +485,7 @@ function WL(){
         <button onclick="mvW(${i},1)">▼</button>
         <button onclick="rw('${w.id}')">✕</button>
       </div>
-      ${w.q?`<p>${esc(w.q)}</p>`:w.sn?`<b>${esc(w.title||'Note')}</b><div style="font-size:13px;margin-top:6px;white-space:pre-wrap">${esc(w.sn)}</div>`:KEYS&&!KEYS.has(w.id)?'<p style="background:var(--card2);color:var(--mu)">Photo gayab</p>':`<img data-k="${w.id}" alt="">`}
+      ${wallBody(w)}
     </div>`).join('')}
   </div>${S.wall.length?'':'<div class="mu" style="text-align:center;padding:20px">Sticky note, sapne, ya quotes lagao. Upar-niche buttons se order badlo.</div>'}`;
 }
@@ -509,7 +507,6 @@ async function aq(){const q=await ask('Motivation line');if(q){S.wall.unshift({i
 async function ai(f){if(!f)return;const im=await createImageBitmap(f),s=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.82)),id=uid();const ok=await idb('put',id,{b:await b.arrayBuffer(),t:'image/jpeg'});if(ok==null){alert('Save nahi hui');return}KEYS&&KEYS.add(id);S.wall.unshift({id,img:1});save();R()}
 async function rw(id){S.wall=S.wall.filter(w=>w.id!==id);await idb('del',id);save();R()}
 
-// Reverse Pomodoro & Focus Studio
 const fm=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),RC=339.3,ML={f:'Focus',s:'Short break',l:'Long break'};
 S.pm=Object.assign({f:25,s:5,l:15,ev:4,auto:true,goal:120,snd:'off'},S.pm||{});S.log=S.log||[];
 const dur=m=>S.pm[m]*60;
@@ -563,7 +560,6 @@ function snd(k){stopS();if(k==='off')return;try{ac=ac||new(window.AudioContext||
 function ssn(k){S.pm.snd=k;save();if(tm.run&&tm.mode==='f')snd(k);R()}
 function sp(k,v){S.pm[k]=Math.max(1,+v||1);save();if(!tm.run&&'fsl'.includes(k))tm.left=tm.full=dur(tm.mode);R()}
 
-// Reverse Pomodoro Waste Check Loop
 function checkReversePomodoro(){
   if(!S.revPm.on)return;
   if(!tm.run){
@@ -608,7 +604,11 @@ function TM(){
   <div class="card"><h2>⚙️ Settings</h2><div class="row" style="flex-wrap:wrap">${[['f','Focus min'],['s','Short'],['l','Long'],['goal','Daily goal']].map(([k,n])=>`<div style="flex:1 1 90px"><div class="mu">${n}</div><input type="number" min="1" value="${S.pm[k]}" onchange="sp('${k}',this.value)"></div>`).join('')}</div></div>`;
 }
 
-// Target Hall Ticket Generator
+async function editTicket(k,label){
+  const v=await ask(label,S.ticket[k]);
+  if(v){S.ticket[k]=v;save();R()}
+}
+
 function HALL(){
   const allNodes=S.exams.flatMap(e=>e.tree.flatMap(lv));
   const sylDone=allNodes.filter(x=>x.done).length;
@@ -664,13 +664,12 @@ function HALL(){
   </div>
   <div class="card">
     <h2>✏️ Admit Card Details</h2>
-    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="ask('Candidate Name',S.ticket.name).then(v=>{if(v){S.ticket.name=v;save();R()}})">Naam: ${esc(t.name)}</button>
-    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="ask('Target Post',S.ticket.post).then(v=>{if(v){S.ticket.post=v;save();R()}})">Post: ${esc(t.post)}</button>
-    <button class="g sp" style="width:100%" onclick="ask('Exam Center',S.ticket.center).then(v=>{if(v){S.ticket.center=v;save();R()}})">Center: ${esc(t.center)}</button>
+    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="editTicket('name','Candidate Name')">Naam: ${esc(t.name)}</button>
+    <button class="g sp" style="width:100%;margin-bottom:6px" onclick="editTicket('post','Target Post')">Post: ${esc(t.post)}</button>
+    <button class="g sp" style="width:100%" onclick="editTicket('center','Exam Center')">Center: ${esc(t.center)}</button>
   </div>`;
 }
 
-// Samay Chakra and Clocks
 const dfm=ms=>{const a=Math.abs(ms),d=Math.floor(a/864e5),h=Math.floor(a%864e5/36e5),m=Math.floor(a%36e5/6e4),s=Math.floor(a%6e4/1e3);return{d,h,m,s,t:`${d} din ${P2(h)}:${P2(m)}:${P2(s)}`}},P2=n=>String(n).padStart(2,'0');
 S.sc=Object.assign({st:'both',face:'tick',col:'#22d3a6',sec:true,h24:false,q:true,birth:''},S.sc||{});S.ms=S.ms||[];S.mk=S.mk||[];
 const dnum=d=>Math.floor(Date.parse(d+'T00:00:00Z')/864e5),RV=[1,3,7,21];
@@ -678,7 +677,7 @@ function dueRv(){const o=[];S.exams.forEach(e=>{const w=ns=>ns.forEach(n=>{if(n.
 function revH(){const l=dueRv();if(!l.length)return'';return`<div class="card"><h2>🔁 Aaj revise karo</h2>${l.slice(0,6).map(n=>`<div class="t"><span class="sp">${esc(n.t)}</span><button class="s" onclick="revd('${n.id}')">Ho gaya</button></div>`).join('')}<div class="mu">Padhe hue topic 1, 3, 7 aur 21 din baad yaad dilate hain.</div></div>`}
 function revd(id){for(const e of S.exams){const r=find(e.tree,id);if(r){const n=r.n;n.rv.s++;if(n.rv.s>=RV.length)delete n.rv;save();boom();R();return}}}
 async function addMk(){const n=await ask('Test ka naam');if(!n)return;const sc=await ask('Score (jaise 78/100)');if(!sc)return;const m=sc.match(/([\d.]+)\s*\/\s*([\d.]+)/);if(!m){alert('Aise likho: 78/100');return}S.mk.push({id:uid(),n,s:+m[1],t:+m[2],d:today()});save();R()}
-function mkH(){const l=S.mk.slice(-10),p=l.map(x=>x.s*100/x.t);let g='';if(l.length>1){const pts=p.map((v,i)=>`${i*260/(p.length-1)},${50-v*.5}`).join(' ');g=`<svg viewBox="0 0 260 50" width="100%" height="60"><polyline points="${pts}" fill="none" stroke="var(--ac2)" stroke-width="3" stroke-linejoin="round"/></svg>`}return`<div class="card"><div class="row"><h2 class="sp">📝 Mock test</h2><button class="s" onclick="addMk()">＋ Score</button></div>${g}${l.slice(-4).reverse().map(x=>`<div class="row"><span class="sp">${esc(x.n)}</span><b>${(x.s*100/x.t).toFixed(0)}%</b><button class="ic" onclick="S.mk=S.mk.filter(y=>y.id!=='\${x.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Pehla test score jodo.</div>'}</div>`}
+function mkH(){const l=S.mk.slice(-10),p=l.map(x=>x.s*100/x.t);let g='';if(l.length>1){const pts=p.map((v,i)=>`${i*260/(p.length-1)},${50-v*.5}`).join(' ');g=`<svg viewBox="0 0 260 50" width="100%" height="60"><polyline points="${pts}" fill="none" stroke="var(--ac2)" stroke-width="3" stroke-linejoin="round"/></svg>`}return`<div class="card"><div class="row"><h2 class="sp">📝 Mock test</h2><button class="s" onclick="addMk()">＋ Score</button></div>${g}${l.slice(-4).reverse().map(x=>`<div class="row"><span class="sp">${esc(x.n)}</span><b>${(x.s*100/x.t).toFixed(0)}%</b><button class="ic" onclick="S.mk=S.mk.filter(y=>y.id!=='${x.id}');save();R()">✕</button></div>`).join('')||'<div class="mu">Pehla test score jodo.</div>'}</div>`}
 async function clean(){if(!NATIVE){alert('Ye sirf APK me chalta hai');return}const keep=new Set([...S.books.map(b=>b.id),...S.wall.filter(w=>!w.q).map(w=>w.id)]);let r;try{r=await FS.readdir({path:'sz',directory:'DATA'})}catch(e){alert('Saaf karne ke liye kuch nahi mila');return}const j=r.files.filter(f=>!keep.has(f.name));if(!j.length){alert('Koi extra file nahi mili ✅');return}const mb=j.reduce((a,f)=>a+(f.size||0),0)/1048576;if(!confirm(j.length+' extra file hatani hain?'))return;for(const f of j){try{await FS.deleteFile({path:'sz/'+f.name,directory:'DATA'})}catch(e){}}alert('Ho gaya ✅ '+mb.toFixed(0)+' MB khali hui');R()}
 async function addMs(){const n=await ask('Naam');if(!n)return;const t=await ask('Kaisa counter?',null,['Is date tak kitna baaki','Is date se kitna beet gaya']);if(t===null)return;const d=await ask('Date chuno','date');if(!d)return;const u=t.startsWith('Is date tak');let a='';if(u)a=await ask('Shuru ki date','date')||'';S.ms.push({id:uid(),n,t:u?'u':'s',d,a});save();R()}
 const rmMs=id=>{S.ms=S.ms.filter(x=>x.id!==id);save();R()},scs=(k,v)=>{S.sc[k]=v;save();R()},scb=k=>{S.sc[k]=!S.sc[k];save();R()};
@@ -700,7 +699,7 @@ f=>'Waqt ko mat gavao, yehi waqt kal itihaas banega.'
 function clockSVG(){const c=S.sc;if(c.st==='digital')return'';const col=c.col;let t='',nm='';for(let i=0;i<60;i++){const big=i%5===0;if(c.face==='dots'&&!big)continue;t+=`<line x1="100" y1="${big?8:11}" x2="100" y2="${big?20:15}" stroke="${big?col:'var(--mu)'}" stroke-width="${big?3:1.2}" transform="rotate(${i*6} 100 100)"/>`}
 if(c.face==='num')for(let i=1;i<=12;i++){const a=i*Math.PI/6;nm+=`<text x="${100+72*Math.sin(a)}" y="${105-72*Math.cos(a)}" text-anchor="middle" fill="var(--tx)" font-size="14" font-weight="700">${i}</text>`}
 return`<svg viewBox="0 0 200 200" width="270" height="270"><circle cx="100" cy="100" r="96" fill="none" stroke="var(--card2)" stroke-width="2"/><circle id="ar" cx="100" cy="100" r="90" fill="none" stroke="${col}" stroke-opacity=".4" stroke-width="3" stroke-dasharray="565.5" stroke-dashoffset="565.5" transform="rotate(-90 100 100)"/>${t}${nm}<line id="hh" x1="100" y1="100" x2="100" y2="55" stroke="var(--tx)" stroke-width="5" stroke-linecap="round"/><line id="hm" x1="100" y1="100" x2="100" y2="35" stroke="var(--tx)" stroke-width="3.5" stroke-linecap="round"/>${c.sec?`<line id="hs" x1="100" y1="112" x2="100" y2="25" stroke="\${col}" stroke-width="1.8" stroke-linecap="round"/>`:''}<circle cx="100" cy="100" r="5" fill="${col}"/></svg>`}
-function CK(){const c=S.sc,ch=(k,v,l)=>`<button class="${c[k]===v?'':'g'} s" onclick="scs('${k}','${v}')">${l}</button>`,tg=(k,l)=>`<button class="${c[k]?'':'g'} s" onclick="scb('${k}')">${l}: ${c[k]?'On':'Off'}</button>`;
+function CK(){const c=S.sc,ch=(k,v,l)=>`<button class="${c[k]===v?'':'g'} s" onclick="scs('${k}','${v}')">${l}</button>`;
 return`<div class="row"><button class="g s" onclick="sw('home')">‹ Home</button></div><h1>Samay Chakra <span class="fl">⏳</span></h1><div class="card" style="text-align:center"><div id="clk">${clockSVG()}</div><div id="dg" class="big" style="font-size:42px;margin:6px 0"></div><div id="dt" class="mu"></div></div>${c.q?'<div class="card"><h2 id="qq" style="margin:0"></h2></div>':''}<div class="card"><h2>Aaj, hafta, mahina, saal</h2><div id="pr"></div></div><div class="card"><h2>Mere dates</h2><div id="ml"></div><div class="row" style="margin-top:8px"><button class="sp" onclick="addMs()">＋ Date jodo</button><button class="g sp" onclick="setBirth()">🎂 Janm tithi</button></div></div><div class="card"><h2>🎨 Customize</h2><div class="chips">${ch('st','both','Analog+Digital')}${ch('st','analog','Analog')}${ch('st','digital','Digital')}</div></div>`}
 
 let ckR=0;
@@ -719,7 +718,6 @@ return`<div style="margin:14px 0"><div class="row"><b class="sp">${esc(m.n)}</b>
 if(g('ml'))g('ml').innerHTML=h||'<div class="mu">＋ Date jodo</div>'}
 setInterval(ckTick,1000);
 
-// Ghost Rival Supercharged Engine
 const ld=(d=new Date())=>d.getFullYear()+'-'+P2(d.getMonth()+1)+'-'+P2(d.getDate());
 S.rv=Object.assign({on:false,name:'AIR 50 Aspirant',exam:'WBCS',me:'Adarsh Routh',em:'👻',lvl:1,night:true,nf:true,sl:[{id:'a1',d:[1,2,3,4,5],s:'09:00',e:'11:00'},{id:'a2',d:[1,2,3,4,5],s:'17:00',e:'19:00'},{id:'a3',d:[0,6],s:'10:00',e:'13:00'}],pw:{},pd:{},rep:{},feed:[],bt:1500,bw:{},since:'',lo:0,lm:{d:'',m:0},tn:{},ga:0,xp:0,sg:0},S.rv||{});
 const LVM=[.7,1,1.4],DD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],VB={s:'padh raha hai',r:'revision kar raha hai',m:'mock test de raha hai'},BOSS=['Polity Dragon','History Hydra','Geography Golem','Maths Minotaur','Reasoning Reaper','Economy Ogre','Current-Affairs Kraken'],RK=['Beginner','Aspirant','Warrior','Officer-in-making','SDM Material','Topper'];
@@ -780,7 +778,6 @@ function rvBg(){
   repCheck();
 }
 
-// Rival Reset Mechanisms
 function resetRival(scope){
   if(scope==='day'){
     if(confirm("Aaj ka muqabla zero karein?")){
@@ -797,7 +794,6 @@ function resetRival(scope){
   }
 }
 
-// Post-Exam Timeline Vision Board
 function visionH(){
   const totH=Math.floor(xpT()/60);
   const reqH=S.vision.hoursReq||100;
@@ -872,18 +868,47 @@ function rvLive(){
 setInterval(()=>{if(tab==='rival')rvLive()},1000);setInterval(rvBg,5000);
 
 let rvt={d:[1,2,3,4,5],s:'09:00',e:'11:00',pw:'t',k:'s'};
-const rvOn=()=>{S.rv.on=true;S.rv.since=today();save();R()},rvs=(k,v)=>{S.rv[k]=v;save();R()},rvb=k=>{S.rv[k]=!S.rv[k];save();R()};
-const rvA=(k,t,def)=>ask(t,def===undefined?String(S.rv[k]):def).then(v=>{if(v!=null&&v!==''){S.rv[k]=v;save();R()}});
+const LN=()=>window.Capacitor&&Capacitor.isPluginAvailable&&Capacitor.isPluginAvailable('LocalNotifications')&&Capacitor.Plugins.LocalNotifications;
+async function schedRv(ask){
+  const L=LN();if(!L||!S.rv.on||!S.rv.nf)return;
+  try{
+    if(ask)await L.requestPermissions();
+    const p=await L.getPending(),old=(p.notifications||[]).filter(n=>n.id>=7000&&n.id<8000);
+    if(old.length)await L.cancel({notifications:old.map(n=>({id:n.id}))});
+    const out=[],now=Date.now();let id=7000;
+    for(let k=0;k<3;k++){
+      const x=new Date();x.setDate(x.getDate()+k);const d=ld(x),at=mm=>{const y=new Date(d+'T00:00:00');y.setMinutes(Math.round(mm));return y};
+      tl(d).forEach(e=>{const a=at(e.t);if(a>now)out.push({id:id++,title:S.rv.name,body:e.m,schedule:{at:a}})});
+    }
+    await L.schedule({notifications:out.slice(0,60)});
+  }catch(e){}
+}
+
+const rvOn=()=>{S.rv.on=true;S.rv.since=today();save();schedRv(1);R()},rvs=(k,v)=>{S.rv[k]=v;save();schedRv();R()},rvb=k=>{S.rv[k]=!S.rv[k];save();schedRv(k==='nf');R()};
+const rvA=(k,t,def)=>ask(t,def===undefined?String(S.rv[k]):def).then(v=>{if(v!=null&&v!==''){S.rv[k]=v;save();schedRv();R()}});
 function rvtd(i){const a=rvt.d,j=a.indexOf(i);j<0?a.push(i):a.splice(j,1);R()}
-function rvAddSl(){if(!rvt.d.length||hm(rvt.e)<=hm(rvt.s)){alert('Din chuno aur end time start ke baad rakho');return}S.rv.sl.push({id:uid(),d:[...rvt.d],s:rvt.s,e:rvt.e});save();R()}
-const rvDel=id=>{S.rv.sl=S.rv.sl.filter(x=>x.id!==id);save();R()};
+function rvAddSl(){if(!rvt.d.length||hm(rvt.e)<=hm(rvt.s)){alert('Din chuno aur end time start ke baad rakho');return}S.rv.sl.push({id:uid(),d:[...rvt.d],s:rvt.s,e:rvt.e});save();schedRv();R()}
+const rvDel=id=>{S.rv.sl=S.rv.sl.filter(x=>x.id!==id);save();schedRv();R()};
 const pArr=()=>rvt.pw==='t'?(S.rv.pd[today()]=S.rv.pd[today()]||[]):(S.rv.pw[rvt.pw]=S.rv.pw[rvt.pw]||[]);
-function rvAddIt(){const v=document.getElementById('pit').value.trim();if(!v)return;pArr().push({t:v,k:rvt.k});save();R()}
-const rvDelIt=i=>{pArr().splice(i,1);save();R()};
+function rvAddIt(){const v=document.getElementById('pit').value.trim();if(!v)return;pArr().push({t:v,k:rvt.k});save();schedRv();R()}
+const rvDelIt=i=>{pArr().splice(i,1);save();schedRv();R()};
+
+function rvOpen(){
+  if(!S.rv.on)return;
+  const n=Date.now();
+  if(S.rv.lo&&n-S.rv.lo>72e5){
+    const st=rvSt();
+    if(st.a){
+      const L=slotsOf(today()).find(x=>nowM()>=hm(x.s)&&nowM()<hm(x.e));
+      banner(`${S.rv.em} ${S.rv.name} Deep Focus Mode me hai (Target: ${L?((hm(L.e)-hm(L.s))/60).toFixed(1):'?'} ghante). Gap badh raha hai!`,'warn');
+    }
+  }
+  S.rv.lo=n;save();rvBg();
+}
 
 function R(){
   const f={home:H,syl:SY,books:BK,wall:WL,timer:TM,clock:CK,rival:RVS,hall:HALL}[tab];
-  \$('#v').innerHTML=f();
+  $('#v').innerHTML=f();
   if(tab==='home')stinfo();
   if(tab==='clock')ckStart();
   if(tab==='rival')rvLive();
@@ -897,4 +922,6 @@ try{const m={name:'Study Zone',short_name:'StudyZone',display:'standalone',backg
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 addEventListener('click',()=>{try{navigator.storage.persist()}catch(e){}},{once:true});
 initR();rst();nav();R();localStorage.szboot=0;setTimeout(()=>chkUpd(),3000);
+setTimeout(()=>{rvOpen();schedRv()},1500);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)rvOpen();if(!document.hidden&&Date.now()-(S.lc||0)>36e5)chkUpd()});
 </script></body></html>
