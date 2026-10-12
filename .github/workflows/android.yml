@@ -17,6 +17,57 @@ jobs:
       - run: |
           sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
           npx cap sync android
+      - name: Fullscreen plugin (PDF reader ke liye)
+        run: |
+          D=android/app/src/main/java/com/studyzone/app
+          mkdir -p $D
+          cat > $D/ImmersivePlugin.java <<'JAVA'
+          package com.studyzone.app;
+          import android.view.Window;
+          import androidx.core.view.WindowCompat;
+          import androidx.core.view.WindowInsetsCompat;
+          import androidx.core.view.WindowInsetsControllerCompat;
+          import com.getcapacitor.Plugin;
+          import com.getcapacitor.PluginCall;
+          import com.getcapacitor.PluginMethod;
+          import com.getcapacitor.annotation.CapacitorPlugin;
+          @CapacitorPlugin(name = "Immersive")
+          public class ImmersivePlugin extends Plugin {
+            @PluginMethod
+            public void enter(PluginCall call) {
+              getActivity().runOnUiThread(() -> {
+                Window w = getActivity().getWindow();
+                WindowCompat.setDecorFitsSystemWindows(w, false);
+                WindowInsetsControllerCompat c = WindowCompat.getInsetsController(w, w.getDecorView());
+                c.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                c.hide(WindowInsetsCompat.Type.systemBars());
+                call.resolve();
+              });
+            }
+            @PluginMethod
+            public void exit(PluginCall call) {
+              getActivity().runOnUiThread(() -> {
+                Window w = getActivity().getWindow();
+                WindowCompat.setDecorFitsSystemWindows(w, true);
+                WindowInsetsControllerCompat c = WindowCompat.getInsetsController(w, w.getDecorView());
+                c.show(WindowInsetsCompat.Type.systemBars());
+                call.resolve();
+              });
+            }
+          }
+          JAVA
+          cat > $D/MainActivity.java <<'JAVA'
+          package com.studyzone.app;
+          import android.os.Bundle;
+          import com.getcapacitor.BridgeActivity;
+          public class MainActivity extends BridgeActivity {
+            @Override
+            public void onCreate(Bundle savedInstanceState) {
+              registerPlugin(ImmersivePlugin.class);
+              super.onCreate(savedInstanceState);
+            }
+          }
+          JAVA
       - name: Fixed signing key (update install ke liye zaroori)
         run: mkdir -p ~/.android && cp ci/debug.keystore ~/.android/debug.keystore
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
